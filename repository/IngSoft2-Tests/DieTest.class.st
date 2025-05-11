@@ -5,13 +5,13 @@ Class {
 	#package : 'IngSoft2-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : 'tests - instance' }
 DieTest >> testDieWithZeroSidesRaisesError [
 	self should: [ Die new initializeWithSides: 0 ] raise: Error.
 
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - instance' }
 DieTest >> testOneSidedDieAlwaysReturnsOne [
 	| dice result |
 	dice := Die new initializeWithSides: 1.
@@ -21,7 +21,7 @@ DieTest >> testOneSidedDieAlwaysReturnsOne [
 
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - instance' }
 DieTest >> testRollReturnsValueWithinRange [
 	| dice result |
 	dice := Die new initializeWithSides: 6.

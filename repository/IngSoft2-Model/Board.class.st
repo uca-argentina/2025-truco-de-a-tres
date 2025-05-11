@@ -19,3 +19,8 @@ Board >> initializeWithCells: aCount wormholes: aDictionary [
 	cellCount := aCount.
    wormholes := aDictionary.
 ]
+
+{ #category : 'initialize' }
+Board >> isGoalReachedAt: aPosition [
+    ^ aPosition >= cellCount
+]

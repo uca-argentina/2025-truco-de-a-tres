@@ -5,7 +5,17 @@ Class {
 	#package : 'IngSoft2-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : 'tests - instance' }
+BoardTest >> testIsGoalReached [
+    | board |
+    board := Board new initializeWithCells: 10 wormholes: Dictionary new.
+
+    self assert: (board isGoalReachedAt: 10).
+    self assert: (board isGoalReachedAt: 11).
+    self deny: (board isGoalReachedAt: 9).
+]
+
+{ #category : 'tests - instance' }
 BoardTest >> testPositionWithoutWormholeReturnsSame [
 	| board |
 	board := Board new initializeWithCells: 10 wormholes: Dictionary new.
@@ -14,7 +24,7 @@ BoardTest >> testPositionWithoutWormholeReturnsSame [
 
 ]
 
-{ #category : 'tests' }
+{ #category : 'tests - instance' }
 BoardTest >> testWormholeTransportsCorrectly [
     | board wormholes |
     wormholes := Dictionary new.
