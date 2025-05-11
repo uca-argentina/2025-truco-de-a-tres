@@ -16,3 +16,12 @@ DummyTest >> testDummy2 [
 
 	self assert: Dummy new isDummy
 ]
+
+{ #category : 'tests' }
+DummyTest >> testRollReturnsValueWithinRange [
+	| die result |
+    die := Die new initializeWithSides: 6.
+    result := die roll.
+    
+    self assert: (result between: 1 and: 6)
+]

@@ -3,7 +3,8 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'side',
-		'dado'
+		'dado',
+		'sides'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -15,8 +16,23 @@ Dice >> initializeWith: aSide [
 ]
 
 { #category : 'initialize' }
+Dice >> initializeWithSides: aNumberOfSides [ 
+	sides:= aNumberOfSides.
+]
+
+{ #category : 'initialize' }
+Dice >> roll [
+	^ (1 to: (self sides)) atRandom.
+]
+
+{ #category : 'initialize' }
 Dice >> side [
 	^ side .
+]
+
+{ #category : 'initialize' }
+Dice >> sides [
+	^ sides.
 ]
 
 { #category : 'instance creation' }
