@@ -3,7 +3,8 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'name',
-		'position'
+		'position',
+		'playerName'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -12,6 +13,6 @@ Class {
 { #category : 'initialize' }
 Spaceship >> initializeWith: aName [
 
-	name := aName.
+	playerName := aName.
 	position := 0.
 ]
