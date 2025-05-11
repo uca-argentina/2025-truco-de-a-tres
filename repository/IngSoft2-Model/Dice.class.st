@@ -10,13 +10,13 @@ Class {
 }
 
 { #category : 'initialize' }
-Dice >> initialize [ 
-	dado:= 6.
+Dice >> initializeWith: aSide [ 
+	side:= aSide.
 ]
 
 { #category : 'initialize' }
 Dice >> side [
-	^ 6.
+	^ side .
 ]
 
 { #category : 'instance creation' }
