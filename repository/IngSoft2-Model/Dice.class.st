@@ -21,6 +21,6 @@ Dice >> side [
 
 { #category : 'instance creation' }
 Dice >> throwTheDice [
-
+	"this comment is to test whether i can work with someone else's branch"
 	^ (1 to: (self side)) atRandom.
 ]
