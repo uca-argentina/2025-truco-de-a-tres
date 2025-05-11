@@ -12,7 +12,10 @@ Class {
 
 { #category : 'initialize' }
 Die >> initializeWithSides: aNumberOfSides [ 
-	sides:= aNumberOfSides.
+	(aNumberOfSides isInteger and: [aNumberOfSides >= 1]) ifFalse: [
+        self error: 'Die must have at least one side.'
+    ].
+    sides := aNumberOfSides.
 ]
 
 { #category : 'initialize' }

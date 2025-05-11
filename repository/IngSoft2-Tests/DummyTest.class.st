@@ -6,6 +6,11 @@ Class {
 }
 
 { #category : 'tests' }
+DummyTest >> testDieWithZeroSidesRaisesError [
+	self should: [ Die new initializeWithSides: 0 ] raise: Error.
+]
+
+{ #category : 'tests' }
 DummyTest >> testOneSidedDieAlwaysReturnsOne [
 	| dice result |
     dice := Die new initializeWithSides: 1.
