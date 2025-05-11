@@ -11,7 +11,7 @@ SpaceshipTest >> testInitializeInPositionZero [
 	|player |
 	player := Spaceship new initializeWith: 'JohnDoe'.
 	
-	self assert: player position equals: 0.
+	self assert: player position equals: 0. 
 ]
 
 { #category : 'tests - instance' }
