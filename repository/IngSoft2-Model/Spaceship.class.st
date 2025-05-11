@@ -13,6 +13,18 @@ Class {
 { #category : 'initialize' }
 Spaceship >> initializeWith: aName [
 
+	aName isEmpty ifTrue: [ self error: 'El nombre no puede estar vacío' ].
+
 	playerName := aName.
-	position := 0.
+	position := 0
+]
+
+{ #category : 'instance creation' }
+Spaceship >> playerName [
+    ^ playerName
+]
+
+{ #category : 'instance creation' }
+Spaceship >> position [
+    ^ position
 ]
