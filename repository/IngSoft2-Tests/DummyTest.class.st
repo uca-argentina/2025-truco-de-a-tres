@@ -6,21 +6,18 @@ Class {
 }
 
 { #category : 'tests' }
-DummyTest >> testDummy [
-
-	self assert: Dummy new isDummy
-]
-
-{ #category : 'tests' }
-DummyTest >> testDummy2 [
-
-	self assert: Dummy new isDummy
+DummyTest >> testOneSidedDieAlwaysReturnsOne [
+	| dice result |
+    dice := Die new initializeWithSides: 1.
+    result := dice roll.
+    
+    self assert: result equals: 1.
 ]
 
 { #category : 'tests' }
 DummyTest >> testRollReturnsValueWithinRange [
 	| dice result |
-    dice := Dice new initializeWithSides: 6.
+    dice := Die new initializeWithSides: 6.
     result := dice roll.
     
     self assert: (result between: 1 and: 6)
