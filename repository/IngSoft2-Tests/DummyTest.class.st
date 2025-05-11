@@ -20,7 +20,7 @@ DummyTest >> testDummy2 [
 { #category : 'tests' }
 DummyTest >> testRollReturnsValueWithinRange [
 	| die result |
-    die := Die new initializeWithSides: 6.
+    die := Dice new initializeWithSides: 6.
     result := die roll.
     
     self assert: (result between: 1 and: 6)
