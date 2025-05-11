@@ -20,6 +20,14 @@ DummyTest >> testOneSidedDieAlwaysReturnsOne [
 ]
 
 { #category : 'tests' }
+DummyTest >> testPositionWithoutWormholeReturnsSame [
+	| board |
+    board := Board new initializeWithCells: 10 wormholes: Dictionary new.
+    
+    self assert: (board applyWormholeIfPresentAt: 5) equals: 5.
+]
+
+{ #category : 'tests' }
 DummyTest >> testRollReturnsValueWithinRange [
 	| dice result |
     dice := Die new initializeWithSides: 6.
