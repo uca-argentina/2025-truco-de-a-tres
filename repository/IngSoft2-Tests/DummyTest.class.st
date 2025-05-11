@@ -18,6 +18,12 @@ DummyTest >> testDummy2 [
 ]
 
 { #category : 'tests' }
+DummyTest >> testDummy3 [
+
+	self assert: Dummy new isDummy
+]
+
+{ #category : 'tests' }
 DummyTest >> testRollReturnsValueWithinRange [
 	| dice result |
     dice := Dice new initializeWithSides: 6.
