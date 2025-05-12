@@ -6,33 +6,26 @@ Class {
 		'dice',
 		'turn',
 		'winner',
-		'board'
+		'board',
+		'spaceShips'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'validation' }
+Game >> spaceShipValidator [
+
+	spaceShips size < 2 ifTrue: [ 
+		self error:'Need 2 space ships or more to initialize the game']
+]
+
 { #category : 'initialization' }
-Game >> initialize [
-	super initialize.
-	ships := OrderedCollection new.
-	dice := OrderedCollection new.
+Game >> withShips: someShips board: aBoard dice: someDices [
+	spaceShips := someShips.
+	board := aBoard.
+	dice := someDices.
 	turn := 1.
 	winner := nil.
-]
-
-{ #category : 'initialization' }
-Game >> initializeWithShips: someShips board: aBoard dice: someDice [
-    ships := someShips asOrderedCollection.
-    board := aBoard.
-    dice := someDice asOrderedCollection.
-    turn := 1.
-    winner := nil.
-]
-
-{ #category : 'as yet unclassified' }
-Game >> withShips: someShips board: aBoard dice: someDices [
-    ^ self new
-        initializeWithShips: someShips board: aBoard dice: someDices;
-        yourself.
+	self spaceShipValidator 
 ]

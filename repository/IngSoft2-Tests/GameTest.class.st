@@ -4,3 +4,40 @@ Class {
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
 }
+
+{ #category : 'asserting' }
+GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessage [
+
+	self
+		should: anErrorBlock
+		raise: anErrorClass
+		withExceptionDo: [ :error |
+		self assert: error messageText equals: errorMessage].
+	
+
+
+]
+
+{ #category : 'tests' }
+GameTest >> testWhenGameCorrectlyCreatedThenNotNil [
+
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dice2 dicesGame boardGame game |
+	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
+	spaceShip2 := Spaceship new initializeWith: 'Ship Num2'.
+	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
+
+	dice1 := Die new initializeWithSides: 1.
+	dice2 := Die new initializeWithSides: 6.
+	dicesGame := OrderedCollection with: dice1 with: dice2.
+
+	boardGame := Board new
+		             initializeWithCells: 10
+		             wormholes: Dictionary new.
+
+	game := Game new
+		        withShips: spaceShipsGame
+		        board: boardGame
+		        dice: dicesGame.
+	
+	self assert: game notNil.
+]
