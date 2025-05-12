@@ -41,6 +41,30 @@ SpaceshipTest >> testAdvanceWithWormholeTransport [
 ]
 
 { #category : 'tests - instance' }
+SpaceshipTest >> testHasNotReachedGoalWhenBehind [
+    | board spaceship |
+    board := Board new initializeWithCells: 10 wormholes: Dictionary new.
+    spaceship := Spaceship new initializeWith: 'Endeavour'.
+
+    spaceship moveTo: 9.
+
+    self deny: (spaceship hasReachedGoalOn: board).
+
+]
+
+{ #category : 'tests - instance' }
+SpaceshipTest >> testHasReachedGoalWhenAtGoal [
+    | board spaceship |
+    board := Board new initializeWithCells: 10 wormholes: Dictionary new.
+    spaceship := Spaceship new initializeWith: 'Orion'.
+
+    spaceship moveTo: 10.
+
+    self assert: (spaceship hasReachedGoalOn: board).
+
+]
+
+{ #category : 'tests - instance' }
 SpaceshipTest >> testInitializeInPositionZero [
 
 	|player |

@@ -19,6 +19,12 @@ Spaceship >> advanceWith: aDie on: aBoard [
 
 ]
 
+{ #category : 'instance creation' }
+Spaceship >> hasReachedGoalOn: aBoard [
+    ^ aBoard isGoalReachedAt: position
+
+]
+
 { #category : 'initialize' }
 Spaceship >> initializeWith: aName [
 
