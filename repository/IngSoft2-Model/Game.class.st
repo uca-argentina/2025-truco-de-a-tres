@@ -14,6 +14,13 @@ Class {
 }
 
 { #category : 'validation' }
+Game >> validateMinimumDice: someDices [
+
+	someDices ifEmpty: [
+		self error: 'At least one die is required to initialize the game' ]
+]
+
+{ #category : 'validation' }
 Game >> validateMinimumSpaceShips: someShips [
 
 	someShips size < 2 ifTrue: [ 
@@ -24,6 +31,7 @@ Game >> validateMinimumSpaceShips: someShips [
 Game >> withShips: someShips board: aBoard dice: someDices [
 
 	self validateMinimumSpaceShips: someShips .
+	self validateMinimumDice: someDices.
 
 	spaceShips := someShips.
 	board := aBoard.
