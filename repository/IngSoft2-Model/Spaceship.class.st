@@ -28,10 +28,11 @@ Spaceship >> hasReachedGoalOn: aBoard [
 { #category : 'initialize' }
 Spaceship >> initializeWith: aName [
 
-	aName isEmpty ifTrue: [ self error: 'El nombre no puede estar vacío' ].
+	aName isEmpty ifTrue: [ self error: 'Name cannot be empty' ].
 
 	playerName := aName.
 	position := 0
+
 ]
 
 { #category : 'instance creation' }

@@ -75,9 +75,10 @@ SpaceshipTest >> testInitializeInPositionZero [
 
 { #category : 'tests - instance' }
 SpaceshipTest >> testInitializeWithEmptyNameRaisesError [
+	| errorThrown |
+	
+	errorThrown := [ Spaceship new initializeWith: '' ] on: Error do: [ :e | e ].
 
-	self "verify that the error shows and that it's the expected error if playerName is empty"
-		should: [ Spaceship new initializeWith: '' ]
-		raise: Error
-		description: 'El nombre no puede estar vacío'
+	self assert: errorThrown messageText equals: 'Name cannot be empty'.
+
 ]
