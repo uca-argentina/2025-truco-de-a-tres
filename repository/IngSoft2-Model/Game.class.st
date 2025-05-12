@@ -13,6 +13,18 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'accessing' }
+Game >> currentTurn [
+
+	^ turn
+]
+
+{ #category : 'testing' }
+Game >> isGameOver [
+
+	^ winner notNil
+]
+
 { #category : 'validation' }
 Game >> validateMinimumDice: someDices [
 
@@ -25,6 +37,12 @@ Game >> validateMinimumSpaceShips: someShips [
 
 	someShips size < 2 ifTrue: [ 
 		self error:'Need 2 space ships or more to initialize the game']
+]
+
+{ #category : 'accessing' }
+Game >> winner [
+
+	^ winner
 ]
 
 { #category : 'initialization' }
