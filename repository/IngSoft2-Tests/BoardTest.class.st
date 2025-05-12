@@ -16,6 +16,27 @@ BoardTest >> testIsGoalReached [
 ]
 
 { #category : 'tests - instance' }
+BoardTest >> testNewPositionWithWormhole [
+	| board wormholes |
+	wormholes := Dictionary new.
+	wormholes at: 6 put: 20.
+	board := Board new initializeWithCells: 25 wormholes: wormholes.
+
+	self assert: (board newPositionFrom: 2 steps: 4) equals: 20.
+
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testNewPositionWithoutWormhole [
+	| board wormholes |
+	wormholes := Dictionary new.
+	board := Board new initializeWithCells: 25 wormholes: wormholes.
+
+	self assert: (board newPositionFrom: 2 steps: 2) equals: 4.
+
+]
+
+{ #category : 'tests - instance' }
 BoardTest >> testPositionWithoutWormholeReturnsSame [
 	| board |
 	board := Board new initializeWithCells: 10 wormholes: Dictionary new.

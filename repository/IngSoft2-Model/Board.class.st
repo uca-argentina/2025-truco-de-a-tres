@@ -15,6 +15,11 @@ Board >> applyWormholeIfPresentAt: aPosition [
 ]
 
 { #category : 'initialize' }
+Board >> cellCount [
+    ^ cellCount
+]
+
+{ #category : 'initialize' }
 Board >> initializeWithCells: aCount wormholes: aDictionary [
 	cellCount := aCount.
    wormholes := aDictionary.
@@ -23,4 +28,13 @@ Board >> initializeWithCells: aCount wormholes: aDictionary [
 { #category : 'initialize' }
 Board >> isGoalReachedAt: aPosition [
     ^ aPosition >= cellCount
+]
+
+{ #category : 'initialize' }
+Board >> newPositionFrom: aPosition steps: steps [
+	| tentativePosition finalPosition |
+	tentativePosition := aPosition + steps.
+	finalPosition := self applyWormholeIfPresentAt: tentativePosition.
+	^ finalPosition
+
 ]
