@@ -5,11 +5,18 @@ Class {
 		'board',
 		'die',
 		'spaceships',
-		'currentPlayerIndex'
+		'currentPlayerIndex',
+		'playerName'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
+
+{ #category : 'initialize' }
+Game >> currentPlayer [
+	^ spaceships at: currentPlayerIndex
+
+]
 
 { #category : 'initialize' }
 Game >> initializeWithPlayers: playerNames cells: numberOfCells wormholes: wormholeDict [
@@ -27,6 +34,7 @@ Game >> playTurn [
 	steps := die roll.
 	newPosition := board newPositionFrom: ship position steps: steps.
 	ship moveTo: newPosition.
+	currentPlayerIndex := currentPlayerIndex \\ spaceships size + 1.
 
 ]
 
