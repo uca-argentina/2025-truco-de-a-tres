@@ -14,18 +14,21 @@ Class {
 }
 
 { #category : 'validation' }
-Game >> spaceShipValidator [
+Game >> validateMinimumSpaceShips: someShips [
 
-	spaceShips size < 2 ifTrue: [ 
+	someShips size < 2 ifTrue: [ 
 		self error:'Need 2 space ships or more to initialize the game']
 ]
 
 { #category : 'initialization' }
 Game >> withShips: someShips board: aBoard dice: someDices [
+
+	self validateMinimumSpaceShips: someShips .
+
 	spaceShips := someShips.
 	board := aBoard.
 	dice := someDices.
 	turn := 1.
 	winner := nil.
-	self spaceShipValidator 
+
 ]
