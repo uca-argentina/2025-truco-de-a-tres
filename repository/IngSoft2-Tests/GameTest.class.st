@@ -17,3 +17,20 @@ GameTest >> testInitializeCreatesGameWithAllPlayers [
 	self assert: (game spaceships allSatisfy: [ :s | s class = Spaceship ]).
 
 ]
+
+{ #category : 'tests - instance' }
+GameTest >> testPlayTurnMovesCurrentPlayer [
+	| game ship |
+	game := Game new
+		initializeWithPlayers: #('Javi')
+		cells: 10
+		wormholes: Dictionary new.
+
+	ship := game spaceships first.
+	self assert: ship position equals: 0.
+
+	game playTurn.
+
+	self assert: ship position > 0.
+
+]

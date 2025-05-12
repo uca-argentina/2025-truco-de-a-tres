@@ -21,6 +21,16 @@ Game >> initializeWithPlayers: playerNames cells: numberOfCells wormholes: wormh
 ]
 
 { #category : 'initialize' }
+Game >> playTurn [
+	| ship steps newPosition |
+	ship := spaceships at: currentPlayerIndex.
+	steps := die roll.
+	newPosition := board newPositionFrom: ship position steps: steps.
+	ship moveTo: newPosition.
+
+]
+
+{ #category : 'initialize' }
 Game >> spaceships [
     ^ spaceships
 
