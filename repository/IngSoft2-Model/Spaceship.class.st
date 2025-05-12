@@ -10,7 +10,7 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'instance creation' }
+{ #category : 'initialize' }
 Spaceship >> advanceWith: aDie on: aBoard [
     | steps newPosition |
     steps := aDie roll.
@@ -19,7 +19,7 @@ Spaceship >> advanceWith: aDie on: aBoard [
 
 ]
 
-{ #category : 'instance creation' }
+{ #category : 'initialize' }
 Spaceship >> hasReachedGoalOn: aBoard [
     ^ aBoard isGoalReachedAt: position
 
@@ -35,18 +35,18 @@ Spaceship >> initializeWith: aName [
 
 ]
 
-{ #category : 'instance creation' }
+{ #category : 'initialize' }
 Spaceship >> moveTo: aPosition [
     position := aPosition
 
 ]
 
-{ #category : 'instance creation' }
+{ #category : 'initialize' }
 Spaceship >> playerName [
     ^ playerName
 ]
 
-{ #category : 'instance creation' }
+{ #category : 'initialize' }
 Spaceship >> position [
     ^ position
 ]
