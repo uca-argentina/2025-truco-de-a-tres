@@ -19,6 +19,38 @@ GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessa
 ]
 
 { #category : 'tests' }
+GameTest >> testGameReturnsFinalPositionsOfSpaceships [
+
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game positions finalPositionShip1 finalPositionShip2 |
+	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
+	spaceShip2 := Spaceship new initializeWith: 'Ship Num2'.
+	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
+
+	dice1 := Die new initializeWithSides: 100. "Al ser 10 cells con un dado de 100 termina en una tirada"
+	dicesGame := OrderedCollection with: dice1.
+
+	boardGame := Board new
+		             initializeWithCells: 10
+		             wormholes: Dictionary new.
+
+	game := Game new
+		        withShips: spaceShipsGame
+		        board: boardGame
+		        dice: dicesGame.
+
+	[game isGameOver] whileFalse: [
+		game playTurnFor: spaceShip1.
+		game isGameOver ifFalse: [ game playTurnFor: spaceShip2 ] ].
+
+	positions := game spaceshipPositions.
+	finalPositionShip1 := spaceShip1 position.
+	finalPositionShip2 := spaceShip2 position.
+
+	self assert: (positions at: spaceShip1) equals: finalPositionShip1.
+	self assert: (positions at: spaceShip2) equals: finalPositionShip2
+]
+
+{ #category : 'tests' }
 GameTest >> testMonito [
 	| spaceShip1 spaceShip2 spaceShipsGame dicesGame boardGame |
 	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
