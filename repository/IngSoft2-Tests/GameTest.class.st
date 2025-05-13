@@ -19,10 +19,30 @@ GameTest >> testGameEndsWhenPlayerReachesGoal [
 ]
 
 { #category : 'tests - instance' }
+GameTest >> testGameEndsWhenPlayerWins [
+	| game |
+	game := Game new initializeWithPlayers: #('Red') cells: 1 wormholes: Dictionary new.
+	game playTurn.
+
+	self assert: game isOver.
+
+]
+
+{ #category : 'tests - instance' }
 GameTest >> testGameInitializesWithCorrectCurrentPlayer [
 	| game |
 	game := Game new initializeWithPlayers: #('Red' 'Blue') cells: 10 wormholes: Dictionary new.
 	self assert: (game currentPlayer playerName) equals: 'Red'.
+
+]
+
+{ #category : 'tests - instance' }
+GameTest >> testGameStartsNotOver [
+	| game |
+	game := Game new initializeWithPlayers: #('Red' 'Blue') cells: 10 wormholes: Dictionary new.
+	
+	self deny: game isOver.
+	self assert: game winner isNil.
 
 ]
 

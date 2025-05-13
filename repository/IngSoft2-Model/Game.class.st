@@ -27,6 +27,8 @@ Game >> initializeWithPlayers: playerNames cells: numberOfCells wormholes: wormh
 	die := Die new initializeWithSides: 6.
 	spaceships := playerNames collect: [ :name | Spaceship new initializeWith: name ].
 	currentPlayerIndex := 1.
+	gameOver := false.
+	winner := nil.
 
 ]
 
