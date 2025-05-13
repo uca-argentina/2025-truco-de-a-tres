@@ -25,6 +25,14 @@ Game >> isGameOver [
 ]
 
 { #category : 'validation' }
+Game >> validateBoard: aBoard [
+	(aBoard cellCount <= 0 or: [ aBoard wormholes isNil ]) ifTrue: [
+		self error: 'Board must have more than 0 cells and a wormhole dictionary'
+	].
+
+]
+
+{ #category : 'validation' }
 Game >> validateMinimumDice: arg1 [
 
 	arg1 ifEmpty: [
@@ -32,9 +40,9 @@ Game >> validateMinimumDice: arg1 [
 ]
 
 { #category : 'validation' }
-Game >> validateMinimumSpaceShips: arg1 [
+Game >> validateMinimumSpaceShips: someShips [
 
-	arg1 size < 2 ifTrue: [
+	someShips size < 2 ifTrue: [
 		self error: 'Need 2 space ships or more to initialize the game' ]
 ]
 
@@ -49,6 +57,7 @@ Game >> withShips: someShips board: aBoard dice: someDices [
 
 	self validateMinimumSpaceShips: someShips .
 	self validateMinimumDice: someDices.
+	self validateBoard: aBoard.
 
 	spaceShips := someShips.
 	board := aBoard.

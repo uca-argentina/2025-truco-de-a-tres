@@ -64,6 +64,28 @@ GameTest >> testWhenGameCorrectlyCreatedThenNotNil [
 ]
 
 { #category : 'tests' }
+GameTest >> testWhenGameCreatedWithInvalidBoardThenIsInvalid [
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dice2 dicesGame boardGame |
+	
+	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
+	spaceShip2 := Spaceship new initializeWith: 'Ship Num2'.
+	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
+
+	dice1 := Die new initializeWithSides: 1.
+	dice2 := Die new initializeWithSides: 6.
+	dicesGame := OrderedCollection with: dice1 with: dice2.
+
+	boardGame := Board new initializeWithCells: 0 wormholes: nil.
+
+	self
+		should: [
+			Game new withShips: spaceShipsGame board: boardGame dice: dicesGame
+		]
+		raise: Error
+		withMessageText: 'Board must have more than 0 cells and a wormhole dictionary'.
+]
+
+{ #category : 'tests' }
 GameTest >> testWhenGameCreatedWithoutADieThenIsInvalid [
 
 	| spaceShip1 spaceShip2 spaceShipsGame dicesGame boardGame |
