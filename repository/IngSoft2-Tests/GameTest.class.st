@@ -20,7 +20,6 @@ GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessa
 
 { #category : 'tests' }
 GameTest >> testMonito [
-
 	| spaceShip1 spaceShip2 spaceShipsGame dicesGame boardGame |
 	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
 	spaceShip2 := Spaceship new initializeWith: 'Ship Num2'.
