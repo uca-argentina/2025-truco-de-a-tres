@@ -36,6 +36,11 @@ Game >> playTurnFor: aSpaceship [
 	turn := turn + 1
 ]
 
+{ #category : 'process actions' }
+Game >> spaceshipPositions [
+	^ spaceShips collect: [ :ship | ship -> ship position ] as: Dictionary
+]
+
 { #category : 'validation' }
 Game >> validateBoard: aBoard [
 	(aBoard cellCount <= 0 or: [ aBoard wormholes isNil ]) ifTrue: [

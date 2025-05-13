@@ -40,6 +40,34 @@ GameTest >> testMonito [
 ]
 
 { #category : 'tests' }
+GameTest >> testSpaceshipPositionsReturnsCorrectPositions [
+
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game positions |
+	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
+	spaceShip2 := Spaceship new initializeWith: 'Ship Num2'.
+	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
+
+	dice1 := Die new initializeWithSides: 1.
+	dicesGame := OrderedCollection with: dice1.
+
+	boardGame := Board new
+		initializeWithCells: 10
+		wormholes: Dictionary new.
+
+	game := Game new
+		withShips: spaceShipsGame
+		board: boardGame
+		dice: dicesGame.
+
+	game playTurnFor: spaceShip1.
+
+	positions := game spaceshipPositions.
+
+	self assert: (positions at: spaceShip1) equals: 1.
+	self assert: (positions at: spaceShip2) equals: 0.
+]
+
+{ #category : 'tests' }
 GameTest >> testWhenGameCorrectlyCreatedThenNotNil [
 
 	| spaceShip1 spaceShip2 spaceShipsGame dice1 dice2 dicesGame boardGame game  |
