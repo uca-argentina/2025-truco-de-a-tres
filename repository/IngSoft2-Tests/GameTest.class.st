@@ -6,6 +6,19 @@ Class {
 }
 
 { #category : 'tests - instance' }
+GameTest >> testGameEndsWhenPlayerReachesGoal [
+    | game ship |
+    game := Game new initializeWithPlayers: #('Ada') cells: 1 wormholes: Dictionary new.
+    ship := game currentPlayer.
+
+    game playTurn.
+
+    self assert: game isOver.
+    self assert: game winner equals: ship.
+
+]
+
+{ #category : 'tests - instance' }
 GameTest >> testGameInitializesWithCorrectCurrentPlayer [
 	| game |
 	game := Game new initializeWithPlayers: #('Red' 'Blue') cells: 10 wormholes: Dictionary new.

@@ -6,7 +6,10 @@ Class {
 		'die',
 		'spaceships',
 		'currentPlayerIndex',
-		'playerName'
+		'playerName',
+		'gameOver',
+		'currentPlayer',
+		'winner'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -28,12 +31,26 @@ Game >> initializeWithPlayers: playerNames cells: numberOfCells wormholes: wormh
 ]
 
 { #category : 'initialize' }
+Game >> isOver [
+    ^ gameOver
+
+]
+
+{ #category : 'initialize' }
 Game >> playTurn [
 	| ship steps newPosition |
 	ship := spaceships at: currentPlayerIndex.
 	steps := die roll.
 	newPosition := board newPositionFrom: ship position steps: steps.
 	ship moveTo: newPosition.
+
+	(ship hasReachedGoalOn: board)
+		ifTrue: [
+			gameOver := true.
+			winner := ship.
+			^self
+		].
+
 	currentPlayerIndex := currentPlayerIndex \\ spaceships size + 1.
 
 ]
@@ -41,5 +58,11 @@ Game >> playTurn [
 { #category : 'initialize' }
 Game >> spaceships [
     ^ spaceships
+
+]
+
+{ #category : 'initialize' }
+Game >> winner [
+    ^ winner
 
 ]
