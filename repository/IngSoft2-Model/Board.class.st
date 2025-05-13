@@ -38,3 +38,8 @@ Board >> newPositionFrom: aPosition steps: steps [
 	^ finalPosition
 
 ]
+
+{ #category : 'initialize' }
+Board >> wormholes [
+	^ wormholes
+]
