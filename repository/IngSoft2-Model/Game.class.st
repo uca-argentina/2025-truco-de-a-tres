@@ -24,6 +24,18 @@ Game >> isGameOver [
 	^ winner notNil
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> playTurnFor: aSpaceship [
+
+	self isGameOver ifTrue: [ self error: 'Game is already over' ].
+
+	dice do: [ :eachDie | aSpaceship advanceWith: eachDie on: board ].
+
+	(aSpaceship hasReachedGoalOn: board) ifTrue: [ winner := aSpaceship ].
+
+	turn := turn + 1
+]
+
 { #category : 'validation' }
 Game >> validateBoard: aBoard [
 	(aBoard cellCount <= 0 or: [ aBoard wormholes isNil ]) ifTrue: [
