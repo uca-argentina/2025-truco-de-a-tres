@@ -42,7 +42,7 @@ GameTest >> testMonito [
 { #category : 'tests' }
 GameTest >> testWhenGameCorrectlyCreatedThenNotNil [
 
-	| spaceShip1 spaceShip2 spaceShipsGame dice1 dice2 dicesGame boardGame game |
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dice2 dicesGame boardGame game originalPosition newPosition|
 	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
 	spaceShip2 := Spaceship new initializeWith: 'Ship Num2'.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
@@ -60,7 +60,11 @@ GameTest >> testWhenGameCorrectlyCreatedThenNotNil [
 		        board: boardGame
 		        dice: dicesGame.
 	
-	self assert: game notNil.
+	originalPosition := spaceShip1 position.
+	game playTurnFor: spaceShip1.
+	newPosition := spaceShip1 position.
+
+	self deny: originalPosition = newPosition.
 ]
 
 { #category : 'tests' }
