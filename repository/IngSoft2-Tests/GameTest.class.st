@@ -132,3 +132,31 @@ GameTest >> testWhenGameCreatedWithoutTwoOrMoreShipsThenIsInvalid [
 		raise: Error
 		withMessageText: 'Need 2 space ships or more to initialize the game'
 ]
+
+{ #category : 'tests' }
+GameTest >> testWhenPlayTurnThenAdvancesShip [
+
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dice2 dicesGame boardGame game originalPosition newPosition|
+	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
+	spaceShip2 := Spaceship new initializeWith: 'Ship Num2'.
+	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
+
+	dice1 := Die new initializeWithSides: 1.
+	dice2 := Die new initializeWithSides: 6.
+	dicesGame := OrderedCollection with: dice1 with: dice2.
+
+	boardGame := Board new
+		             initializeWithCells: 10
+		             wormholes: Dictionary new.
+
+	game := Game new
+		        withShips: spaceShipsGame
+		        board: boardGame
+		        dice: dicesGame.
+	
+	originalPosition := spaceShip1 position.
+	game playTurnFor: spaceShip1.
+	newPosition := spaceShip1 position.
+
+	self deny: originalPosition equals: newPosition.
+]

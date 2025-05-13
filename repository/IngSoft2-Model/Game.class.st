@@ -24,7 +24,7 @@ Game >> isGameOver [
 	^ winner notNil
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'process actions' }
 Game >> playTurnFor: aSpaceship [
 
 	self isGameOver ifTrue: [ self error: 'Game is already over' ].
