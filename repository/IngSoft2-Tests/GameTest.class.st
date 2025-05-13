@@ -156,3 +156,56 @@ GameTest >> testWhenPlayTurnThenAdvancesShip [
 
 	self deny: originalPosition equals: newPosition.
 ]
+
+{ #category : 'tests' }
+GameTest >> testWhenShipReachesGoalThenGameEnds [
+
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game |
+	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
+	spaceShip2 := Spaceship new initializeWith: 'Ship Num2'.
+	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
+
+	dice1 := Die new initializeWithSides: 100.
+	dicesGame := OrderedCollection with: dice1.
+
+	boardGame := Board new
+		initializeWithCells: 10
+		wormholes: Dictionary new.
+
+	game := Game new
+		withShips: spaceShipsGame
+		board: boardGame
+		dice: dicesGame.
+
+	game playTurnFor: spaceShip1.
+
+	self assert: game isGameOver.
+
+
+]
+
+{ #category : 'tests' }
+GameTest >> testWhenWinnerSpaceShipIsCorrectWhenGameEnds [
+
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game |
+	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
+	spaceShip2 := Spaceship new initializeWith: 'Ship Num2'.
+	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
+
+	dice1 := Die new initializeWithSides: 100.
+	dicesGame := OrderedCollection with: dice1.
+
+	boardGame := Board new
+		initializeWithCells: 10
+		wormholes: Dictionary new.
+
+	game := Game new
+		withShips: spaceShipsGame
+		board: boardGame
+		dice: dicesGame.
+
+	game playTurnFor: spaceShip1.
+
+	self assert: game winner equals: spaceShip1.
+
+]
