@@ -12,6 +12,12 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'initialize' }
+Game class >> withShips: someShips board: aBoard dice: someDices [
+
+	^ self new withShips: someShips board: aBoard dice: someDices
+]
+
 { #category : 'accessing' }
 Game >> currentTurn [
 
