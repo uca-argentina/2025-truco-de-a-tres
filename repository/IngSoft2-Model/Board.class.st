@@ -34,7 +34,7 @@ Board >> initializeWithCells: aCount and: aWormhole [
 { #category : 'initialize' }
 Board >> initializeWithCells: aCount wormholes: aDictionary [
 	cellCount := aCount.
-   wormholes := aDictionary.
+   wormholes := aDictionary.  "NO USAR MAS, AHORA USAMOS initializeWithCells: aCount and: aWormhole"
 ]
 
 { #category : 'initialize' }
