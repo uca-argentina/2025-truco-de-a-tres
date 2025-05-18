@@ -13,8 +13,8 @@ SpaceshipTest >> testAdvanceWithDieAndBoard [
     wormholes at: 5 put: 20.
     board := Board new initializeWithCells: 30 wormholes: wormholes.
     
-    die := Die new initializeWithSides: 1.
-    spaceship := Spaceship new initializeWith: 'Apollo'.
+    die := Die withSides: 1.
+    spaceship := Spaceship withName: 'Apollo'.
 
     spaceship advanceWith: die on: board.
 
@@ -30,8 +30,8 @@ SpaceshipTest >> testAdvanceWithWormholeTransport [
     wormholes at: 1 put: 10.
     board := Board new initializeWithCells: 30 wormholes: wormholes.
     
-    die := Die new initializeWithSides: 1.
-	 spaceship := Spaceship new initializeWith: 'Vostok'.
+    die := Die withSides: 1.
+	 spaceship := Spaceship withName: 'Vostok'.
 
 
     spaceship advanceWith: die on: board.
@@ -44,7 +44,7 @@ SpaceshipTest >> testAdvanceWithWormholeTransport [
 SpaceshipTest >> testHasNotReachedGoalWhenBehind [
     | board spaceship |
     board := Board new initializeWithCells: 10 wormholes: Dictionary new.
-    spaceship := Spaceship new initializeWith: 'Endeavour'.
+    spaceship := Spaceship withName: 'Endeavour'.
 
     spaceship moveTo: 9.
 
@@ -56,7 +56,7 @@ SpaceshipTest >> testHasNotReachedGoalWhenBehind [
 SpaceshipTest >> testHasReachedGoalWhenAtGoal [
     | board spaceship |
     board := Board new initializeWithCells: 10 wormholes: Dictionary new.
-    spaceship := Spaceship new initializeWith: 'Orion'.
+    spaceship := Spaceship withName: 'Orion'.
 
     spaceship moveTo: 10.
 
@@ -68,7 +68,7 @@ SpaceshipTest >> testHasReachedGoalWhenAtGoal [
 SpaceshipTest >> testInitializeInPositionZero [
 
 	|player |
-	player := Spaceship new initializeWith: 'JohnDoe'.
+	player := Spaceship withName: 'JohnDoe'.
 	
 	self assert: player position equals: 0. 
 ]
@@ -77,7 +77,7 @@ SpaceshipTest >> testInitializeInPositionZero [
 SpaceshipTest >> testInitializeWithEmptyNameRaisesError [
 	| errorThrown |
 	
-	errorThrown := [ Spaceship new initializeWith: '' ] on: Error do: [ :e | e ].
+	errorThrown := [ Spaceship withName: '' ] on: Error do: [ :e | e ].
 
 	self assert: errorThrown messageText equals: 'Name cannot be empty'.
 

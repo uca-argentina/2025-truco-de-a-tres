@@ -14,7 +14,7 @@ DieTest >> testDieWithZeroSidesRaisesError [
 { #category : 'tests - instance' }
 DieTest >> testOneSidedDieAlwaysReturnsOne [
 	| dice result |
-	dice := Die new initializeWithSides: 1.
+	dice := Die withSides: 1.
 	result := dice roll.
 
 	self assert: result equals: 1.
@@ -24,7 +24,7 @@ DieTest >> testOneSidedDieAlwaysReturnsOne [
 { #category : 'tests - instance' }
 DieTest >> testRollReturnsValueWithinRange [
 	| dice result |
-	dice := Die new initializeWithSides: 6.
+	dice := Die withSides: 6.
 	result := dice roll.
 
 	self assert: (result between: 1 and: 6).
