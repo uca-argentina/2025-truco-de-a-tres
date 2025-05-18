@@ -33,14 +33,13 @@ GameTest >> testGameReturnsFinalPositionsOfSpaceships [
 		             initializeWithCells: 10
 		             wormholes: Dictionary new.
 
-	game := Game new
-		        startWithShips: spaceShipsGame
+	game := Game
+		        startWithShips:spaceShipsGame
 		        board: boardGame
 		        dice: dicesGame.
 
 	[game isGameOver] whileFalse: [
-		game playTurnFor: spaceShip1.
-		game isGameOver ifFalse: [ game playTurnFor: spaceShip2 ] ].
+		game playTurn].
 
 	positions := game spaceshipPositions.
 	finalPositionShip1 := spaceShip1 position.
@@ -65,7 +64,9 @@ GameTest >> testMonito [
 
 	self
 		should: [
-		Game startWithShips: spaceShipsGame board: boardGame dice: dicesGame ]
+		Game startWithShips:spaceShipsGame
+		        board: boardGame
+		        dice: dicesGame. ]
 		raise: Error
 		withMessageText: 'At least one die is required to initialize the game'
 ]
@@ -244,6 +245,44 @@ GameTest >> testWhenShipReachesGoalThenGameEnds [
 	self assert: game isGameOver.
 
 
+]
+
+{ #category : 'tests' }
+GameTest >> testWhenSpaceShipEndsTurnThenRotatesPlayerTurn [
+
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game expectedSequence actualSequence |
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
+	spaceShip2 := Spaceship withName: 'Ship Num2'.
+	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
+
+	dice1 := Die withSides: 1.
+	dicesGame := OrderedCollection with: dice1.
+
+	boardGame := Board new
+		             initializeWithCells: 5
+		             wormholes: Dictionary new.
+
+	game := Game
+		        startWithShips: spaceShipsGame
+		        board: boardGame
+		        dice: dicesGame.
+
+	expectedSequence := OrderedCollection withAll: {
+			                    spaceShip1.
+			                    spaceShip2.
+			                    spaceShip1.
+			                    spaceShip2.
+			                    spaceShip1 }.
+
+	actualSequence := OrderedCollection new.
+
+
+	[actualSequence size < expectedSequence size and: game isGameOver not ]
+		whileTrue: [
+			actualSequence add: game currentShip.
+			game playTurn ].
+
+	self assert: actualSequence equals: expectedSequence
 ]
 
 { #category : 'tests' }
