@@ -91,7 +91,7 @@ GameTest >> testSpaceshipPositionsReturnsCorrectPositions [
 		board: boardGame
 		dice: dicesGame.
 
-	game playTurnFor: spaceShip1.
+	game playTurn.
 
 	positions := game spaceshipPositions.
 
@@ -214,7 +214,7 @@ GameTest >> testWhenPlayTurnThenAdvancesShip [
 		        dice: dicesGame.
 	
 	originalPosition := spaceShip1 position.
-	game playTurnFor: spaceShip1.
+	game playTurn.
 	newPosition := spaceShip1 position.
 
 	self deny: originalPosition equals: newPosition.
@@ -240,7 +240,7 @@ GameTest >> testWhenShipReachesGoalThenGameEnds [
 		board: boardGame
 		dice: dicesGame.
 
-	game playTurnFor: spaceShip1.
+	game playTurn.
 
 	self assert: game isGameOver.
 
@@ -305,7 +305,7 @@ GameTest >> testWhenWinnerSpaceShipIsCorrectWhenGameEnds [
 		board: boardGame
 		dice: dicesGame.
 
-	game playTurnFor: spaceShip1.
+	game playTurn.
 
 	self assert: game winner equals: spaceShip1.
 

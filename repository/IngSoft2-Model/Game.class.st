@@ -93,6 +93,8 @@ Game >> playTurnFor: aSpaceship [
 	(aSpaceship hasReachedGoalOn: board) ifTrue: [ winner := aSpaceship ].
 
 	self advanceTurn.
+	
+"No lo estamos usando"
 ]
 
 { #category : 'process actions' }
@@ -108,7 +110,7 @@ Game >> validateBoard: aBoard [
 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'validation' }
 Game >> validateIsCurrentPlayer: aSpaceship [
 	self currentShip = aSpaceship ifFalse: [
 		self error: 'It is not the turn of this spaceship'
