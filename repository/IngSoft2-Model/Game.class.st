@@ -13,15 +13,29 @@ Class {
 }
 
 { #category : 'initialize' }
-Game class >> withShips: someShips board: aBoard dice: someDices [
+Game class >> startWithShips: someShips board: aBoard dice: someDices [
 
-	^ self new withShips: someShips board: aBoard dice: someDices
+	^ self new initializeWithShips: someShips board: aBoard dice: someDices
 ]
 
 { #category : 'accessing' }
 Game >> currentTurn [
 
 	^ turn
+]
+
+{ #category : 'initialization' }
+Game >> initializeWithShips: someShips board: aBoard dice: someDices [
+
+	self validateMinimumSpaceShips: someShips .
+	self validateMinimumDice: someDices.
+	self validateBoard: aBoard.
+
+	spaceShips := someShips.
+	board := aBoard.
+	dice := someDices.
+	turn := 1.
+	winner := nil.
 ]
 
 { #category : 'testing' }
@@ -45,6 +59,20 @@ Game >> playTurnFor: aSpaceship [
 { #category : 'process actions' }
 Game >> spaceshipPositions [
 	^ spaceShips collect: [ :ship | ship -> ship position ] as: Dictionary
+]
+
+{ #category : 'initialization' }
+Game >> startWithShips: someShips board: aBoard dice: someDices [
+
+	self validateMinimumSpaceShips: someShips .
+	self validateMinimumDice: someDices.
+	self validateBoard: aBoard.
+
+	spaceShips := someShips.
+	board := aBoard.
+	dice := someDices.
+	turn := 1.
+	winner := nil.
 ]
 
 { #category : 'validation' }
@@ -73,18 +101,4 @@ Game >> validateMinimumSpaceShips: someShips [
 Game >> winner [
 
 	^ winner
-]
-
-{ #category : 'initialization' }
-Game >> withShips: someShips board: aBoard dice: someDices [
-
-	self validateMinimumSpaceShips: someShips .
-	self validateMinimumDice: someDices.
-	self validateBoard: aBoard.
-
-	spaceShips := someShips.
-	board := aBoard.
-	dice := someDices.
-	turn := 1.
-	winner := nil.
 ]

@@ -22,11 +22,11 @@ GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessa
 GameTest >> testGameReturnsFinalPositionsOfSpaceships [
 
 	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game positions finalPositionShip1 finalPositionShip2 |
-	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
-	spaceShip2 := Spaceship new initializeWith: 'Ship Num2'.
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
+	spaceShip2 := Spaceship withName: 'Ship Num2'.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
-
-	dice1 := Die new initializeWithSides: 100. "Al ser 10 cells con un dado de 100 termina en una tirada"
+	
+	dice1 := Die withSides: 100. "Al ser 10 cells con un dado de 100 termina en una tirada"
 	dicesGame := OrderedCollection with: dice1.
 
 	boardGame := Board new
@@ -34,7 +34,7 @@ GameTest >> testGameReturnsFinalPositionsOfSpaceships [
 		             wormholes: Dictionary new.
 
 	game := Game new
-		        withShips: spaceShipsGame
+		        startWithShips: spaceShipsGame
 		        board: boardGame
 		        dice: dicesGame.
 
@@ -53,8 +53,8 @@ GameTest >> testGameReturnsFinalPositionsOfSpaceships [
 { #category : 'tests' }
 GameTest >> testMonito [
 	| spaceShip1 spaceShip2 spaceShipsGame dicesGame boardGame |
-	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
-	spaceShip2 := Spaceship new initializeWith: 'Ship Num2'.
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
+	spaceShip2 := Spaceship withName: 'Ship Num2'.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
 	dicesGame := OrderedCollection new.
@@ -65,7 +65,7 @@ GameTest >> testMonito [
 
 	self
 		should: [
-		Game new withShips: spaceShipsGame board: boardGame dice: dicesGame ]
+		Game startWithShips: spaceShipsGame board: boardGame dice: dicesGame ]
 		raise: Error
 		withMessageText: 'At least one die is required to initialize the game'
 ]
@@ -74,19 +74,19 @@ GameTest >> testMonito [
 GameTest >> testSpaceshipPositionsReturnsCorrectPositions [
 
 	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game positions |
-	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
-	spaceShip2 := Spaceship new initializeWith: 'Ship Num2'.
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
+	spaceShip2 := Spaceship withName: 'Ship Num2'.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
-	dice1 := Die new initializeWithSides: 1.
+	dice1 := Die withSides: 1.
 	dicesGame := OrderedCollection with: dice1.
 
 	boardGame := Board new
 		initializeWithCells: 10
 		wormholes: Dictionary new.
 
-	game := Game new
-		withShips: spaceShipsGame
+	game := Game
+		startWithShips: spaceShipsGame
 		board: boardGame
 		dice: dicesGame.
 
@@ -102,20 +102,20 @@ GameTest >> testSpaceshipPositionsReturnsCorrectPositions [
 GameTest >> testWhenGameCorrectlyCreatedThenNotNil [
 
 	| spaceShip1 spaceShip2 spaceShipsGame dice1 dice2 dicesGame boardGame game  |
-	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
-	spaceShip2 := Spaceship new initializeWith: 'Ship Num2'.
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
+	spaceShip2 := Spaceship withName: 'Ship Num2'.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
-	dice1 := Die new initializeWithSides: 1.
-	dice2 := Die new initializeWithSides: 6.
+	dice1 := Die withSides: 1.
+	dice2 := Die withSides: 6.
 	dicesGame := OrderedCollection with: dice1 with: dice2.
 
 	boardGame := Board new
 		             initializeWithCells: 10
 		             wormholes: Dictionary new.
 
-	game := Game new
-		        withShips: spaceShipsGame
+	game := Game
+		        startWithShips: spaceShipsGame
 		        board: boardGame
 		        dice: dicesGame.
 
@@ -126,19 +126,19 @@ GameTest >> testWhenGameCorrectlyCreatedThenNotNil [
 GameTest >> testWhenGameCreatedWithInvalidBoardThenIsInvalid [
 	| spaceShip1 spaceShip2 spaceShipsGame dice1 dice2 dicesGame boardGame |
 	
-	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
-	spaceShip2 := Spaceship new initializeWith: 'Ship Num2'.
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
+	spaceShip2 := Spaceship withName: 'Ship Num2'.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
-	dice1 := Die new initializeWithSides: 1.
-	dice2 := Die new initializeWithSides: 6.
+	dice1 := Die withSides: 1.
+	dice2 := Die withSides: 6.
 	dicesGame := OrderedCollection with: dice1 with: dice2.
 
 	boardGame := Board new initializeWithCells: 0 wormholes: nil.
 
 	self
 		should: [
-			Game new withShips: spaceShipsGame board: boardGame dice: dicesGame
+			Game startWithShips: spaceShipsGame board: boardGame dice: dicesGame
 		]
 		raise: Error
 		withMessageText: 'Board must have more than 0 cells and a wormhole dictionary'.
@@ -148,8 +148,8 @@ GameTest >> testWhenGameCreatedWithInvalidBoardThenIsInvalid [
 GameTest >> testWhenGameCreatedWithoutADieThenIsInvalid [
 
 	| spaceShip1 spaceShip2 spaceShipsGame dicesGame boardGame |
-	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
-	spaceShip2 := Spaceship new initializeWith: 'Ship Num2'.
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
+	spaceShip2 := Spaceship withName: 'Ship Num2'.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
 	dicesGame := OrderedCollection new.
@@ -160,7 +160,7 @@ GameTest >> testWhenGameCreatedWithoutADieThenIsInvalid [
 
 	self
 		should: [
-		Game new withShips: spaceShipsGame board: boardGame dice: dicesGame ]
+		Game startWithShips: spaceShipsGame board: boardGame dice: dicesGame ]
 		raise: Error
 		withMessageText: 'At least one die is required to initialize the game'
 ]
@@ -169,11 +169,11 @@ GameTest >> testWhenGameCreatedWithoutADieThenIsInvalid [
 GameTest >> testWhenGameCreatedWithoutTwoOrMoreShipsThenIsInvalid [
 
 	| spaceShip1 spaceShipsGame dice1 dice2 dicesGame boardGame |
-	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
 	spaceShipsGame := OrderedCollection with: spaceShip1.
 
-	dice1 := Die new initializeWithSides: 1.
-	dice2 := Die new initializeWithSides: 6.
+	dice1 := Die withSides: 1.
+	dice2 := Die withSides: 6.
 	dicesGame := OrderedCollection with: dice1 with: dice2.
 
 	boardGame := Board new
@@ -183,7 +183,10 @@ GameTest >> testWhenGameCreatedWithoutTwoOrMoreShipsThenIsInvalid [
 
 	self
 		should: [
-		Game new withShips: spaceShipsGame board: boardGame dice: dicesGame ]
+			Game
+				startWithShips: spaceShipsGame
+				board: boardGame
+				dice: dicesGame ]
 		raise: Error
 		withMessageText: 'Need 2 space ships or more to initialize the game'
 ]
@@ -192,20 +195,20 @@ GameTest >> testWhenGameCreatedWithoutTwoOrMoreShipsThenIsInvalid [
 GameTest >> testWhenPlayTurnThenAdvancesShip [
 
 	| spaceShip1 spaceShip2 spaceShipsGame dice1 dice2 dicesGame boardGame game originalPosition newPosition|
-	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
-	spaceShip2 := Spaceship new initializeWith: 'Ship Num2'.
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
+	spaceShip2 := Spaceship withName: 'Ship Num2'.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
-	dice1 := Die new initializeWithSides: 1.
-	dice2 := Die new initializeWithSides: 6.
+	dice1 := Die withSides: 1.
+	dice2 := Die withSides: 6.
 	dicesGame := OrderedCollection with: dice1 with: dice2.
 
 	boardGame := Board new
 		             initializeWithCells: 10
 		             wormholes: Dictionary new.
 
-	game := Game new
-		        withShips: spaceShipsGame
+	game := Game
+		        startWithShips: spaceShipsGame
 		        board: boardGame
 		        dice: dicesGame.
 	
@@ -220,19 +223,19 @@ GameTest >> testWhenPlayTurnThenAdvancesShip [
 GameTest >> testWhenShipReachesGoalThenGameEnds [
 
 	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game |
-	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
-	spaceShip2 := Spaceship new initializeWith: 'Ship Num2'.
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
+	spaceShip2 := Spaceship withName: 'Ship Num2'.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
-	dice1 := Die new initializeWithSides: 100.
+	dice1 := Die withSides: 100.
 	dicesGame := OrderedCollection with: dice1.
 
 	boardGame := Board new
 		initializeWithCells: 10
 		wormholes: Dictionary new.
 
-	game := Game new
-		withShips: spaceShipsGame
+	game := Game
+		startWithShips: spaceShipsGame
 		board: boardGame
 		dice: dicesGame.
 
@@ -247,19 +250,19 @@ GameTest >> testWhenShipReachesGoalThenGameEnds [
 GameTest >> testWhenWinnerSpaceShipIsCorrectWhenGameEnds [
 
 	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game |
-	spaceShip1 := Spaceship new initializeWith: 'Ship Num1'.
-	spaceShip2 := Spaceship new initializeWith: 'Ship Num2'.
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
+	spaceShip2 := Spaceship withName: 'Ship Num2'.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
-	dice1 := Die new initializeWithSides: 100.
+	dice1 := Die withSides: 100.
 	dicesGame := OrderedCollection with: dice1.
 
 	boardGame := Board new
 		initializeWithCells: 10
 		wormholes: Dictionary new.
 
-	game := Game new
-		withShips: spaceShipsGame
+	game := Game
+		startWithShips: spaceShipsGame
 		board: boardGame
 		dice: dicesGame.
 

@@ -10,9 +10,9 @@ Class {
 }
 
 { #category : 'initialize' }
-Board class >> withCells: aCount and: aDictionary [
+Board class >> withCells: aCount and: aWormhole [
 
-	^ self new initializeWithCells: aCount wormholes: aDictionary
+	^ self new initializeWithCells: aCount wormholes: aWormhole.
 ]
 
 { #category : 'initialize' }
