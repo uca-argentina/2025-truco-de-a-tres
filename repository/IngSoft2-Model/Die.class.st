@@ -11,6 +11,12 @@ Class {
 }
 
 { #category : 'initialize' }
+Die class >> withSides: aNumberOfSides [
+
+	^ self new initializeWithSides: aNumberOfSides
+]
+
+{ #category : 'initialize' }
 Die >> initializeWithSides: aNumberOfSides [ 
 	(aNumberOfSides isInteger and: [aNumberOfSides >= 1]) ifFalse: [
         self error: 'Die must have at least one side.'

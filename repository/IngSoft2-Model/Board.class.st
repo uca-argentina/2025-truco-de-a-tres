@@ -10,6 +10,12 @@ Class {
 }
 
 { #category : 'initialize' }
+Board class >> withCells: aCount and: aWormhole [
+
+	^ self new initializeWithCells: aCount wormholes: aWormhole.
+]
+
+{ #category : 'initialize' }
 Board >> applyWormholeIfPresentAt: aPosition [
 	^ wormholes at: aPosition ifAbsent: [aPosition]
 ]
@@ -20,9 +26,15 @@ Board >> cellCount [
 ]
 
 { #category : 'initialize' }
+Board >> initializeWithCells: aCount and: aWormhole [
+	cellCount := aCount.
+   wormholes := aWormhole.
+]
+
+{ #category : 'initialize' }
 Board >> initializeWithCells: aCount wormholes: aDictionary [
 	cellCount := aCount.
-   wormholes := aDictionary.
+   wormholes := aDictionary.  "NO USAR MAS, AHORA USAMOS initializeWithCells: aCount and: aWormhole"
 ]
 
 { #category : 'initialize' }
@@ -37,4 +49,9 @@ Board >> newPositionFrom: aPosition steps: steps [
 	finalPosition := self applyWormholeIfPresentAt: tentativePosition.
 	^ finalPosition
 
+]
+
+{ #category : 'initialize' }
+Board >> wormholes [
+	^ wormholes
 ]

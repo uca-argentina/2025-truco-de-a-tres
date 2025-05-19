@@ -11,6 +11,12 @@ Class {
 }
 
 { #category : 'initialize' }
+Spaceship class >> withName: aName [
+
+	^ self new initializeWith: aName
+]
+
+{ #category : 'initialize' }
 Spaceship >> advanceWith: aDie on: aBoard [
     | steps newPosition |
     steps := aDie roll.
