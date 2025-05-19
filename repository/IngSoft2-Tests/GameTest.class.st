@@ -232,7 +232,7 @@ GameTest >> testWhenShipReachesGoalThenGameEnds [
 	dicesGame := OrderedCollection with: dice1.
 
 	boardGame := Board new
-		initializeWithCells: 10
+		initializeWithCells: 1
 		wormholes: Dictionary new.
 
 	game := Game
