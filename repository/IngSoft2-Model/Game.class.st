@@ -27,12 +27,6 @@ Game >> advanceTurn [
 	turn := turn + 1
 ]
 
-{ #category : 'initialize' }
-Game >> currentPlayer [
-	^ spaceships at: currentPlayerIndex
-
-]
-
 { #category : 'accessing' }
 Game >> currentShip [
     ^ spaceShips at: currentTurnIndex
@@ -72,15 +66,20 @@ Game >> isGameOver [
 	^ winner notNil
 ]
 
-{ #category : 'initialize' }
+{ #category : 'process actions' }
 Game >> playTurn [
-	| ship steps newPosition |
-	ship := spaceships at: currentPlayerIndex.
-	steps := die roll.
-	newPosition := board newPositionFrom: ship position steps: steps.
-	ship moveTo: newPosition.
-	currentPlayerIndex := currentPlayerIndex \\ spaceships size + 1.
 
+	| ship |
+	self isGameOver ifTrue: [ self error: 'Game is already over' ].
+	
+
+	ship := self currentShip.
+	self validateIsCurrentPlayer: ship.
+	dice do: [ :eachDie | ship advanceWith: eachDie on: board ].
+
+	(ship hasReachedGoalOn: board) ifTrue: [ winner := ship ].
+
+	self advanceTurn
 ]
 
 { #category : 'process actions' }

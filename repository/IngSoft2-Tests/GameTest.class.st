@@ -18,14 +18,6 @@ GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessa
 
 ]
 
-{ #category : 'tests - instance' }
-GameTest >> testGameInitializesWithCorrectCurrentPlayer [
-	| game |
-	game := Game new initializeWithPlayers: #('Red' 'Blue') cells: 10 wormholes: Dictionary new.
-	self assert: (game currentPlayer playerName) equals: 'Red'.
-
-]
-
 { #category : 'tests' }
 GameTest >> testGameReturnsFinalPositionsOfSpaceships [
 
@@ -37,9 +29,8 @@ GameTest >> testGameReturnsFinalPositionsOfSpaceships [
 	dice1 := Die withSides: 100. "Al ser 10 cells con un dado de 100 termina en una tirada"
 	dicesGame := OrderedCollection with: dice1.
 
-	boardGame := Board new
-		             initializeWithCells: 10
-		             wormholes: Dictionary new.
+	boardGame := Board withCells: 10 andWormholes: #().
+
 
 	game := Game
 		        startWithShips:spaceShipsGame
@@ -66,9 +57,8 @@ GameTest >> testMonito [
 
 	dicesGame := OrderedCollection new.
 
-	boardGame := Board new
-		             initializeWithCells: 10
-		             wormholes: Dictionary new.
+	boardGame := Board withCells: 10 andWormholes: #().
+
 
 	self
 		should: [
@@ -77,16 +67,6 @@ GameTest >> testMonito [
 		        dice: dicesGame. ]
 		raise: Error
 		withMessageText: 'At least one die is required to initialize the game'
-]
-
-{ #category : 'tests - instance' }
-GameTest >> testPlayTurnWrapsAround [
-	| game |
-	game := Game new initializeWithPlayers: #('Red' 'Blue') cells: 10 wormholes: Dictionary new.
-	game playTurn.
-	game playTurn.
-	self assert: (game currentPlayer playerName) equals: 'Red'.
-
 ]
 
 { #category : 'tests' }
@@ -100,9 +80,8 @@ GameTest >> testSpaceshipPositionsReturnsCorrectPositions [
 	dice1 := Die withSides: 1.
 	dicesGame := OrderedCollection with: dice1.
 
-	boardGame := Board new
-		initializeWithCells: 10
-		wormholes: Dictionary new.
+	boardGame := Board withCells: 10 andWormholes: #().
+
 
 	game := Game
 		startWithShips: spaceShipsGame
@@ -129,9 +108,8 @@ GameTest >> testWhenGameCorrectlyCreatedThenNotNil [
 	dice2 := Die withSides: 6.
 	dicesGame := OrderedCollection with: dice1 with: dice2.
 
-	boardGame := Board new
-		             initializeWithCells: 10
-		             wormholes: Dictionary new.
+	boardGame := Board withCells: 10 andWormholes: #().
+
 
 	game := Game
 		        startWithShips: spaceShipsGame
@@ -143,24 +121,25 @@ GameTest >> testWhenGameCorrectlyCreatedThenNotNil [
 
 { #category : 'tests' }
 GameTest >> testWhenGameCreatedWithInvalidBoardThenIsInvalid [
-	| spaceShip1 spaceShip2 spaceShipsGame dice1 dice2 dicesGame boardGame |
-	
-	spaceShip1 := Spaceship withName: 'Ship Num1'.
-	spaceShip2 := Spaceship withName: 'Ship Num2'.
-	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
+    | spaceShip1 spaceShip2 spaceShipsGame dice1 dice2 dicesGame |
 
-	dice1 := Die withSides: 1.
-	dice2 := Die withSides: 6.
-	dicesGame := OrderedCollection with: dice1 with: dice2.
+    spaceShip1 := Spaceship withName: 'Ship Num1'.
+    spaceShip2 := Spaceship withName: 'Ship Num2'.
+    spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
-	boardGame := Board new initializeWithCells: 0 wormholes: nil.
+    dice1 := Die withSides: 1.
+    dice2 := Die withSides: 6.
+    dicesGame := OrderedCollection with: dice1 with: dice2.
 
-	self
-		should: [
-			Game startWithShips: spaceShipsGame board: boardGame dice: dicesGame
-		]
-		raise: Error
-		withMessageText: 'Board must have more than 0 cells and a wormhole dictionary'.
+    self
+        should: [
+            | boardGame |
+            boardGame := Board withCells: 0 andWormholes: #().
+            Game startWithShips: spaceShipsGame board: boardGame dice: dicesGame
+        ]
+        raise: Error
+        withMessageText: 'Board must have a positive number of cells'.
+
 ]
 
 { #category : 'tests' }
@@ -173,9 +152,8 @@ GameTest >> testWhenGameCreatedWithoutADieThenIsInvalid [
 
 	dicesGame := OrderedCollection new.
 
-	boardGame := Board new
-		             initializeWithCells: 10
-		             wormholes: Dictionary new.
+	boardGame := Board withCells: 10 andWormholes: #().
+
 
 	self
 		should: [
@@ -195,9 +173,8 @@ GameTest >> testWhenGameCreatedWithoutTwoOrMoreShipsThenIsInvalid [
 	dice2 := Die withSides: 6.
 	dicesGame := OrderedCollection with: dice1 with: dice2.
 
-	boardGame := Board new
-		             initializeWithCells: 10
-		             wormholes: Dictionary new.
+	boardGame := Board withCells: 10 andWormholes: #().
+
 
 
 	self
@@ -222,9 +199,8 @@ GameTest >> testWhenPlayTurnThenAdvancesShip [
 	dice2 := Die withSides: 6.
 	dicesGame := OrderedCollection with: dice1 with: dice2.
 
-	boardGame := Board new
-		             initializeWithCells: 10
-		             wormholes: Dictionary new.
+	boardGame := Board withCells: 10 andWormholes: #().
+
 
 	game := Game
 		        startWithShips: spaceShipsGame
@@ -249,9 +225,8 @@ GameTest >> testWhenShipReachesGoalThenGameEnds [
 	dice1 := Die withSides: 100.
 	dicesGame := OrderedCollection with: dice1.
 
-	boardGame := Board new
-		initializeWithCells: 10
-		wormholes: Dictionary new.
+	boardGame := Board withCells: 10 andWormholes: #().
+
 
 	game := Game
 		startWithShips: spaceShipsGame
@@ -276,9 +251,8 @@ GameTest >> testWhenSpaceShipEndsTurnThenRotatesPlayerTurn [
 	dice1 := Die withSides: 1.
 	dicesGame := OrderedCollection with: dice1.
 
-	boardGame := Board new
-		             initializeWithCells: 5
-		             wormholes: Dictionary new.
+	boardGame := Board withCells: 5 andWormholes: #().
+
 
 	game := Game
 		        startWithShips: spaceShipsGame
@@ -314,9 +288,8 @@ GameTest >> testWhenWinnerSpaceShipIsCorrectWhenGameEnds [
 	dice1 := Die withSides: 100.
 	dicesGame := OrderedCollection with: dice1.
 
-	boardGame := Board new
-		initializeWithCells: 10
-		wormholes: Dictionary new.
+	boardGame := Board withCells: 10 andWormholes: #().
+
 
 	game := Game
 		startWithShips: spaceShipsGame

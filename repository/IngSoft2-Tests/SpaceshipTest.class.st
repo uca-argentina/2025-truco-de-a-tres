@@ -7,12 +7,10 @@ Class {
 
 { #category : 'tests - instance' }
 SpaceshipTest >> testAdvanceWithDieAndBoard [
-    | die board wormholes spaceship |
+    | die board spaceship |
     
-    wormholes := Dictionary new.
-    wormholes at: 5 put: 20.
-    board := Board new initializeWithCells: 30 wormholes: wormholes.
-    
+    board := Board withCells: 30 andWormholes: (OrderedCollection with: (Wormhole from: 5 to: 20)).
+
     die := Die withSides: 1.
     spaceship := Spaceship withName: 'Apollo'.
 
@@ -24,15 +22,12 @@ SpaceshipTest >> testAdvanceWithDieAndBoard [
 
 { #category : 'tests - instance' }
 SpaceshipTest >> testAdvanceWithWormholeTransport [
-    | die board wormholes spaceship |
-    
-    wormholes := Dictionary new.
-    wormholes at: 1 put: 10.
-    board := Board new initializeWithCells: 30 wormholes: wormholes.
-    
-    die := Die withSides: 1.
-	 spaceship := Spaceship withName: 'Vostok'.
+    | die board spaceship |
 
+    board := Board withCells: 30 andWormholes: (OrderedCollection with: (Wormhole from: 1 to: 10)).
+
+    die := Die withSides: 1.
+    spaceship := Spaceship withName: 'Vostok'.
 
     spaceship advanceWith: die on: board.
 
@@ -43,7 +38,7 @@ SpaceshipTest >> testAdvanceWithWormholeTransport [
 { #category : 'tests - instance' }
 SpaceshipTest >> testHasNotReachedGoalWhenBehind [
     | board spaceship |
-    board := Board new initializeWithCells: 10 wormholes: Dictionary new.
+    board := Board withCells: 10 andWormholes: #().
     spaceship := Spaceship withName: 'Endeavour'.
 
     spaceship moveTo: 9.
@@ -55,7 +50,7 @@ SpaceshipTest >> testHasNotReachedGoalWhenBehind [
 { #category : 'tests - instance' }
 SpaceshipTest >> testHasReachedGoalWhenAtGoal [
     | board spaceship |
-    board := Board new initializeWithCells: 10 wormholes: Dictionary new.
+    board := Board withCells: 10 andWormholes: #().
     spaceship := Spaceship withName: 'Orion'.
 
     spaceship moveTo: 10.
