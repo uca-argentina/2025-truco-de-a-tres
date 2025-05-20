@@ -7,7 +7,10 @@ Class {
 		'dice',
 		'turn',
 		'winner',
-		'currentTurnIndex'
+		'currentTurnIndex',
+		'spaceships',
+		'currentPlayerIndex',
+		'die'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -73,18 +76,12 @@ Game >> isGameOver [
 
 { #category : 'process actions' }
 Game >> playTurn [
-
-	| ship |
-	self isGameOver ifTrue: [ self error: 'Game is already over' ].
-	
-
-	ship := self currentShip.
-	self validateIsCurrentPlayer: ship.
-	dice do: [ :eachDie | ship advanceWith: eachDie on: board ].
-
-	(ship hasReachedGoalOn: board) ifTrue: [ winner := ship ].
-
-	self advanceTurn
+	| ship steps newPosition |
+	ship := spaceships at: currentPlayerIndex.
+	steps := die roll.
+	newPosition := board newPositionFrom: ship position steps: steps.
+	ship moveTo: newPosition.
+	currentPlayerIndex := currentPlayerIndex \\ spaceships size + 1.
 ]
 
 { #category : 'process actions' }
