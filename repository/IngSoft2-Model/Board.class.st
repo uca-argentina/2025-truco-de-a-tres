@@ -84,7 +84,7 @@ Board >> isGoalReachedAt: aPosition [
 
 { #category : 'initialize' }
 Board >> isValid [
-    [ self assertValidState. true ] on: Error do: [ false ].
+    ^ [ self assertValidState. true ] on: Error do: [ false ].
 ]
 
 { #category : 'initialize' }

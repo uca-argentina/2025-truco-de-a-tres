@@ -14,12 +14,17 @@ Class {
 { #category : 'initialize' }
 Wormhole class >> connecting: aPosition and: anotherPosition [
 
-	^ self new initializeConnecting: aPosition and: anotherPosition
+	^ super new initializeConnecting: aPosition and: anotherPosition
 ]
 
 { #category : 'initialize' }
 Wormhole class >> from: entryPosition to: exitPosition [
-    ^ self new initializeFrom: entryPosition to: exitPosition.
+    ^ super new initializeFrom: entryPosition to: exitPosition.
+]
+
+{ #category : 'initialize' }
+Wormhole class >> new [
+    self error: 'Use Wormhole from:to: instead.'
 ]
 
 { #category : 'validation' }

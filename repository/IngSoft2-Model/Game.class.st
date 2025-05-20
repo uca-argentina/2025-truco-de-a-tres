@@ -14,9 +14,14 @@ Class {
 }
 
 { #category : 'initialize' }
+Game class >> new [
+    self error: 'Use Game startWithShips:board:dice: instead.'
+]
+
+{ #category : 'initialize' }
 Game class >> startWithShips: someShips board: aBoard dice: someDices [
 
-	^ self new initializeWithShips: someShips board: aBoard dice: someDices
+	^ super new initializeWithShips: someShips board: aBoard dice: someDices
 ]
 
 { #category : 'process actions' }
@@ -104,9 +109,7 @@ Game >> spaceshipPositions [
 
 { #category : 'validation' }
 Game >> validateBoard: aBoard [
-	(aBoard cellCount <= 0 or: [ aBoard wormholes isNil ]) ifTrue: [
-		self error: 'Board must have more than 0 cells and a wormhole dictionary'
-	].
+    aBoard isValid ifFalse: [ self error: 'Board is invalid' ].
 
 ]
 
