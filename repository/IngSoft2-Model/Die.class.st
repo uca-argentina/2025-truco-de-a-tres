@@ -11,9 +11,14 @@ Class {
 }
 
 { #category : 'initialize' }
+Die class >> new [
+    self error: 'Use Die withSides: instead.'
+]
+
+{ #category : 'initialize' }
 Die class >> withSides: aNumberOfSides [
 
-	^ self new initializeWithSides: aNumberOfSides
+	^ super new initializeWithSides: aNumberOfSides
 ]
 
 { #category : 'initialize' }

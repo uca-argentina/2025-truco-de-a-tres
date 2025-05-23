@@ -11,9 +11,14 @@ Class {
 }
 
 { #category : 'initialize' }
+Spaceship class >> new [
+    self error: 'Use Spaceship withName: instead.'
+]
+
+{ #category : 'initialize' }
 Spaceship class >> withName: aName [
 
-	^ self new initializeWith: aName
+	^ super new initializeWith: aName
 ]
 
 { #category : 'initialize' }
