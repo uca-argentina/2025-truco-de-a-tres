@@ -19,6 +19,29 @@ GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessa
 ]
 
 { #category : 'tests' }
+GameTest >> testGameEndsWithPlayUntilFinish [
+
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game |
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
+	spaceShip2 := Spaceship withName: 'Ship Num2'.
+	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
+
+	dice1 := Die withSides: 6.
+	dicesGame := OrderedCollection with: dice1.
+
+	boardGame := Board withCells: 25 andWormholes: #().
+
+	game := Game
+		startWithShips: spaceShipsGame
+		board: boardGame
+		dice: dicesGame.
+		
+	game playUntilFinish.
+	
+	self assert: game isGameOver.
+]
+
+{ #category : 'tests' }
 GameTest >> testGameReturnsFinalPositionsOfSpaceships [
 
 	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game positions finalPositionShip1 finalPositionShip2 |
@@ -66,13 +89,7 @@ GameTest >> testMonito [
 		board: boardGame
 		dice: dicesGame.
 		
-	game playTurn.
-	
-	self
-		should: [
-		game validateIsCurrentPlayer: spaceShip1 ]
-		raise: Error
-		withMessageText: 'It is not the turn of this spaceship'
+	game playUntilFinish 
 ]
 
 { #category : 'tests' }

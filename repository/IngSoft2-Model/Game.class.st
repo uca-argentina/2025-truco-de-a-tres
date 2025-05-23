@@ -91,6 +91,12 @@ Game >> playTurn [
 ]
 
 { #category : 'process actions' }
+Game >> playUntilFinish [
+
+	[ self isGameOver] whileFalse: [ self playTurn ]
+]
+
+{ #category : 'process actions' }
 Game >> spaceshipPositions [
 	^ spaceShips collect: [ :ship | ship -> ship position ] as: Dictionary
 ]
