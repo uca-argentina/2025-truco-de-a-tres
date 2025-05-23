@@ -50,23 +50,29 @@ GameTest >> testGameReturnsFinalPositionsOfSpaceships [
 
 { #category : 'tests' }
 GameTest >> testMonito [
-	| spaceShip1 spaceShip2 spaceShipsGame dicesGame boardGame |
+
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game |
 	spaceShip1 := Spaceship withName: 'Ship Num1'.
 	spaceShip2 := Spaceship withName: 'Ship Num2'.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
-	dicesGame := OrderedCollection new.
+	dice1 := Die withSides: 6.
+	dicesGame := OrderedCollection with: dice1.
 
-	boardGame := Board withCells: 10 andWormholes: #().
+	boardGame := Board withCells: 25 andWormholes: #().
 
-
+	game := Game
+		startWithShips: spaceShipsGame
+		board: boardGame
+		dice: dicesGame.
+		
+	game playTurn.
+	
 	self
 		should: [
-		Game startWithShips:spaceShipsGame
-		        board: boardGame
-		        dice: dicesGame. ]
+		game validateIsCurrentPlayer: spaceShip1 ]
 		raise: Error
-		withMessageText: 'At least one die is required to initialize the game'
+		withMessageText: 'It is not the turn of this spaceship'
 ]
 
 { #category : 'tests' }
@@ -94,6 +100,33 @@ GameTest >> testSpaceshipPositionsReturnsCorrectPositions [
 
 	self assert: (positions at: spaceShip1) equals: 1.
 	self assert: (positions at: spaceShip2) equals: 0.
+]
+
+{ #category : 'tests' }
+GameTest >> testWhenAShipTriesToPlayOutOfTurnThenError [
+
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game |
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
+	spaceShip2 := Spaceship withName: 'Ship Num2'.
+	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
+
+	dice1 := Die withSides: 6.
+	dicesGame := OrderedCollection with: dice1.
+
+	boardGame := Board withCells: 25 andWormholes: #().
+
+	game := Game
+		startWithShips: spaceShipsGame
+		board: boardGame
+		dice: dicesGame.
+		
+	game playTurn.
+	
+	self
+		should: [
+		game validateIsCurrentPlayer: spaceShip1 ]
+		raise: Error
+		withMessageText: 'It is not the turn of this spaceship'
 ]
 
 { #category : 'tests' }

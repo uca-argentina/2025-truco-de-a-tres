@@ -91,21 +91,6 @@ Game >> playTurn [
 ]
 
 { #category : 'process actions' }
-Game >> playTurnFor: aSpaceship [
-	|currentShip|
-	self isGameOver ifTrue: [ self error: 'Game is already over' ].
-
-	currentShip := spaceShips at: currentTurnIndex.
-	dice do: [ :eachDie | currentShip advanceWith: eachDie on: board ].
-
-	(aSpaceship hasReachedGoalOn: board) ifTrue: [ winner := aSpaceship ].
-
-	self advanceTurn.
-	
-"No lo estamos usando"
-]
-
-{ #category : 'process actions' }
 Game >> spaceshipPositions [
 	^ spaceShips collect: [ :ship | ship -> ship position ] as: Dictionary
 ]
