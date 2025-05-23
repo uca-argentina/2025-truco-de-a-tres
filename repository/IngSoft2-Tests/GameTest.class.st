@@ -225,9 +225,8 @@ GameTest >> testWhenShipReachesGoalThenGameEnds [
 	dice1 := Die withSides: 100.
 	dicesGame := OrderedCollection with: dice1.
 
-	boardGame := Board new
-		initializeWithCells: 1
-		wormholes: Dictionary new.
+	boardGame := Board withCells: 1 andWormholes: #().
+
 
 	game := Game
 		startWithShips: spaceShipsGame
