@@ -22,15 +22,6 @@ Spaceship class >> withName: aName [
 ]
 
 { #category : 'initialize' }
-Spaceship >> advanceWith: aDie on: aBoard [
-    | steps newPosition |
-    steps := aDie roll.
-    newPosition := aBoard newPositionFrom: position steps: steps.
-    self moveTo: newPosition.
-
-]
-
-{ #category : 'initialize' }
 Spaceship >> hasReachedGoalOn: aBoard [
     ^ aBoard isGoalReachedAt: position
 
