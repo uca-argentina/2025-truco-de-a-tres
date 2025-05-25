@@ -74,7 +74,7 @@ GameTest >> testGameReturnsFinalPositionsOfSpaceships [
 { #category : 'tests' }
 GameTest >> testMonito [
 
-	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game |
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game realShip1 |
 	spaceShip1 := Spaceship withName: 'Ship Num1'.
 	spaceShip2 := Spaceship withName: 'Ship Num2'.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
@@ -82,14 +82,27 @@ GameTest >> testMonito [
 	dice1 := Die withSides: 6.
 	dicesGame := OrderedCollection with: dice1.
 
-	boardGame := Board withCells: 25 andWormholes: #().
+	boardGame := Board withCells: 25 andWormholes: #(  ).
 
 	game := Game
-		startWithShips: spaceShipsGame
-		board: boardGame
-		dice: dicesGame.
-		
-	game playUntilFinish 
+		        startWithShips: spaceShipsGame
+		        board: boardGame
+		        dice: dicesGame.
+
+	realShip1 := game spaceShips first.
+
+	game penalize: realShip1 forTurns: 2.
+	game playTurn. "RealShip1 losees turn"
+	
+	self assert: game currentShip equals: game spaceShips second.
+	game playTurn. "RealShip2 plays turn"
+	game playTurn. "Penalty returns to 0 for realShip1"
+	game playTurn. "RealShip2 plays turn"
+	
+	self assert: (game isPenalized: realShip1) not.
+	game playTurn. "RealShip1 plays turn, it is not penalized"
+	
+game playUntilFinish 
 ]
 
 { #category : 'tests' }
@@ -262,6 +275,40 @@ GameTest >> testWhenPlayTurnThenAdvancesShip [
 	newPosition := spaceShip1 position.
 
 	self deny: originalPosition equals: newPosition.
+]
+
+{ #category : 'tests' }
+GameTest >> testWhenShipIsPenalizedThenSkipsTurnAndReducesPenalty [
+
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game realShip1 |
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
+	spaceShip2 := Spaceship withName: 'Ship Num2'.
+	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
+
+	dice1 := Die withSides: 6.
+	dicesGame := OrderedCollection with: dice1.
+
+	boardGame := Board withCells: 25 andWormholes: #(  ).
+
+	game := Game
+		        startWithShips: spaceShipsGame
+		        board: boardGame
+		        dice: dicesGame.
+
+	realShip1 := game spaceShips first.
+
+	game penalize: realShip1 forTurns: 2.
+	game playTurn. "RealShip1 losees turn"
+
+	self assert: game currentShip equals: game spaceShips second.
+	game playTurn. "RealShip2 plays turn"
+	game playTurn. "Penalty returns to 0 for realShip1"
+	game playTurn. "RealShip2 plays turn"
+
+	self assert: (game isPenalized: realShip1) not.
+	game playTurn. "RealShip1 plays turn, it is not penalized"
+
+	game playUntilFinish
 ]
 
 { #category : 'tests' }

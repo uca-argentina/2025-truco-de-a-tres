@@ -10,7 +10,8 @@ Class {
 		'currentTurnIndex',
 		'spaceships',
 		'currentPlayerIndex',
-		'die'
+		'die',
+		'penaltyTurns'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -64,6 +65,8 @@ Game >> initializeWithShips: someShips board: aBoard dice: someDices [
 	dice := someDices.
 	turn := 1. "Amounts of turns played"
 	currentTurnIndex := 1. "Es el indice del jugador que debe jugar" "Seria el indice de la ordered collection para saber de que nave es el turno. EJ: si currentTurnIndex es 1 entonces es el turno de la primer nave que esta en el orderedCollection"
+	penaltyTurns := Dictionary new.
+	spaceShips do: [ :ship | penaltyTurns at: ship put: 0 ]. "Basicamente me aseguro que todos arranquen sin penalizacion (hice un diccionario que la key sea la ship y el valor la cantidad de turnos penalizados que tiene"
 
 	winner := nil
 ]
@@ -74,16 +77,30 @@ Game >> isGameOver [
 	^ winner notNil
 ]
 
+{ #category : 'testing' }
+Game >> isPenalized: aShip [
+    ^ (penaltyTurns at: aShip) > 0
+
+]
+
+{ #category : 'process actions' }
+Game >> penalize: aShip forTurns: turns [
+    penaltyTurns at: aShip put: turns.
+
+]
+
 { #category : 'process actions' }
 Game >> playTurn [
 
 	| ship steps newPosition |
 	self isGameOver ifTrue: [ self error: 'Game is already over' ].
 
-
 	ship := self currentShip.
-	self validateIsCurrentPlayer: ship.
 
+	(self isPenalized: ship) ifTrue: [
+		self reducePenaltyFor: ship.
+		^ self advanceTurn ].
+	
 	steps := dice sum: [ :eachDie | eachDie roll ].
 	newPosition := board newPositionFrom: ship position steps: steps.
 	ship moveTo: newPosition.
@@ -97,6 +114,22 @@ Game >> playTurn [
 Game >> playUntilFinish [
 
 	[ self isGameOver] whileFalse: [ self playTurn ]
+]
+
+{ #category : 'testing' }
+Game >> reducePenaltyFor: aShip [
+    | remainingTurns |
+    remainingTurns := (penaltyTurns at: aShip) - 1.
+    penaltyTurns at: aShip put: remainingTurns.
+    aShip restoreFuel. "A implementar Tomi"
+
+
+]
+
+{ #category : 'accessing' }
+Game >> spaceShips [
+    ^ spaceShips
+
 ]
 
 { #category : 'process actions' }
