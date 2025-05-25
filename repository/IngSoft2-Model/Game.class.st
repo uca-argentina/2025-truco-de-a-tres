@@ -92,7 +92,7 @@ Game >> penalize: aShip forTurns: turns [
 { #category : 'process actions' }
 Game >> playTurn [
 
-	| ship steps shouldPassTurn shouldSkipTurn newPosition |
+	| ship steps newPosition |
 	self isGameOver ifTrue: [ self error: 'Game is already over' ].
 
 	ship := self currentShip.
@@ -123,6 +123,12 @@ Game >> reducePenaltyFor: aShip [
     penaltyTurns at: aShip put: remainingTurns.
     aShip restoreFuel. "A implementar Tomi"
 
+
+]
+
+{ #category : 'accessing' }
+Game >> spaceShips [
+    ^ spaceShips
 
 ]
 
