@@ -21,6 +21,38 @@ BoardTest >> testApplyEffectToSpaceship [
 ]
 
 { #category : 'tests - instance' }
+BoardTest >> testAtomicBombEffectResetsPositionsButKeepsLaps [
+	| effect nave1 nave2 nave3 allShips |
+	
+	effect := AtomicBombEffect new.
+
+	nave1 := Spaceship withName: 'Rojo'.
+	nave2 := Spaceship withName: 'Azul'.
+	nave3 := Spaceship withName: 'Verde'.
+
+	nave1 moveTo: 6.
+	nave2 moveTo: 3.
+	nave3 moveTo: 9.
+
+	nave1 incrementLap.
+	nave2 incrementLap.
+	nave2 incrementLap.
+
+	allShips := { nave1. nave2. nave3 }.
+
+	effect applyTo: nave2 inContextOf: allShips.
+
+	self assert: nave1 position equals: 0.
+	self assert: nave2 position equals: 0.
+	self assert: nave3 position equals: 0.
+
+	self assert: nave1 lap equals: 1.
+	self assert: nave2 lap equals: 2.
+	self assert: nave3 lap equals: 0.
+
+]
+
+{ #category : 'tests - instance' }
 BoardTest >> testBlackHoleEffectMovesSpaceshipBackwards [
 	| board ship |
 	board := Board withCells: 5 andWormholes: #().
