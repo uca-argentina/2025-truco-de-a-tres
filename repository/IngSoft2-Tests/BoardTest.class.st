@@ -6,6 +6,41 @@ Class {
 }
 
 { #category : 'tests - instance' }
+BoardTest >> testApplyEffectToSpaceship [
+	| board ship |
+	board := Board withCells: 5 andWormholes: #().
+	ship := Spaceship withName: 'Lucas'.
+	ship moveTo: 3.
+
+	board cells at: 4 put: TestEffect new.  "posición 3 → índice 4"
+
+	board applyEffectTo: ship.
+
+	self assert: ship lap equals: 1.
+
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testBoardCellsContainRecognizedEffects [
+	| board validEffects |
+	validEffects := #('NoEffect' 'BlackHole' 'HyperGravity' 'MoonWalk' 'HyperJump' 'AtomicBomb').
+
+	board := Board withCells: 20 andWormholes: OrderedCollection new.
+
+	self assert: (board cells allSatisfy: [:e | validEffects includes: e ]).
+
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testBoardInitializesCorrectNumberOfEffects [
+	| board |
+	board := Board withCells: 20 andWormholes: OrderedCollection new.
+
+	self assert: board cells size equals: 20.
+
+]
+
+{ #category : 'tests - instance' }
 BoardTest >> testIsGoalReached [
     | board |
     board := Board withCells: 10 andWormholes: #().
