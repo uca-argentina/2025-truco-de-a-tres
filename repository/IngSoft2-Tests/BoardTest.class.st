@@ -187,6 +187,33 @@ BoardTest >> testLapIncrementsWhenPassingLastCell [
 ]
 
 { #category : 'tests - instance' }
+BoardTest >> testMoonWalkEffectMovesOtherSpaceshipsBackwards [
+	| effect nave1 nave2 nave3 allShips |
+	
+	effect := MoonWalkEffect new.
+
+	nave1 := Spaceship withName: 'Jugador1'.
+	nave2 := Spaceship withName: 'Jugador2'.
+	nave3 := Spaceship withName: 'Jugador3'.
+
+	nave1 moveTo: 5.
+	nave2 moveTo: 7.
+	nave3 moveTo: 3.
+
+	allShips := { nave1. nave2. nave3 }.
+
+	effect applyTo: nave2 inContextOf: allShips.
+
+	"nave2 fue quien activó el efecto, no debe moverse"
+	self assert: nave2 position equals: 7.
+
+	"las demás naves retroceden 2"
+	self assert: nave1 position equals: 3.
+	self assert: nave3 position equals: 1.
+
+]
+
+{ #category : 'tests - instance' }
 BoardTest >> testNewPositionWithWormhole [
 	| board ship |
 	board := Board withCells: 25 andWormholes: (OrderedCollection with: (Wormhole from: 6 to: 20)).
