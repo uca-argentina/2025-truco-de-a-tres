@@ -7,7 +7,10 @@ Class {
 		'dice',
 		'turn',
 		'winner',
-		'currentTurnIndex'
+		'currentTurnIndex',
+		'spaceships',
+		'currentPlayerIndex',
+		'die'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
