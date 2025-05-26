@@ -54,6 +54,12 @@ Game >> currentTurnIndex [
 	^ currentTurnIndex 
 ]
 
+{ #category : 'accessing' }
+Game >> dice [
+    ^ dice
+
+]
+
 { #category : 'initialization' }
 Game >> initializeWithShips: someShips board: aBoard dice: someDices [
 
@@ -82,6 +88,16 @@ Game >> isGameOver [
 Game >> isPenalized: aShip [
     ^ (penaltyTurns at: aShip) > 0
 
+]
+
+{ #category : 'process actions' }
+Game >> maxRoll: someDice [
+
+	| max |
+	max := 0.
+	someDice do: [ :sides | max := max + sides ].
+
+	^ max
 ]
 
 { #category : 'process actions' }
