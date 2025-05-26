@@ -11,7 +11,8 @@ Class {
 		'spaceships',
 		'currentPlayerIndex',
 		'die',
-		'penaltyTurns'
+		'penaltyTurns',
+		'wantsToPassTurn'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -67,7 +68,7 @@ Game >> initializeWithShips: someShips board: aBoard dice: someDices [
 	currentTurnIndex := 1. "Es el indice del jugador que debe jugar" "Seria el indice de la ordered collection para saber de que nave es el turno. EJ: si currentTurnIndex es 1 entonces es el turno de la primer nave que esta en el orderedCollection"
 	penaltyTurns := Dictionary new.
 	spaceShips do: [ :ship | penaltyTurns at: ship put: 0 ]. "Basicamente me aseguro que todos arranquen sin penalizacion (hice un diccionario que la key sea la ship y el valor la cantidad de turnos penalizados que tiene"
-
+	wantsToPassTurn := Dictionary new.
 	winner := nil
 ]
 
@@ -81,6 +82,12 @@ Game >> isGameOver [
 Game >> isPenalized: aShip [
     ^ (penaltyTurns at: aShip) > 0
 
+]
+
+{ #category : 'process actions' }
+Game >> passTurn [
+	self currentShip restoreFuel.
+	self advanceTurn.
 ]
 
 { #category : 'process actions' }
@@ -100,7 +107,11 @@ Game >> playTurn [
 	(self isPenalized: ship) ifTrue: [
 		self reducePenaltyFor: ship.
 		^ self advanceTurn ].
-	
+
+	(self wantsToPassTurn: ship) ifTrue: [
+		self setWantsToPassTurnFor: ship to: false.
+		ship restoreFuel.
+		^ self advanceTurn ].
 	steps := dice sum: [ :eachDie | eachDie roll ].
 	newPosition := board newPositionFrom: ship position steps: steps.
 	ship moveTo: newPosition.
@@ -124,6 +135,12 @@ Game >> reducePenaltyFor: aShip [
     aShip restoreFuel. "A implementar Tomi"
 
 
+]
+
+{ #category : 'as yet unclassified' }
+Game >> setWantsToPassTurnFor: aShip to: aBoolean [
+
+	wantsToPassTurn at: aShip put: aBoolean
 ]
 
 { #category : 'accessing' }
@@ -162,6 +179,11 @@ Game >> validateMinimumSpaceShips: someShips [
 
 	someShips size < 2 ifTrue: [
 		self error: 'Need 2 space ships or more to initialize the game' ]
+]
+
+{ #category : 'as yet unclassified' }
+Game >> wantsToPassTurn: aShip [
+	^ (wantsToPassTurn at: aShip ifAbsent: [ false ]).
 ]
 
 { #category : 'accessing' }
