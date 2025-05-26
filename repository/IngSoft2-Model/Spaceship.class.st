@@ -5,7 +5,9 @@ Class {
 		'name',
 		'position',
 		'playerName',
-		'penaltyTurns'
+		'penaltyTurns',
+		'maxFuel',
+		'fuel'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -35,6 +37,18 @@ Spaceship >> initializeWith: aName [
 
 	playerName := aName.
 	position := 0
+
+]
+
+{ #category : 'initialize' }
+Spaceship >> initializeWith: aName and: aMaxRoll [
+
+	aName isEmpty ifTrue: [ self error: 'Name cannot be empty' ].
+
+	playerName := aName.
+	position := 0.
+	maxFuel := aMaxRoll * 2.
+	fuel := maxFuel.
 
 ]
 
