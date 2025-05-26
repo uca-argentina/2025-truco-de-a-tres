@@ -225,7 +225,7 @@ GameTest >> testWhenShipReachesGoalThenGameEnds [
 	dice1 := Die withSides: 100.
 	dicesGame := OrderedCollection with: dice1.
 
-	boardGame := Board withCells: 10 andWormholes: #().
+	boardGame := Board withCells: 1 andWormholes: #().
 
 
 	game := Game
