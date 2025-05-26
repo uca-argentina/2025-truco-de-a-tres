@@ -11,8 +11,9 @@ Class {
 		'spaceships',
 		'currentPlayerIndex',
 		'die',
-		'penaltyTurns',
-		'wantsToPassTurn'
+		'wantsToPassTurn',
+		'penaltyShips',
+		'penalizedShips'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -54,6 +55,14 @@ Game >> currentTurnIndex [
 	^ currentTurnIndex 
 ]
 
+{ #category : 'testing' }
+Game >> findPenaltyFor: aShip [
+    ^ penalizedShips detect: [ :penalty | penalty isFor: aShip ] ifNone: [ PenalizedShip noPenaltyFor: aShip ]
+
+
+
+]
+
 { #category : 'initialization' }
 Game >> initializeWithShips: someShips board: aBoard dice: someDices [
 
@@ -66,8 +75,7 @@ Game >> initializeWithShips: someShips board: aBoard dice: someDices [
 	dice := someDices.
 	turn := 1. "Amounts of turns played"
 	currentTurnIndex := 1. "Es el indice del jugador que debe jugar" "Seria el indice de la ordered collection para saber de que nave es el turno. EJ: si currentTurnIndex es 1 entonces es el turno de la primer nave que esta en el orderedCollection"
-	penaltyTurns := Dictionary new.
-	spaceShips do: [ :ship | penaltyTurns at: ship put: 0 ]. "Basicamente me aseguro que todos arranquen sin penalizacion (hice un diccionario que la key sea la ship y el valor la cantidad de turnos penalizados que tiene"
+	penalizedShips  := OrderedCollection new.
 	wantsToPassTurn := Dictionary new.
 	winner := nil
 ]
@@ -80,7 +88,9 @@ Game >> isGameOver [
 
 { #category : 'testing' }
 Game >> isPenalized: aShip [
-    ^ (penaltyTurns at: aShip) > 0
+    ^ (self findPenaltyFor: aShip) hasPenalty
+
+
 
 ]
 
@@ -92,7 +102,8 @@ Game >> passTurn [
 
 { #category : 'process actions' }
 Game >> penalize: aShip forTurns: turns [
-    penaltyTurns at: aShip put: turns.
+    penalizedShips add: (PenalizedShip for: aShip withTurns: turns).
+
 
 ]
 
@@ -129,12 +140,12 @@ Game >> playUntilFinish [
 
 { #category : 'testing' }
 Game >> reducePenaltyFor: aShip [
-    | remainingTurns |
-    remainingTurns := (penaltyTurns at: aShip) - 1.
-    penaltyTurns at: aShip put: remainingTurns.
-    aShip restoreFuel. "A implementar Tomi"
 
-
+	| penalty |
+	penalty := self findPenaltyFor: aShip.
+	penalty reduceTurn.
+	penalty hasPenalty ifFalse: [ penalizedShips remove: penalty ].
+	aShip restoreFuel "A implementar Tomi"
 ]
 
 { #category : 'as yet unclassified' }

@@ -308,7 +308,7 @@ GameTest >> testWhenShipDecidesToPassTurnThenSkipTurn [
 { #category : 'tests' }
 GameTest >> testWhenShipIsPenalizedThenSkipsTurnAndReducesPenalty [
 
-	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game realShip1 |
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game realShip1 realShip2|
 	spaceShip1 := Spaceship withName: 'Ship Num1'.
 	spaceShip2 := Spaceship withName: 'Ship Num2'.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
@@ -324,16 +324,20 @@ GameTest >> testWhenShipIsPenalizedThenSkipsTurnAndReducesPenalty [
 		        dice: dicesGame.
 
 	realShip1 := game spaceShips first.
+	realShip2 := game spaceShips second.
 
 	game penalize: realShip1 forTurns: 2.
 	game playTurn. "RealShip1 losees turn"
 
-	self assert: game currentShip equals: game spaceShips second.
+	self assert: game currentShip equals: realShip2.
+	
 	game playTurn. "RealShip2 plays turn"
 	game playTurn. "Penalty returns to 0 for realShip1"
 	game playTurn. "RealShip2 plays turn"
 
 	self assert: (game isPenalized: realShip1) not.
+	self assert: game currentShip equals: realShip1.
+
 	game playTurn. "RealShip1 plays turn, it is not penalized"
 
 	game playUntilFinish
