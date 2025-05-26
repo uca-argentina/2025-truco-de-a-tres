@@ -72,6 +72,15 @@ Board >> assertValidState [
 ]
 
 { #category : 'initialize' }
+Board >> canEnterPosition: aPosition withRoll: roll [
+	| effect |
+	effect := self effectAt: aPosition.
+	^ effect allowsEntryWithRoll: roll.
+
+
+]
+
+{ #category : 'initialize' }
 Board >> cellCount [
     ^ cellCount
 ]
@@ -157,16 +166,23 @@ Board >> newPositionFrom: aPosition steps: steps for: spaceship [
 ]
 
 { #category : 'initialize' }
-Board >> randomEffect [
-	| r |
-	r := (1 to: 100) atRandom.
+Board >> newPositionFrom: aPosition steps: steps for: aSpaceship withRoll: roll [
+	| position effect |
+	position := (aPosition + steps) \\ cellCount.
 
-	^ r <= 2 ifTrue: [ 'AtomicBomb' ]
-		ifFalse: [ r <= 10 ifTrue: [ 'MoonWalk' ]
-		ifFalse: [ r <= 30 ifTrue: [ 'HyperGravity' ]
-		ifFalse: [ r <= 50 ifTrue: [ 'BlackHole' ]
-		ifFalse: [ r <= 90 ifTrue: [ 'NoEffect' ]
-		ifFalse: [ 'HyperJump' ] ]]]].
+	(position <= aPosition) ifTrue: [ aSpaceship incrementLap ].
+
+	effect := cells at: position + 1.
+	(effect allowsEntryWithRoll: roll)
+		ifTrue: [ ^ position ]
+		ifFalse: [ ^ aPosition ].
+
+]
+
+{ #category : 'initialize' }
+Board >> randomEffect [
+	effects := { BlackHoleEffect. HyperGravityEffect }.
+	^ (effects atRandom) new
 
 ]
 

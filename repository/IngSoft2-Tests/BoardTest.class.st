@@ -35,13 +35,31 @@ BoardTest >> testBlackHoleEffectMovesSpaceshipBackwards [
 ]
 
 { #category : 'tests - instance' }
+BoardTest >> testBoardAllowsEntryToHyperGravityCellWithSufficientRoll [
+	| board ship effect newPosition |
+	board := Board withCells: 5 andWormholes: #().
+	ship := Spaceship withName: 'Lucas'.
+	ship moveTo: 2.
+
+	effect := HyperGravityEffect new.
+	effect requiredRoll: 4.  "Tirada mínima conocida y controlada"
+	board cells at: 3 put: effect.
+
+	newPosition := board newPositionFrom: ship position steps: 1 for: ship withRoll: 5.
+
+	self assert: newPosition equals: 3.  "Sí avanzó"
+
+]
+
+{ #category : 'tests - instance' }
 BoardTest >> testBoardCellsContainRecognizedEffects [
-	| board validEffects |
-	validEffects := #('NoEffect' 'BlackHole' 'HyperGravity' 'MoonWalk' 'HyperJump' 'AtomicBomb').
+	| board validClasses |
+	validClasses := { BlackHoleEffect. HyperGravityEffect }.
 
 	board := Board withCells: 20 andWormholes: OrderedCollection new.
 
-	self assert: (board cells allSatisfy: [:e | validEffects includes: e ]).
+	self assert: (board cells allSatisfy: [:e |
+		validClasses anySatisfy: [:c | e class = c ] ]).
 
 ]
 
@@ -51,6 +69,55 @@ BoardTest >> testBoardInitializesCorrectNumberOfEffects [
 	board := Board withCells: 20 andWormholes: OrderedCollection new.
 
 	self assert: board cells size equals: 20.
+
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testBoardPreventsEntryToHyperGravityCellWithLowRoll [
+	| board ship newPosition |
+	board := Board withCells: 5 andWormholes: #().
+	ship := Spaceship withName: 'Lucas'.
+	ship moveTo: 2.
+
+	board cells at: 3 put: HyperGravityEffect new.  "posición 2 → índice 3"
+
+	self assert: ((board cells at: 3) requiredRoll) equals: 4.
+
+	newPosition := board newPositionFrom: ship position steps: 1 for: ship withRoll: 2.
+
+	self assert: newPosition equals: 2.  "No avanzó"
+	self assert: ship lap equals: 0.  "No contó vuelta"
+
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testCanEnterHyperGravityCellWithSufficientRoll [
+	| board effect |
+	board := Board withCells: 5 andWormholes: #().
+	effect := HyperGravityEffect new.
+	board cells at: 3 put: effect.
+
+	self assert: (effect allowsEntryWithRoll: 5).
+
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testCannotEnterHyperGravityCellWithLowRoll [
+	| board effect |
+	board := Board withCells: 5 andWormholes: #().
+	effect := HyperGravityEffect new.
+	board cells at: 3 put: effect.  "Casillero 2 → índice 3"
+
+	"Simulamos una tirada menor al requerido (por default, 4)"
+	self deny: (effect allowsEntryWithRoll: 2).
+
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testHyperGravityEffectHasCorrectDefaultRoll [
+	| effect |
+	effect := HyperGravityEffect new.
+	self assert: effect requiredRoll equals: 4.
 
 ]
 

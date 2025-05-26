@@ -6,6 +6,11 @@ Class {
 }
 
 { #category : 'operations' }
+Effect >> allowsEntryWithRoll: aRoll [
+    ^ true
+]
+
+{ #category : 'operations' }
 Effect >> applyTo: aSpaceship [
     self subclassResponsibility.
 ]
