@@ -74,7 +74,7 @@ GameTest >> testGameReturnsFinalPositionsOfSpaceships [
 { #category : 'tests' }
 GameTest >> testMonito [
 
-	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game |
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game realShip1 |
 	spaceShip1 := Spaceship withName: 'Ship Num1'.
 	spaceShip2 := Spaceship withName: 'Ship Num2'.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
@@ -82,14 +82,24 @@ GameTest >> testMonito [
 	dice1 := Die withSides: 6.
 	dicesGame := OrderedCollection with: dice1.
 
-	boardGame := Board withCells: 25 andWormholes: #().
+	boardGame := Board withCells: 25 andWormholes: #(  ).
 
 	game := Game
-		startWithShips: spaceShipsGame
-		board: boardGame
-		dice: dicesGame.
-		
-	game playUntilFinish 
+		        startWithShips: spaceShipsGame
+		        board: boardGame
+		        dice: dicesGame.
+
+	realShip1 := game spaceShips first.
+	game playTurn. "RealShip1 plays turn"
+	game playTurn. "RealShip2 plays turn"
+	
+	game setWantsToPassTurnFor: realShip1 to: true.
+	game playTurn. "RealShip2 decides not to play"
+	self assert: game currentShip equals: game spaceShips second.
+
+
+
+	game playUntilFinish
 ]
 
 { #category : 'tests' }

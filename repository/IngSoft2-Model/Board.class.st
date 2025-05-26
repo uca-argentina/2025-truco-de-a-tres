@@ -54,6 +54,16 @@ Board >> cellCount [
 ]
 
 { #category : 'initialize' }
+Board >> circularPositionFrom: current steps: steps for: aSpaceship [
+	| newPosition |
+	newPosition := (current + steps) \\ cellCount.
+
+	(newPosition <= current) ifTrue: [ aSpaceship incrementLap ].
+
+	^ newPosition
+]
+
+{ #category : 'initialize' }
 Board >> initializeWithCells: aCount and: aWormhole [
 	cellCount := aCount.
    wormholes := aWormhole.

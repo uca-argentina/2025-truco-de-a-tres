@@ -10,7 +10,9 @@ Class {
 		'currentTurnIndex',
 		'spaceships',
 		'currentPlayerIndex',
-		'die'
+		'die',
+		'penaltyTurns',
+		'wantsToPassTurn'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -100,10 +102,16 @@ Game >> playTurn [
 	| ship steps newPosition |
 	self isGameOver ifTrue: [ self error: 'Game is already over' ].
 
-
 	ship := self currentShip.
-	self validateIsCurrentPlayer: ship.
 
+	(self isPenalized: ship) ifTrue: [
+		self reducePenaltyFor: ship.
+		^ self advanceTurn ].
+
+	(self wantsToPassTurn: ship) ifTrue: [
+		self setWantsToPassTurnFor: ship to: false.
+		ship restoreFuel.
+		^ self advanceTurn ].
 	steps := dice sum: [ :eachDie | eachDie roll ].
 	newPosition := board newPositionFrom: ship position steps: steps.
 	ship moveTo: newPosition.

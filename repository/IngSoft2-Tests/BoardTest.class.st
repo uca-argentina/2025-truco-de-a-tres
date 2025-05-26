@@ -17,6 +17,34 @@ BoardTest >> testIsGoalReached [
 ]
 
 { #category : 'tests - instance' }
+BoardTest >> testLapDoesNotIncrementWhenStayingWithinBounds [
+	| board ship newPosition |
+	board := Board withCells: 10 andWormholes: OrderedCollection new.
+	ship := Spaceship withName: 'Lucas'.
+	ship moveTo: 3.
+
+	newPosition := board circularPositionFrom: ship position steps: 4 for: ship.
+
+	self assert: newPosition equals: 7.
+	self assert: ship lap equals: 0.
+
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testLapIncrementsWhenPassingLastCell [
+	| board ship newPosition |
+	board := Board withCells: 10 andWormholes: OrderedCollection new.
+	ship := Spaceship withName: 'Lucas'.
+	ship moveTo: 8.
+
+	newPosition := board circularPositionFrom: ship position steps: 3 for: ship.
+
+	self assert: newPosition equals: 1.
+	self assert: ship lap equals: 1.
+
+]
+
+{ #category : 'tests - instance' }
 BoardTest >> testNewPositionWithWormhole [
     | board |
     board := Board withCells: 25 andWormholes: (OrderedCollection with: (Wormhole from: 6 to: 20)).
