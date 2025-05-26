@@ -46,19 +46,21 @@ BoardTest >> testLapIncrementsWhenPassingLastCell [
 
 { #category : 'tests - instance' }
 BoardTest >> testNewPositionWithWormhole [
-    | board |
-    board := Board withCells: 25 andWormholes: (OrderedCollection with: (Wormhole from: 6 to: 20)).
+	| board ship |
+	board := Board withCells: 25 andWormholes: (OrderedCollection with: (Wormhole from: 6 to: 20)).
+	ship := Spaceship withName: 'Test'.
 
-    self assert: (board newPositionFrom: 2 steps: 4) equals: 20.
+	self assert: (board newPositionFrom: 2 steps: 4 for: ship) equals: 20.
 
 ]
 
 { #category : 'tests - instance' }
 BoardTest >> testNewPositionWithoutWormhole [
-    | board |
-    board := Board withCells: 25 andWormholes: #().
+	| board ship |
+	board := Board withCells: 25 andWormholes: #().
+	ship := Spaceship withName: 'Test'.
 
-    self assert: (board newPositionFrom: 2 steps: 2) equals: 4.
+	self assert: (board newPositionFrom: 2 steps: 2 for: ship) equals: 4.
 
 ]
 

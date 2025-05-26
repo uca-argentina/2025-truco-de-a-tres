@@ -103,6 +103,17 @@ Board >> newPositionFrom: aPosition steps: steps [
 ]
 
 { #category : 'initialize' }
+Board >> newPositionFrom: aPosition steps: steps for: spaceship [
+    | position |
+    position := (aPosition + steps) \\ cellCount.
+    
+    (position <= aPosition) ifTrue: [ spaceship incrementLap ].
+    
+    ^ self applyWormholeIfPresentAt: position
+
+]
+
+{ #category : 'initialize' }
 Board >> wormholes [
 	^ wormholes
 ]
