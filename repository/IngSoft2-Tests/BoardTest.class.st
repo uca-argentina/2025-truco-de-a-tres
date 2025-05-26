@@ -76,6 +76,7 @@ BoardTest >> testBoardInitializesCorrectNumberOfEffects [
 BoardTest >> testBoardPreventsEntryToHyperGravityCellWithLowRoll [
 	| board ship newPosition |
 	board := Board withCells: 5 andWormholes: #().
+	
 	ship := Spaceship withName: 'Lucas'.
 	ship moveTo: 2.
 
@@ -118,6 +119,31 @@ BoardTest >> testHyperGravityEffectHasCorrectDefaultRoll [
 	| effect |
 	effect := HyperGravityEffect new.
 	self assert: effect requiredRoll equals: 4.
+
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testHyperJumpEffectJumpsShipForward [
+	| board ship newPosition effect |
+	
+	board := Board withCells: 10 andWormholes: #().
+	
+	HyperJumpEffect resetJumpIndex.  "deja el salto en 3"
+
+	effect := HyperJumpEffect new.
+	board cells at: 6 put: effect.  "🔒 esto se hace después de initializeCells"
+
+	self assert: (board effectAt: 5) class equals: HyperJumpEffect.
+
+	ship := Spaceship withName: 'Apollo'.
+	ship moveTo: 5.
+
+	newPosition := board newPositionFrom: ship position steps: 1 for: ship withRoll: 4.
+	ship moveTo: newPosition.
+	
+	board applyEffectTo: ship.
+
+	self assert: ship position equals: 6.
 
 ]
 

@@ -34,6 +34,14 @@ Board class >> withCells: aCount andWormholes: aCollection [
 ]
 
 { #category : 'initialize' }
+Board class >> withEmptyCells: aCount andWormholes: aCollection [
+	| board |
+	board := self new.
+	board initializeWithoutEffectsWithCells: aCount wormholes: aCollection.
+	^ board.
+]
+
+{ #category : 'initialize' }
 Board >> applyEffectTo: aSpaceship [
 	| effect |
 	effect := self effectAt: aSpaceship position.
@@ -117,7 +125,6 @@ Board >> initializeCells [
 Board >> initializeWithCells: aCount and: aWormhole [
 	cellCount := aCount.
    wormholes := aWormhole.
-	self initializeCells.
 ]
 
 { #category : 'initialize' }
@@ -132,6 +139,13 @@ Board >> initializeWithCells: aCount andWormholes: aCollection [
 Board >> initializeWithCells: aCount wormholes: aDictionary [
 	cellCount := aCount.
    wormholes := aDictionary.  "NO USAR MAS, AHORA USAMOS initializeWithCells: aCount and: aWormhole"
+]
+
+{ #category : 'initialize' }
+Board >> initializeWithoutEffectsWithCells: aCount wormholes: aCollection [
+	cellCount := aCount.
+	wormholes := aCollection.
+	cells := (1 to: cellCount) collect: [:i | nil ].
 ]
 
 { #category : 'initialize' }

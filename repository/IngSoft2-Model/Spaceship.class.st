@@ -59,6 +59,12 @@ Spaceship >> moveBack: steps [
 ]
 
 { #category : 'initialize' }
+Spaceship >> moveForward: steps [
+	position := position + steps.
+
+]
+
+{ #category : 'initialize' }
 Spaceship >> moveTo: aPosition [
     position := aPosition
 
