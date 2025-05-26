@@ -53,6 +53,12 @@ Spaceship >> lap [
 ]
 
 { #category : 'initialize' }
+Spaceship >> moveBack: steps [
+    position := (position - steps) max: 0.
+
+]
+
+{ #category : 'initialize' }
 Spaceship >> moveTo: aPosition [
     position := aPosition
 

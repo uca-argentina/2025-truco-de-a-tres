@@ -21,6 +21,20 @@ BoardTest >> testApplyEffectToSpaceship [
 ]
 
 { #category : 'tests - instance' }
+BoardTest >> testBlackHoleEffectMovesSpaceshipBackwards [
+	| board ship |
+	board := Board withCells: 5 andWormholes: #().
+	ship := Spaceship withName: 'Lucas'.
+	ship moveTo: 3.
+
+	board cells at: 4 put: BlackHoleEffect new.  "posición 3 → índice 4 (1-based)"
+	board applyEffectTo: ship.
+
+	self assert: ship position equals: 0.
+
+]
+
+{ #category : 'tests - instance' }
 BoardTest >> testBoardCellsContainRecognizedEffects [
 	| board validEffects |
 	validEffects := #('NoEffect' 'BlackHole' 'HyperGravity' 'MoonWalk' 'HyperJump' 'AtomicBomb').
