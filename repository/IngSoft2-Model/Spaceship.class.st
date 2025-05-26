@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'name',
 		'position',
-		'playerName'
+		'playerName',
+		'penaltyTurns'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -51,4 +52,8 @@ Spaceship >> playerName [
 { #category : 'initialize' }
 Spaceship >> position [
     ^ position
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> restoreFuel [
 ]
