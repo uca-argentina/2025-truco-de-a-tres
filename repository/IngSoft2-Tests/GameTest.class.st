@@ -96,7 +96,7 @@ GameTest >> testShipStatusReturnsCorrectValues [
 
 	self assert: status ship equals: spaceShip1.
 	self assert: status position equals: spaceShip1 position.
-	self assert: status lapCount equals: 0.
+	self assert: status lapCount equals: (spaceShip1 lap + 1).
 	self assert: status isPenalized equals: false.
 ]
 
