@@ -6,16 +6,66 @@ Class {
 		'board',
 		'dice',
 		'turn',
-		'winner'
+		'winner',
+		'currentTurnIndex',
+		'spaceships',
+		'currentPlayerIndex',
+		'die'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'initialize' }
+Game class >> new [
+    self error: 'Use Game startWithShips:board:dice: instead.'
+]
+
+{ #category : 'initialize' }
+Game class >> startWithShips: someShips board: aBoard dice: someDices [
+
+	^ super new initializeWithShips: someShips board: aBoard dice: someDices
+]
+
+{ #category : 'process actions' }
+Game >> advanceTurn [
+
+	currentTurnIndex := currentTurnIndex + 1.
+	currentTurnIndex > spaceShips size ifTrue: [ currentTurnIndex := 1 ].
+	turn := turn + 1
+]
+
+{ #category : 'accessing' }
+Game >> currentShip [
+    ^ spaceShips at: currentTurnIndex
+]
+
 { #category : 'accessing' }
 Game >> currentTurn [
 
 	^ turn
+]
+
+{ #category : 'accessing' }
+Game >> currentTurnIndex [
+
+	^ currentTurnIndex 
+]
+
+{ #category : 'initialization' }
+Game >> initializeWithShips: someShips board: aBoard dice: someDices [
+
+	self validateMinimumSpaceShips: someShips.
+	self validateMinimumDice: someDices.
+	self validateBoard: aBoard.
+
+	spaceShips := someShips.
+	board := aBoard.
+	dice := someDices.
+	turn := 1. "Amounts of turns played"
+	currentTurnIndex := 1. "Es el indice del jugador que debe jugar" "Seria el indice de la ordered collection para saber de que nave es el turno. EJ: si currentTurnIndex es 1 entonces es el turno de la primer nave que esta en el orderedCollection"
+
+	winner := nil
 ]
 
 { #category : 'testing' }
@@ -25,15 +75,25 @@ Game >> isGameOver [
 ]
 
 { #category : 'process actions' }
-Game >> playTurnFor: aSpaceship [
+Game >> playTurn [
 
+	| ship |
 	self isGameOver ifTrue: [ self error: 'Game is already over' ].
+	
 
-	dice do: [ :eachDie | aSpaceship advanceWith: eachDie on: board ].
+	ship := self currentShip.
+	self validateIsCurrentPlayer: ship.
+	dice do: [ :eachDie | ship advanceWith: eachDie on: board ].
 
-	(aSpaceship hasReachedGoalOn: board) ifTrue: [ winner := aSpaceship ].
+	(ship hasReachedGoalOn: board) ifTrue: [ winner := ship ].
 
-	turn := turn + 1
+	self advanceTurn
+]
+
+{ #category : 'process actions' }
+Game >> playUntilFinish [
+
+	[ self isGameOver] whileFalse: [ self playTurn ]
 ]
 
 { #category : 'process actions' }
@@ -43,10 +103,15 @@ Game >> spaceshipPositions [
 
 { #category : 'validation' }
 Game >> validateBoard: aBoard [
-	(aBoard cellCount <= 0 or: [ aBoard wormholes isNil ]) ifTrue: [
-		self error: 'Board must have more than 0 cells and a wormhole dictionary'
-	].
+    aBoard isValid ifFalse: [ self error: 'Board is invalid' ].
 
+]
+
+{ #category : 'validation' }
+Game >> validateIsCurrentPlayer: aSpaceship [
+	self currentShip = aSpaceship ifFalse: [
+		self error: 'It is not the turn of this spaceship'
+	].
 ]
 
 { #category : 'validation' }
@@ -67,18 +132,4 @@ Game >> validateMinimumSpaceShips: someShips [
 Game >> winner [
 
 	^ winner
-]
-
-{ #category : 'initialization' }
-Game >> withShips: someShips board: aBoard dice: someDices [
-
-	self validateMinimumSpaceShips: someShips .
-	self validateMinimumDice: someDices.
-	self validateBoard: aBoard.
-
-	spaceShips := someShips.
-	board := aBoard.
-	dice := someDices.
-	turn := 1.
-	winner := nil.
 ]

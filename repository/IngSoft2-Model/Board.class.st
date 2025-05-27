@@ -10,8 +10,42 @@ Class {
 }
 
 { #category : 'initialize' }
+Board class >> new [
+    self error: 'Use Board withCells:andWormholes: instead'.
+]
+
+{ #category : 'initialize' }
+Board class >> withCells: aCount and: aWormhole [
+
+	^ self new initializeWithCells: aCount wormholes: aWormhole.
+]
+
+{ #category : 'initialize' }
+Board class >> withCells: aCount andWormholes: aCollection [
+    ^ super new initializeWithCells: aCount andWormholes: aCollection.
+
+]
+
+{ #category : 'initialize' }
 Board >> applyWormholeIfPresentAt: aPosition [
-	^ wormholes at: aPosition ifAbsent: [aPosition]
+    | matches |
+    matches := wormholes select: [ :w | w hasEntryAt: aPosition ].
+    ^ matches
+        ifEmpty: [ aPosition ]
+        ifNotEmpty: [ matches first exit ].
+]
+
+{ #category : 'initialize' }
+Board >> assertValidState [
+    (cellCount isInteger and: [ cellCount > 0 ]) ifFalse: [
+        self error: 'Board must have a positive number of cells'
+    ].
+
+    (wormholes isCollection and: [
+        wormholes allSatisfy: [ :each | each isValid ]
+    ]) ifFalse: [
+        self error: 'All wormholes must be valid objects'
+    ].
 ]
 
 { #category : 'initialize' }
@@ -20,9 +54,21 @@ Board >> cellCount [
 ]
 
 { #category : 'initialize' }
-Board >> initializeWithCells: aCount wormholes: aDictionary [
+Board >> initializeWithCells: aCount and: aWormhole [
 	cellCount := aCount.
-   wormholes := aDictionary.
+   wormholes := aWormhole.
+]
+
+{ #category : 'initialize' }
+Board >> initializeWithCells: aCount andWormholes: aCollection [
+    cellCount := aCount.
+    wormholes := aCollection.
+    self assertValidState.
+]
+
+{ #category : 'initialize' }
+Board >> isBoardValid [
+    [ self assertValidState. true ] on: Error do: [ false ].
 ]
 
 { #category : 'initialize' }
@@ -31,12 +77,13 @@ Board >> isGoalReachedAt: aPosition [
 ]
 
 { #category : 'initialize' }
-Board >> newPositionFrom: aPosition steps: steps [
-	| tentativePosition finalPosition |
-	tentativePosition := aPosition + steps.
-	finalPosition := self applyWormholeIfPresentAt: tentativePosition.
-	^ finalPosition
+Board >> isValid [
+    ^ [ self assertValidState. true ] on: Error do: [ false ].
+]
 
+{ #category : 'initialize' }
+Board >> newPositionFrom: aPosition steps: steps [
+    ^ self applyWormholeIfPresentAt: (aPosition + steps).
 ]
 
 { #category : 'initialize' }
