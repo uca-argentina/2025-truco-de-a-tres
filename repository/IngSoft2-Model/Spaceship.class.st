@@ -5,7 +5,8 @@ Class {
 		'name',
 		'position',
 		'playerName',
-		'penaltyTurns'
+		'penaltyTurns',
+		'lap'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -29,12 +30,37 @@ Spaceship >> hasReachedGoalOn: aBoard [
 ]
 
 { #category : 'initialize' }
+Spaceship >> incrementLap [
+	lap := lap + 1.
+
+]
+
+{ #category : 'initialize' }
 Spaceship >> initializeWith: aName [
 
 	aName isEmpty ifTrue: [ self error: 'Name cannot be empty' ].
 
 	playerName := aName.
-	position := 0
+	position := 0.
+	lap := 0.
+
+]
+
+{ #category : 'initialize' }
+Spaceship >> lap [
+	^ lap
+
+]
+
+{ #category : 'initialize' }
+Spaceship >> moveBack: steps [
+    position := (position - steps) max: 0.
+
+]
+
+{ #category : 'initialize' }
+Spaceship >> moveForward: steps [
+	position := position + steps.
 
 ]
 
