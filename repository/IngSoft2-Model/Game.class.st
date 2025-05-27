@@ -13,7 +13,9 @@ Class {
 		'die',
 		'wantsToPassTurn',
 		'penaltyShips',
-		'penalizedShips'
+		'penalizedShips',
+		'lappedShips',
+		'totalLaps'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -28,6 +30,18 @@ Game class >> new [
 Game class >> startWithShips: someShips board: aBoard dice: someDices [
 
 	^ super new initializeWithShips: someShips board: aBoard dice: someDices
+]
+
+{ #category : 'initialize' }
+Game class >> startWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps [
+
+	^ super new initializeWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps
+]
+
+{ #category : 'as yet unclassified' }
+Game >> addLapTo: aShip [
+
+	(self findLapFor: aShip) addLap
 ]
 
 { #category : 'process actions' }
@@ -55,6 +69,12 @@ Game >> currentTurnIndex [
 	^ currentTurnIndex 
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> findLapFor: aShip [
+
+	^ lappedShips detect: [ :lap | lap ship = aShip ]
+]
+
 { #category : 'testing' }
 Game >> findPenaltyFor: aShip [
     ^ penalizedShips detect: [ :penalty | penalty isFor: aShip ] ifNone: [ PenalizedShip noPenaltyFor: aShip ]
@@ -63,8 +83,14 @@ Game >> findPenaltyFor: aShip [
 
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> hasWonByLaps: aShip [
+	^ (self findLapFor: aShip) hasWonWithTotalLaps: totalLaps
+]
+
 { #category : 'initialization' }
 Game >> initializeWithShips: someShips board: aBoard dice: someDices [
+"NO VA A QUEDAR EN FUNCIONAMIENTO, ES EL QUE DA TODO EN VERDE PERO VAMOS A UTILIZAR EL OTRO INICIALIZADOR"
 
 	self validateMinimumSpaceShips: someShips.
 	self validateMinimumDice: someDices.
@@ -77,6 +103,26 @@ Game >> initializeWithShips: someShips board: aBoard dice: someDices [
 	currentTurnIndex := 1. "Es el indice del jugador que debe jugar" "Seria el indice de la ordered collection para saber de que nave es el turno. EJ: si currentTurnIndex es 1 entonces es el turno de la primer nave que esta en el orderedCollection"
 	penalizedShips  := OrderedCollection new.
 	wantsToPassTurn := Dictionary new.
+	lappedShips := spaceShips collect: [ :ship | LappedShip for: ship ].
+	winner := nil
+]
+
+{ #category : 'initialization' }
+Game >> initializeWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps [
+
+	self validateMinimumSpaceShips: someShips.
+	self validateMinimumDice: someDices.
+	self validateBoard: aBoard.
+
+	spaceShips := someShips.
+	board := aBoard.
+	dice := someDices.
+	totalLaps := aNumberLaps.
+	turn := 1. "Amounts of turns played"
+	currentTurnIndex := 1. "Es el indice del jugador que debe jugar" "Seria el indice de la ordered collection para saber de que nave es el turno. EJ: si currentTurnIndex es 1 entonces es el turno de la primer nave que esta en el orderedCollection"
+	penalizedShips  := OrderedCollection new.
+	wantsToPassTurn := Dictionary new.
+	lappedShips := spaceShips collect: [ :ship | LappedShip for: ship ].
 	winner := nil
 ]
 
@@ -110,7 +156,7 @@ Game >> penalize: aShip forTurns: turns [
 { #category : 'process actions' }
 Game >> playTurn [
 
-	| ship steps newPosition |
+	| ship steps newPosition previousPosition|
 	self isGameOver ifTrue: [ self error: 'Game is already over' ].
 
 	ship := self currentShip.
@@ -124,9 +170,13 @@ Game >> playTurn [
 		ship restoreFuel.
 		^ self advanceTurn ].
 	steps := dice sum: [ :eachDie | eachDie roll ].
+	
+	previousPosition := ship position.
 	newPosition := board newPositionFrom: ship position steps: steps.
 	ship moveTo: newPosition.
 
+	self registerLapIfNeededFor: ship from: previousPosition to: newPosition.
+	
 	(ship hasReachedGoalOn: board) ifTrue: [ winner := ship ].
 
 	self advanceTurn
@@ -146,6 +196,17 @@ Game >> reducePenaltyFor: aShip [
 	penalty reduceTurn.
 	penalty hasPenalty ifFalse: [ penalizedShips remove: penalty ].
 	aShip restoreFuel "A implementar Tomi"
+]
+
+{ #category : 'as yet unclassified' }
+Game >> registerLapIfNeededFor: aShip from: oldPosition to: newPosition [
+
+	| cellCount lap |
+	cellCount := board cellCount.
+
+	oldPosition > newPosition ifTrue: [ ^ self ].
+	lap := self findLapFor: aShip.
+	lap addLap
 ]
 
 { #category : 'as yet unclassified' }
