@@ -71,6 +71,35 @@ GameTest >> testGameReturnsFinalPositionsOfSpaceships [
 	self assert: (positions at: spaceShip2) equals: finalPositionShip2
 ]
 
+{ #category : 'accessing' }
+GameTest >> testShipStatusReturnsCorrectValues [
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game status |
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
+	spaceShip2 := Spaceship withName: 'Ship Num2'.
+	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
+
+	dice1 := Die withSides: 2.
+	dicesGame := OrderedCollection with: dice1.
+
+	boardGame := Board withCells: 25 andWormholes: #().
+
+	game := Game
+		startWithShips: spaceShipsGame
+		board: boardGame
+		dice: dicesGame
+		laps: 2.
+
+	game playTurn. 
+	game playTurn.
+
+	status := game statusFor: spaceShip1.
+
+	self assert: status ship equals: spaceShip1.
+	self assert: status position equals: spaceShip1 position.
+	self assert: status lapCount equals: 0.
+	self assert: status isPenalized equals: false.
+]
+
 { #category : 'tests' }
 GameTest >> testSpaceshipPositionsReturnsCorrectPositions [
 

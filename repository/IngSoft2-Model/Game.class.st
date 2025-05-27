@@ -226,6 +226,15 @@ Game >> spaceshipPositions [
 	^ spaceShips collect: [ :ship | ship -> ship position ] as: Dictionary
 ]
 
+{ #category : 'process actions' }
+Game >> statusFor: aShip [
+	^ ShipStatus
+		for: aShip
+		position: aShip position
+		laps: (self lapTrackerFor: aShip) lapCount
+		penalized: (self isPenalized: aShip)
+]
+
 { #category : 'validation' }
 Game >> validateBoard: aBoard [
     aBoard isValid ifFalse: [ self error: 'Board is invalid' ].
