@@ -100,11 +100,11 @@ Board >> cells [
 ]
 
 { #category : 'initialize' }
-Board >> circularPositionFrom: current steps: steps for: aSpaceship [
+Board >> circularPositionFrom: current steps: steps for: aLappedSpaceship [
 	| newPosition |
 	newPosition := (current + steps) \\ cellCount.
 
-	(newPosition <= current) ifTrue: [ aSpaceship incrementLap ].
+	(newPosition <= current) ifTrue: [ aLappedSpaceship addLap ].
 
 	^ newPosition
 ]

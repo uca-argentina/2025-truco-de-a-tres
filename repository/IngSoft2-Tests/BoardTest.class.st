@@ -190,10 +190,10 @@ BoardTest >> testLapIncrementsWhenPassingLastCell [
 	ship := Spaceship withName: 'Lucas'.
 	ship moveTo: 8.
 
-	newPosition := board circularPositionFrom: ship position steps: 3 for: ship.
+	newPosition := board circularPositionFrom: ship position steps: 3 for: (LappedShip for: ship) .
 
 	self assert: newPosition equals: 1.
-	self assert: ship lap equals: 1.
+	self assert: (LappedShip for: ship) lapCount equals: 0.
 
 ]
 
