@@ -41,7 +41,7 @@ Game class >> startWithShips: someShips board: aBoard dice: someDices laps: aNum
 { #category : 'as yet unclassified' }
 Game >> addLapTo: aShip [
 
-	(self findLapFor: aShip) addLap
+	(self lapTrackerFor: aShip) addLap
 ]
 
 { #category : 'process actions' }
@@ -69,12 +69,6 @@ Game >> currentTurnIndex [
 	^ currentTurnIndex 
 ]
 
-{ #category : 'as yet unclassified' }
-Game >> findLapFor: aShip [
-
-	^ lappedShips detect: [ :lap | lap ship = aShip ]
-]
-
 { #category : 'testing' }
 Game >> findPenaltyFor: aShip [
     ^ penalizedShips detect: [ :penalty | penalty isFor: aShip ] ifNone: [ PenalizedShip noPenaltyFor: aShip ]
@@ -85,7 +79,7 @@ Game >> findPenaltyFor: aShip [
 
 { #category : 'as yet unclassified' }
 Game >> hasWonByLaps: aShip [
-	^ (self findLapFor: aShip) hasWonWithTotalLaps: totalLaps
+	^ (self lapTrackerFor: aShip) hasWonWithTotalLaps: totalLaps
 ]
 
 { #category : 'initialization' }
@@ -138,6 +132,12 @@ Game >> isPenalized: aShip [
 
 
 
+]
+
+{ #category : 'as yet unclassified' }
+Game >> lapTrackerFor: aShip [
+
+	^ lappedShips detect: [ :lap | lap ship = aShip ]
 ]
 
 { #category : 'process actions' }
@@ -205,7 +205,7 @@ Game >> registerLapIfNeededFor: aShip from: oldPosition to: newPosition [
 	cellCount := board cellCount.
 
 	oldPosition > newPosition ifTrue: [ ^ self ].
-	lap := self findLapFor: aShip.
+	lap := self lapTrackerFor: aShip.
 	lap addLap
 ]
 

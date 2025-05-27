@@ -362,7 +362,7 @@ GameTest >> testWhenShipWinsByCompletingRequiredLapsThenEndsGame [
 	realShip1 := game spaceShips first.
 
 	game playUntilFinish.
-	self assert: (game findLapFor: realShip1) lapCount equals: 3.
+	self assert: (game lapTrackerFor: realShip1) lapCount equals: 3.
 	self assert: (game hasWonByLaps: realShip1)
 ]
 
@@ -414,7 +414,7 @@ GameTest >> testWhenWinnerSpaceShipIsCorrectWhenGameEnds [
 	dice1 := Die withSides: 100.
 	dicesGame := OrderedCollection with: dice1.
 
-	boardGame := Board withCells: 10 andWormholes: #().
+	boardGame := Board withCells: 1 andWormholes: #().
 
 
 	game := Game
