@@ -85,21 +85,28 @@ BoardTest >> testBoardInitializesCorrectNumberOfEffects [
 
 { #category : 'tests - instance' }
 BoardTest >> testBoardPreventsEntryToHyperGravityCellWithLowRoll [
-	| board ship newPosition |
+	| board ship effect newPosition |
+
 	board := Board withCells: 5 andWormholes: #().
-	
+
 	ship := Spaceship withName: 'Lucas'.
 	ship moveTo: 2.
 
-	board cells at: 3 put: HyperGravityEffect new.
+	effect := HyperGravityEffect new.
+	effect requiredRoll: 4.
+	board cells at: 4 put: effect.
 
-	self assert: ((board cells at: 3) requiredRoll) equals: 4.
+	self assert: effect requiredRoll equals: 4.
 
 	newPosition := board newPositionFrom: ship position steps: 1 for: (LappedShip for: ship) withRoll: 2.
-
 	self assert: newPosition equals: 2.
-	self assert: ship lap equals: 0.
 
+	ship moveTo: newPosition.
+	self assert: ship position equals: 2.
+
+	board applyEffectTo: ship.
+
+	self assert: ship lap equals: 0.
 ]
 
 { #category : 'tests - instance' }
@@ -134,26 +141,27 @@ BoardTest >> testHyperGravityEffectHasCorrectDefaultRoll [
 
 { #category : 'tests - instance' }
 BoardTest >> testHyperJumpEffectJumpsShipForward [
-	| board ship newPosition effect |
+	| board ship effect newPosition |
 
 	board := Board withCells: 10 andWormholes: #().
-
-	HyperJumpEffect resetJumpIndex.
+	self assert: board cells size equals: 10.
 
 	effect := HyperJumpEffect new.
-	board cells at: 6 put: effect.
-
-	self assert: (board effectAt: 5) class equals: HyperJumpEffect.
+	board cells at: 7 put: effect.
 
 	ship := Spaceship withName: 'Apollo'.
 	ship moveTo: 5.
+	self assert: ship position equals: 5.
 
-	newPosition := board newPositionFrom: ship position steps: 1 for: ship withRoll: 4.
+	newPosition := board newPositionFrom: ship position steps: 1 for: ship withRoll: 1.
+	self assert: newPosition equals: 6.
+
 	ship moveTo: newPosition.
+	self assert: ship position equals: 6.
 
 	board applyEffectTo: ship.
 
-	self assert: ship position equals: 6.
+	self assert: ship position equals: 9.
 ]
 
 { #category : 'tests - instance' }
