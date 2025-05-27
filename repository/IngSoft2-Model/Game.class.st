@@ -54,11 +54,17 @@ Game >> currentTurnIndex [
 	^ currentTurnIndex 
 ]
 
+{ #category : 'accessing' }
+Game >> dice [
+    ^ dice
+
+]
+
 { #category : 'initialization' }
 Game >> initializeWithShips: someShips board: aBoard dice: someDices [
 
 	self validateMinimumSpaceShips: someShips.
-	self validateMinimumDice: someDices.
+	"self validateMinimumDice: someDices."
 	self validateBoard: aBoard.
 
 	spaceShips := someShips.
@@ -112,7 +118,8 @@ Game >> playTurn [
 		self setWantsToPassTurnFor: ship to: false.
 		ship restoreFuel.
 		^ self advanceTurn ].
-	steps := dice sum: [ :eachDie | eachDie roll ].
+	"steps := dice sum: [ :eachDie | eachDie roll ]."
+	steps := dice normalRoll.
 	newPosition := board newPositionFrom: ship position steps: steps.
 	ship moveTo: newPosition.
 

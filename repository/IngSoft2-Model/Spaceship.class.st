@@ -6,6 +6,9 @@ Class {
 		'position',
 		'playerName',
 		'penaltyTurns',
+		'maxFuel',
+		'fuel',
+
 		'lap'
 	],
 	#category : 'IngSoft2-Model',
@@ -18,9 +21,9 @@ Spaceship class >> new [
 ]
 
 { #category : 'initialize' }
-Spaceship class >> withName: aName [
+Spaceship class >> withName: aName and: aMaxRoll [
 
-	^ super new initializeWith: aName
+	^ super new initializeWith: aName and: aMaxRoll 
 ]
 
 { #category : 'initialize' }
@@ -30,20 +33,22 @@ Spaceship >> hasReachedGoalOn: aBoard [
 ]
 
 { #category : 'initialize' }
+
 Spaceship >> incrementLap [
 	lap := lap + 1.
-
 ]
 
 { #category : 'initialize' }
-Spaceship >> initializeWith: aName [
+
+Spaceship >> initializeWith: aName and: aMaxRoll [
 
 	aName isEmpty ifTrue: [ self error: 'Name cannot be empty' ].
 
 	playerName := aName.
 	position := 0.
+  maxFuel := aMaxRoll * 2.
+	fuel := maxFuel.
 	lap := 0.
-
 ]
 
 { #category : 'initialize' }
