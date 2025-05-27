@@ -156,7 +156,7 @@ Game >> penalize: aShip forTurns: turns [
 { #category : 'process actions' }
 Game >> playTurn [
 
-	| ship steps newPosition previousPosition|
+	| ship steps newPosition previousPosition |
 	self isGameOver ifTrue: [ self error: 'Game is already over' ].
 
 	ship := self currentShip.
@@ -170,13 +170,16 @@ Game >> playTurn [
 		ship restoreFuel.
 		^ self advanceTurn ].
 	steps := dice sum: [ :eachDie | eachDie roll ].
-	
+
 	previousPosition := ship position.
 	newPosition := board newPositionFrom: ship position steps: steps.
 	ship moveTo: newPosition.
 
-	self registerLapIfNeededFor: ship from: previousPosition to: newPosition.
-	
+	self
+		registerLapIfNeededFor: ship
+		from: previousPosition
+		withSteps: steps.
+
 	(ship hasReachedGoalOn: board) ifTrue: [ winner := ship ].
 
 	self advanceTurn
@@ -205,6 +208,17 @@ Game >> registerLapIfNeededFor: aShip from: oldPosition to: newPosition [
 	cellCount := board cellCount.
 
 	oldPosition > newPosition ifTrue: [ ^ self ].
+	lap := self lapTrackerFor: aShip.
+	lap addLap
+]
+
+{ #category : 'as yet unclassified' }
+Game >> registerLapIfNeededFor: aShip from: oldPosition withSteps: someSteps [
+
+	| cellCount lap |
+	cellCount := board cellCount.
+
+	(oldPosition + someSteps) < cellCount ifTrue: [ ^ self ].
 	lap := self lapTrackerFor: aShip.
 	lap addLap
 ]
