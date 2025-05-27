@@ -67,12 +67,6 @@ Board >> initializeWithCells: aCount andWormholes: aCollection [
 ]
 
 { #category : 'initialize' }
-Board >> initializeWithCells: aCount wormholes: aDictionary [
-	cellCount := aCount.
-   wormholes := aDictionary.  "NO USAR MAS, AHORA USAMOS initializeWithCells: aCount and: aWormhole"
-]
-
-{ #category : 'initialize' }
 Board >> isBoardValid [
     [ self assertValidState. true ] on: Error do: [ false ].
 ]
