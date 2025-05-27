@@ -64,7 +64,7 @@ Game >> dice [
 Game >> initializeWithShips: someShips board: aBoard dice: someDices [
 
 	self validateMinimumSpaceShips: someShips.
-	self validateMinimumDice: someDices.
+	"self validateMinimumDice: someDices."
 	self validateBoard: aBoard.
 
 	spaceShips := someShips.
@@ -88,16 +88,6 @@ Game >> isGameOver [
 Game >> isPenalized: aShip [
     ^ (penaltyTurns at: aShip) > 0
 
-]
-
-{ #category : 'process actions' }
-Game >> maxRoll: someDice [
-
-	| max |
-	max := 0.
-	someDice do: [ :sides | max := max + sides ].
-
-	^ max
 ]
 
 { #category : 'process actions' }
@@ -128,7 +118,8 @@ Game >> playTurn [
 		self setWantsToPassTurnFor: ship to: false.
 		ship restoreFuel.
 		^ self advanceTurn ].
-	steps := dice sum: [ :eachDie | eachDie roll ].
+	"steps := dice sum: [ :eachDie | eachDie roll ]."
+	steps := dice normalRoll.
 	newPosition := board newPositionFrom: ship position steps: steps.
 	ship moveTo: newPosition.
 
