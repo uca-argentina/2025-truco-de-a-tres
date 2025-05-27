@@ -7,7 +7,8 @@ Class {
 		'playerName',
 		'penaltyTurns',
 		'maxFuel',
-		'fuel'
+		'fuel',
+		'lap'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -39,6 +40,8 @@ Spaceship >> initializeWith: aName and: aMaxRoll [
 	position := 0.
 	maxFuel := aMaxRoll * 2.
 	fuel := maxFuel.
+	lap := 0.
+	
 
 ]
 
