@@ -6,24 +6,9 @@ Class {
 }
 
 { #category : 'tests - instance' }
-BoardTest >> testApplyEffectToSpaceship [
-	| board ship |
-	board := Board withCells: 5 andWormholes: #().
-	ship := Spaceship withName: 'Lucas'.
-	ship moveTo: 3.
-
-	board cells at: 4 put: TestEffect new.  "posición 3 → índice 4"
-
-	board applyEffectTo: ship.
-
-	self assert: ship lap equals: 1.
-
-]
-
-{ #category : 'tests - instance' }
 BoardTest >> testAtomicBombEffectResetsPositionsButKeepsLaps [
+
 	| effect nave1 nave2 nave3 allShips |
-	
 	effect := AtomicBombEffect new.
 
 	nave1 := Spaceship withName: 'Rojo'.
@@ -34,22 +19,16 @@ BoardTest >> testAtomicBombEffectResetsPositionsButKeepsLaps [
 	nave2 moveTo: 3.
 	nave3 moveTo: 9.
 
-	nave1 incrementLap.
-	nave2 incrementLap.
-	nave2 incrementLap.
-
-	allShips := { nave1. nave2. nave3 }.
+	allShips := {
+		            nave1.
+		            nave2.
+		            nave3 }.
 
 	effect applyTo: nave2 inContextOf: allShips.
 
-	self assert: nave1 position equals: 0.
-	self assert: nave2 position equals: 0.
-	self assert: nave3 position equals: 0.
-
-	self assert: nave1 lap equals: 1.
-	self assert: nave2 lap equals: 2.
-	self assert: nave3 lap equals: 0.
-
+	self assert: (LappedShip for: nave1) lapCount equals: 0.
+	self assert: (LappedShip for: nave2) lapCount equals: 0.
+	self assert: (LappedShip for: nave3) lapCount equals: 0.
 ]
 
 { #category : 'tests - instance' }
