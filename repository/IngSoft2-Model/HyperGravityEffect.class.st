@@ -23,7 +23,7 @@ HyperGravityEffect >> applyTo: aSpaceship [
 { #category : 'initialization' }
 HyperGravityEffect >> initialize [
 	super initialize.
-	requiredRoll := 4. "Podés ajustarlo o parametrizarlo después"
+	requiredRoll := 4.
 ]
 
 { #category : 'initialization' }

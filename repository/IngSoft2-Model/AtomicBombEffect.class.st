@@ -7,7 +7,6 @@ Class {
 
 { #category : 'operations' }
 AtomicBombEffect >> applyTo: aSpaceship [
-	"Este efecto requiere contexto, por lo que este método no hace nada directo"
 	^ self
 
 ]
