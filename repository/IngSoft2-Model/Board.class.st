@@ -169,22 +169,22 @@ Board >> newPositionFrom: aPosition steps: steps [
 ]
 
 { #category : 'initialize' }
-Board >> newPositionFrom: aPosition steps: steps for: spaceship [
+Board >> newPositionFrom: aPosition steps: steps for: aLappedSpaceship [
     | position |
     position := (aPosition + steps) \\ cellCount.
     
-    (position <= aPosition) ifTrue: [ spaceship incrementLap ].
+    (position <= aPosition) ifTrue: [  aLappedSpaceship addLap ].
     
     ^ self applyWormholeIfPresentAt: position
 
 ]
 
 { #category : 'initialize' }
-Board >> newPositionFrom: aPosition steps: steps for: aSpaceship withRoll: roll [
+Board >> newPositionFrom: aPosition steps: steps for: aLappedSpaceship withRoll: roll [
 	| position effect |
 	position := (aPosition + steps) \\ cellCount.
 
-	(position <= aPosition) ifTrue: [ aSpaceship incrementLap ].
+	(position <= aPosition) ifTrue: [  aLappedSpaceship addLap ].
 
 	effect := cells at: position + 1.
 	(effect allowsEntryWithRoll: roll)

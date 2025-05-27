@@ -95,7 +95,7 @@ BoardTest >> testBoardPreventsEntryToHyperGravityCellWithLowRoll [
 
 	self assert: ((board cells at: 3) requiredRoll) equals: 4.
 
-	newPosition := board newPositionFrom: ship position steps: 1 for: ship withRoll: 2.
+	newPosition := board newPositionFrom: ship position steps: 1 for: (LappedShip for: ship) withRoll: 2.
 
 	self assert: newPosition equals: 2.  "No avanzó"
 	self assert: ship lap equals: 0.  "No contó vuelta"
