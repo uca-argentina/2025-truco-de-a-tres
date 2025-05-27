@@ -4,9 +4,7 @@ Class {
 	#instVars : [
 		'name',
 		'position',
-		'playerName',
-		'penaltyTurns',
-		'lap'
+		'playerName'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -24,14 +22,17 @@ Spaceship class >> withName: aName [
 ]
 
 { #category : 'initialize' }
-Spaceship >> hasReachedGoalOn: aBoard [
-    ^ aBoard isGoalReachedAt: position
+Spaceship >> advanceWith: aDie on: aBoard [
+    | steps newPosition |
+    steps := aDie roll.
+    newPosition := aBoard newPositionFrom: position steps: steps.
+    self moveTo: newPosition.
 
 ]
 
 { #category : 'initialize' }
-Spaceship >> incrementLap [
-	lap := lap + 1.
+Spaceship >> hasReachedGoalOn: aBoard [
+    ^ aBoard isGoalReachedAt: position
 
 ]
 
@@ -41,26 +42,7 @@ Spaceship >> initializeWith: aName [
 	aName isEmpty ifTrue: [ self error: 'Name cannot be empty' ].
 
 	playerName := aName.
-	position := 0.
-	lap := 0.
-
-]
-
-{ #category : 'initialize' }
-Spaceship >> lap [
-	^ lap
-
-]
-
-{ #category : 'initialize' }
-Spaceship >> moveBack: steps [
-    position := (position - steps) max: 0.
-
-]
-
-{ #category : 'initialize' }
-Spaceship >> moveForward: steps [
-	position := position + steps.
+	position := 0
 
 ]
 
@@ -78,8 +60,4 @@ Spaceship >> playerName [
 { #category : 'initialize' }
 Spaceship >> position [
     ^ position
-]
-
-{ #category : 'as yet unclassified' }
-Spaceship >> restoreFuel [
 ]
