@@ -46,23 +46,6 @@ BoardTest >> testBlackHoleEffectMovesSpaceshipBackwards [
 ]
 
 { #category : 'tests - instance' }
-BoardTest >> testBoardAllowsEntryToHyperGravityCellWithSufficientRoll [
-	| board ship effect newPosition |
-	board := Board withCells: 5 andWormholes: #().
-	ship := Spaceship withName: 'Lucas'.
-	ship moveTo: 2.
-
-	effect := HyperGravityEffect new.
-	effect requiredRoll: 4.
-	board cells at: 3 put: effect.
-
-	newPosition := board newPositionFrom: ship position steps: 1 for: ship withRoll: 5.
-
-	self assert: newPosition equals: 3.
-
-]
-
-{ #category : 'tests - instance' }
 BoardTest >> testBoardCellsContainRecognizedEffects [
 	| board validClasses |
 	validClasses := { BlackHoleEffect. HyperGravityEffect }.
@@ -129,6 +112,27 @@ BoardTest >> testCannotEnterHyperGravityCellWithLowRoll [
 
 	self deny: (effect allowsEntryWithRoll: 2).
 
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testHyperGravityAllowsEntryWhenRollIsSufficient [
+	| board ship effect newPosition |
+
+	board := Board withCells: 5 andWormholes: #().
+	ship := Spaceship withName: 'Lucas'.
+	ship moveTo: 2.
+
+	effect := HyperGravityEffect new.
+	effect requiredRoll: 4.
+	board cells at: 4 put: effect.
+
+	newPosition := board newPositionFrom: ship position steps: 1 for: (LappedShip for: ship) withRoll: 5.
+	self assert: newPosition equals: 3.
+
+	ship moveTo: newPosition.
+	board applyEffectTo: ship.
+
+	self assert: ship position equals: 3.
 ]
 
 { #category : 'tests - instance' }

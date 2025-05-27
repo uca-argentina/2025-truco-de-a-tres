@@ -1,6 +1,6 @@
 Class {
 	#name : 'HyperGravityEffect',
-	#superclass : 'Effect',
+	#superclass : 'EffectDecorator',
 	#instVars : [
 		'requiredRoll'
 	],

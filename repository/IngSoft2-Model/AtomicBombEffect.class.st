@@ -1,6 +1,6 @@
 Class {
 	#name : 'AtomicBombEffect',
-	#superclass : 'Effect',
+	#superclass : 'EffectDecorator',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
