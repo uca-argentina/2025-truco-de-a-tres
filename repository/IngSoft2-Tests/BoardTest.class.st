@@ -26,36 +26,36 @@ BoardTest >> testApplyEffectToSpaceship [
 
 { #category : 'tests - instance' }
 BoardTest >> testAtomicBombEffectResetsPositionsButKeepsLaps [
-	| dice1 dicesGame effect nave1 nave2 nave3 allShips |
+	| dice1 dicesGame effect ship1 ship2 ship3 allShips |
 	
 	dice1 := Die withSides: 6.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
 	
 	effect := AtomicBombEffect new.
 
-	nave1 := Spaceship withName: 'Rojo' and: dicesGame maxRoll.
-	nave2 := Spaceship withName: 'Azul' and: dicesGame maxRoll.
-	nave3 := Spaceship withName: 'Verde' and: dicesGame maxRoll.
+	ship1 := Spaceship withName: 'Rojo' and: dicesGame maxRoll.
+	ship2 := Spaceship withName: 'Azul' and: dicesGame maxRoll.
+	ship3 := Spaceship withName: 'Verde' and: dicesGame maxRoll.
 
-	nave1 moveTo: 6.
-	nave2 moveTo: 3.
-	nave3 moveTo: 9.
+	ship1 moveTo: 6.
+	ship2 moveTo: 3.
+	ship3 moveTo: 9.
 
-	nave1 incrementLap.
-	nave2 incrementLap.
-	nave2 incrementLap.
+	ship1 incrementLap.
+	ship2 incrementLap.
+	ship2 incrementLap.
 
-	allShips := { nave1. nave2. nave3 }.
+	allShips := { ship1. ship2. ship3 }.
 
-	effect applyTo: nave2 inContextOf: allShips.
+	effect applyTo: ship2 inContextOf: allShips.
 
-	self assert: nave1 position equals: 0.
-	self assert: nave2 position equals: 0.
-	self assert: nave3 position equals: 0.
+	self assert: ship1 position equals: 0.
+	self assert: ship2 position equals: 0.
+	self assert: ship3 position equals: 0.
 
-	self assert: nave1 lap equals: 1.
-	self assert: nave2 lap equals: 2.
-	self assert: nave3 lap equals: 0.
+	self assert: ship1 lap equals: 1.
+	self assert: ship2 lap equals: 2.
+	self assert: ship3 lap equals: 0.
 
 ]
 
