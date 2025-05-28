@@ -1,6 +1,6 @@
 Class {
 	#name : 'HyperJumpEffect',
-	#superclass : 'Effect',
+	#superclass : 'EffectDecorator',
 	#classVars : [
 		'CurrentIndex',
 		'JumpValues'
