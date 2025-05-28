@@ -20,6 +20,13 @@ HyperGravityEffect >> applyTo: aSpaceship [
 
 ]
 
+{ #category : 'operations' }
+HyperGravityEffect >> applyTo: aSpaceship inGame: aGame [
+	"HyperGravityEffect only restricts entry; it does nothing on apply"
+	^ self
+
+]
+
 { #category : 'initialization' }
 HyperGravityEffect >> initialize [
 	super initialize.

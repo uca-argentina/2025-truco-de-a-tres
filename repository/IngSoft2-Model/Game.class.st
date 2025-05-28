@@ -37,6 +37,11 @@ Game >> advanceTurn [
 	turn := turn + 1
 ]
 
+{ #category : 'process actions' }
+Game >> applyEffect: anEffect toShip: aSpaceship [
+    anEffect applyTo: aSpaceship inGame: self
+]
+
 { #category : 'accessing' }
 Game >> currentShip [
     ^ spaceShips at: currentTurnIndex
@@ -105,7 +110,7 @@ Game >> penalize: aShip forTurns: turns [
 { #category : 'process actions' }
 Game >> playTurn [
 
-	| ship steps newPosition |
+	| ship steps newPosition effect |
 	self isGameOver ifTrue: [ self error: 'Game is already over' ].
 
 	ship := self currentShip.
@@ -118,18 +123,21 @@ Game >> playTurn [
 		self setWantsToPassTurnFor: ship to: false.
 		ship restoreFuel.
 		^ self advanceTurn ].
-	
+
 	steps := dice normalRoll.
-	
+
 	(ship hasFuelFor: steps) ifFalse: [
 		ship resetPosition.
 		self penalize: ship forTurns: 2.
 		ship restoreFuel.
 		^ self advanceTurn ]. "Validacion suficiente combustible"
-	
+
 	newPosition := board newPositionFrom: ship position steps: steps.
+	ship consumeFuel: steps.
 	ship moveTo: newPosition.
 
+	effect := board effectAt: newPosition.
+	effect ifNotNil: [ self applyEffect: effect toShip: ship ].
 	(ship hasReachedGoalOn: board) ifTrue: [ winner := ship ].
 
 	self advanceTurn

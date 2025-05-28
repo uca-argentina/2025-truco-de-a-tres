@@ -14,3 +14,8 @@ Effect >> allowsEntryWithRoll: aRoll [
 Effect >> applyTo: aSpaceship [
     self subclassResponsibility.
 ]
+
+{ #category : 'operations' }
+Effect >> applyTo: aSpaceship inGame: aGame [
+    self subclassResponsibility.
+]
