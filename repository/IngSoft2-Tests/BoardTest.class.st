@@ -8,12 +8,16 @@ Class {
 { #category : 'tests - instance' }
 BoardTest >> testAtomicBombEffectResetsPositionsButKeepsLaps [
 
-	| effect ship1 ship2 ship3 allShips |
+	| dice1 dicesGame effect ship1 ship2 ship3 allShips |
+	
+	dice1 := Die withSides: 6.
+	dicesGame := DiceCup with: (OrderedCollection with: dice1).
+
 	effect := AtomicBombEffect new.
 
-	ship1 := Spaceship withName: 'Red'.
-	ship2 := Spaceship withName: 'Blue'.
-	ship3 := Spaceship withName: 'Green'.
+	ship1 := Spaceship withName: 'Red' and: dicesGame maxRoll.
+	ship2 := Spaceship withName: 'Blue' and: dicesGame maxRoll.
+	ship3 := Spaceship withName: 'Green' and: dicesGame maxRoll.
 
 	ship1 moveTo: 6.
 	ship2 moveTo: 3.
@@ -68,28 +72,31 @@ BoardTest >> testBoardInitializesCorrectNumberOfEffects [
 
 { #category : 'tests - instance' }
 BoardTest >> testBoardPreventsEntryToHyperGravityCellWithLowRoll [
-	| board ship effect newPosition |
-
+	| dice1 dicesGame board ship lappedShip effect newPosition |
+	dice1 := Die withSides: 6.
+	dicesGame := DiceCup with: (OrderedCollection with: dice1).
 	board := Board withCells: 5 andWormholes: #().
-
-	ship := Spaceship withName: 'Lucas'.
+	
+	ship := Spaceship withName: 'Lucas' and: dicesGame maxRoll.
 	ship moveTo: 2.
+	lappedShip := LappedShip for: ship.  "Usar LappedShip para vueltas"
 
 	effect := HyperGravityEffect new.
 	effect requiredRoll: 4.
-	board cells at: 4 put: effect.
+	board cells at: 4 put: effect. "posición 3 → índice 4 (1-based)"
 
-	self assert: effect requiredRoll equals: 4.
+	newPosition := board 
+		newPositionFrom: ship position 
+		steps: 1 
+		for: lappedShip  "Pasar LappedShip para tracking de vueltas"
+		withRoll: 2.
 
-	newPosition := board newPositionFrom: ship position steps: 1 for: (LappedShip for: ship) withRoll: 2.
+	"Verificar que no avanzó"
 	self assert: newPosition equals: 2.
-
-	ship moveTo: newPosition.
 	self assert: ship position equals: 2.
-
-	board applyEffectTo: ship.
-
-	self assert: ship lap equals: 0.
+	
+	"Verificar que no se incrementó vuelta"
+	self assert: lappedShip lapCount equals: 0.
 ]
 
 { #category : 'tests - instance' }
@@ -145,27 +152,41 @@ BoardTest >> testHyperGravityEffectHasCorrectDefaultRoll [
 
 { #category : 'tests - instance' }
 BoardTest >> testHyperJumpEffectJumpsShipForward [
-	| board ship effect newPosition |
-
+	| dice1 dicesGame board ship lappedShip effect newPosition game |
+	dice1 := Die withSides: 6.
+	dicesGame := DiceCup with: (OrderedCollection with: dice1).
 	board := Board withCells: 10 andWormholes: #().
-	self assert: board cells size equals: 10.
-
+	
+	"Configurar efecto HyperJump en posición correcta (índice 7 = posición 6)"
+	HyperJumpEffect resetJumpIndex.
 	effect := HyperJumpEffect new.
-	board cells at: 7 put: effect.
-
-	ship := Spaceship withName: 'Apollo'.
+	board cells at: 7 put: effect.  "Para posición 6 (1-based index)"
+	
+	ship := Spaceship withName: 'Apollo' and: dicesGame maxRoll.
+	ship restoreFuel. "Asegurar combustible suficiente"
+	lappedShip := LappedShip for: ship. "Para tracking de vueltas"
+	
 	ship moveTo: 5.
 	self assert: ship position equals: 5.
-
-	newPosition := board newPositionFrom: ship position steps: 1 for: ship withRoll: 1.
+	
+	"Mover a posición 6 (donde está el efecto)"
+	newPosition := board 
+		newPositionFrom: ship position 
+		steps: 1 
+		for: lappedShip 
+		withRoll: 4.
 	self assert: newPosition equals: 6.
-
+	
 	ship moveTo: newPosition.
 	self assert: ship position equals: 6.
-
-	board applyEffectTo: ship.
-
+	
+	"Crear contexto mínimo del juego para aplicar efecto"
+	game := Game startWithShips: {ship} board: board dice: dicesGame laps: 1.
+	effect applyTo: ship inGame: game.
+	
+	"Verificar salto de 3 posiciones (6 + 3 = 9)"
 	self assert: ship position equals: 9.
+	self assert: ship fuel equals: (dicesGame maxRoll * 2) - 4. "Combustible consumido"
 ]
 
 { #category : 'tests - instance' }
@@ -195,9 +216,11 @@ BoardTest >> testLapDoesNotIncrementWhenStayingWithinBounds [
 
 { #category : 'tests - instance' }
 BoardTest >> testLapIncrementsWhenPassingLastCell [
-	| board ship newPosition |
+	| dice1 dicesGame board ship newPosition |
+	dice1 := Die withSides: 6.
+	dicesGame := DiceCup with: (OrderedCollection with: dice1).
 	board := Board withCells: 10 andWormholes: OrderedCollection new.
-	ship := Spaceship withName: 'Lucas'.
+	ship := Spaceship withName: 'Lucas' and: dicesGame maxRoll.
 	ship moveTo: 8.
 
 	newPosition := board circularPositionFrom: ship position steps: 3 for: (LappedShip for: ship) .
@@ -209,13 +232,16 @@ BoardTest >> testLapIncrementsWhenPassingLastCell [
 
 { #category : 'tests - instance' }
 BoardTest >> testMoonWalkEffectMovesOtherSpaceshipsBackwards [
-	| effect ship1 ship2 ship3 allShips |
+	| dice1 dicesGame effect ship1 ship2 ship3 allShips |
 
+	dice1 := Die withSides: 6.
+	dicesGame := DiceCup with: (OrderedCollection with: dice1).
+	
 	effect := MoonWalkEffect new.
 
-	ship1 := Spaceship withName: 'Player1'.
-	ship2 := Spaceship withName: 'Player2'.
-	ship3 := Spaceship withName: 'Player3'.
+	ship1 := Spaceship withName: 'Player1' and: dicesGame maxRoll.
+	ship2 := Spaceship withName: 'Player2' and: dicesGame maxRoll.
+	ship3 := Spaceship withName: 'Player3' and: dicesGame maxRoll.
 
 	ship1 moveTo: 5.
 	ship2 moveTo: 7.
