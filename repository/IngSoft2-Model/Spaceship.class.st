@@ -32,11 +32,6 @@ Spaceship >> hasReachedGoalOn: aBoard [
 ]
 
 { #category : 'initialize' }
-Spaceship >> incrementLap [
-	lap := lap + 1.
-]
-
-{ #category : 'initialize' }
 Spaceship >> initializeWith: aName and: aMaxRoll [
 
 	aName isEmpty ifTrue: [ self error: 'Name cannot be empty' ].
