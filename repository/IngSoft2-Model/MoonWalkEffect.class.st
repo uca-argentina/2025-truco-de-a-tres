@@ -6,19 +6,6 @@ Class {
 }
 
 { #category : 'operations' }
-MoonWalkEffect >> applyTo: aSpaceship [
-	"By default, this does nothing. Real logic is in applyTo:inContextOf:"
-	^ self
-
-]
-
-{ #category : 'operations' }
-MoonWalkEffect >> applyTo: aSpaceship inContextOf: allSpaceships [
-	allSpaceships do: [:ship |
-		ship = aSpaceship ifFalse: [ ship moveBack: 2 ]].
-]
-
-{ #category : 'operations' }
 MoonWalkEffect >> applyTo: aSpaceship inGame: aGame [
     | stepsBack |
     stepsBack := 2.

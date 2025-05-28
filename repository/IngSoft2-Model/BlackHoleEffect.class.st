@@ -6,12 +6,6 @@ Class {
 }
 
 { #category : 'operations' }
-BlackHoleEffect >> applyTo: aSpaceship [
-    aSpaceship moveBack: 4.
-
-]
-
-{ #category : 'operations' }
 BlackHoleEffect >> applyTo: aSpaceship inGame: aGame [
     | stepsBack requiredFuel |
     stepsBack := 4. "Retroceso fijo de 4 casilleros"

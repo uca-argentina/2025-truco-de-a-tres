@@ -14,13 +14,6 @@ HyperGravityEffect >> allowsEntryWithRoll: aNumber [
 ]
 
 { #category : 'operations' }
-HyperGravityEffect >> applyTo: aSpaceship [
-	"HyperGravityEffect only restricts entry; it does nothing on apply"
-	^ self
-
-]
-
-{ #category : 'operations' }
 HyperGravityEffect >> applyTo: aSpaceship inGame: aGame [
 	"HyperGravityEffect only restricts entry; it does nothing on apply"
 	^ self

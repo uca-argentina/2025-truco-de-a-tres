@@ -34,11 +34,6 @@ HyperJumpEffect >> allowsEntryWithRoll: aRoll [
 ]
 
 { #category : 'operations' }
-HyperJumpEffect >> applyTo: aSpaceship [
-	aSpaceship moveForward: 3.
-]
-
-{ #category : 'operations' }
 HyperJumpEffect >> applyTo: aSpaceship inGame: aGame [
     | jumpValue requiredFuel |
     jumpValue := 3.
