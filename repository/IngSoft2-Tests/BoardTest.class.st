@@ -48,7 +48,7 @@ BoardTest >> testBlackHoleEffectMovesSpaceshipBackwards [
 { #category : 'tests - instance' }
 BoardTest >> testBoardCellsContainRecognizedEffects [
 	| board validClasses |
-	validClasses := { BlackHoleEffect. HyperGravityEffect }.
+	validClasses := { BlackHoleEffect. HyperGravityEffect. NoEffect. HyperJumpEffect }.
 
 	board := Board withCells: 20 andWormholes: OrderedCollection new.
 

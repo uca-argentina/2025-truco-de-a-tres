@@ -195,9 +195,12 @@ Board >> newPositionFrom: aPosition steps: steps for: aLappedSpaceship withRoll:
 
 { #category : 'initialize' }
 Board >> randomEffect [
-	effects := { BlackHoleEffect. HyperGravityEffect }.
-	^ (effects atRandom) new
-
+	| r |
+	r := (1 to: 100) atRandom.
+	^ r <= 40 ifTrue: [ NoEffect new ]
+		ifFalse: [ r <= 60 ifTrue: [ BlackHoleEffect new ]
+		ifFalse: [ r <= 80 ifTrue: [ HyperGravityEffect new ]
+		ifFalse: [ HyperJumpEffect new ] ]].
 ]
 
 { #category : 'initialize' }
