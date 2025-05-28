@@ -72,6 +72,45 @@ GameTest >> testGameReturnsFinalPositionsOfSpaceships [
 	self assert: (positions at: spaceShip2) equals: finalPositionShip2
 ]
 
+{ #category : 'tests' }
+GameTest >> testRankingReturnsShipsOrderedByLapsAndPosition [
+
+	| spaceShip1 spaceShip2 spaceShip3 spaceShipsGame die dicesGame boardGame game ranking realShip1 realShip2 realShip3 |
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
+	spaceShip2 := Spaceship withName: 'Ship Num2'.
+	spaceShip3 := Spaceship withName: 'Ship Num3'.
+	spaceShipsGame := OrderedCollection
+		                  with: spaceShip1
+		                  with: spaceShip2
+		                  with: spaceShip3.
+
+	die := Die withSides: 1.
+	dicesGame := OrderedCollection with: die.
+
+	boardGame := Board withCells: 3 andWormholes: #(  ).
+
+	game := Game
+		        startWithShips: spaceShipsGame
+		        board: boardGame
+		        dice: dicesGame
+		        laps: 2.
+
+	game playUntilFinish.
+
+	ranking := game ranking.
+
+	realShip1 := game spaceShips first.
+	realShip2 := game spaceShips second.
+	realShip3 := game spaceShips third.
+
+	self assert: ranking size equals: 3.
+
+	"Todos juegan una vez y hacen 1 salto en la jugada entonces el orden quedaria igual por igualaciones"
+	self assert: ranking first ship equals: realShip1.
+	self assert: ranking second ship equals: realShip2.
+	self assert: ranking third ship equals: realShip3
+]
+
 { #category : 'accessing' }
 GameTest >> testShipStatusReturnsCorrectValues [
 
@@ -200,7 +239,8 @@ GameTest >> testWhenGameCreatedWithInvalidBoardThenIsInvalid [
 			Game
 				startWithShips: spaceShipsGame
 				board: boardGame
-				dice: dicesGame ]
+				dice: dicesGame 
+				laps: 1]
 		raise: Error
 		withMessageText: 'Board must have a positive number of cells'
 ]
