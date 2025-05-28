@@ -168,13 +168,14 @@ GameTest >> testWhenAShipTriesToPlayOutOfTurnThenError [
 GameTest >> testWhenGameCorrectlyCreatedThenNotNil [
 
 	| spaceShip1 spaceShip2 spaceShipsGame dice1 dice2 dicesGame boardGame game  |
-	spaceShip1 := Spaceship withName: 'Ship Num1'.
-	spaceShip2 := Spaceship withName: 'Ship Num2'.
-	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
 	dice1 := Die withSides: 1.
 	dice2 := Die withSides: 6.
-	dicesGame := OrderedCollection with: dice1 with: dice2.
+	dicesGame := DiceCup with: (OrderedCollection with: dice1 with: dice2).
+	
+	spaceShip1 := Spaceship withName: 'Ship Num1' and: dicesGame maxRoll.
+	spaceShip2 := Spaceship withName: 'Ship Num2' and: dicesGame maxRoll.
+	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
 	boardGame := Board withCells: 10 andWormholes: #().
 
@@ -189,59 +190,73 @@ GameTest >> testWhenGameCorrectlyCreatedThenNotNil [
 
 { #category : 'tests' }
 GameTest >> testWhenGameCreatedWithInvalidBoardThenIsInvalid [
-    | spaceShip1 spaceShip2 spaceShipsGame dice1 dice2 dicesGame |
 
-    spaceShip1 := Spaceship withName: 'Ship Num1'.
-    spaceShip2 := Spaceship withName: 'Ship Num2'.
-    spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dice2 dicesGame |
+	dice1 := Die withSides: 1.
+	dice2 := Die withSides: 6.
+	dicesGame := DiceCup with:
+		             (OrderedCollection with: dice1 with: dice2).
 
-    dice1 := Die withSides: 1.
-    dice2 := Die withSides: 6.
-    dicesGame := OrderedCollection with: dice1 with: dice2.
+	spaceShip1 := Spaceship withName: 'Ship Num1' and: dicesGame maxRoll.
+	spaceShip2 := Spaceship withName: 'Ship Num2' and: dicesGame maxRoll.
+	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
-    self
-        should: [
-            | boardGame |
-            boardGame := Board withCells: 0 andWormholes: #().
-            Game startWithShips: spaceShipsGame board: boardGame dice: dicesGame
-        ]
-        raise: Error
-        withMessageText: 'Board must have a positive number of cells'.
-
+	self
+		should: [
+			| boardGame |
+			boardGame := Board withCells: 0 andWormholes: #(  ).
+			Game
+				startWithShips: spaceShipsGame
+				board: boardGame
+				dice: dicesGame ]
+		raise: Error
+		withMessageText: 'Board must have a positive number of cells'
 ]
 
 { #category : 'tests' }
 GameTest >> testWhenGameCreatedWithoutADieThenIsInvalid [
 
 	| spaceShip1 spaceShip2 spaceShipsGame dicesGame boardGame |
+	"
 	spaceShip1 := Spaceship withName: 'Ship Num1'.
 	spaceShip2 := Spaceship withName: 'Ship Num2'.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
 	dicesGame := OrderedCollection new.
-
-	boardGame := Board withCells: 10 andWormholes: #().
+	"
+	dicesGame := DiceCup with: OrderedCollection.
+	
+	spaceShip1 := Spaceship withName: 'Ship Num1' and: dicesGame maxRoll.
+	spaceShip2 := Spaceship withName: 'Ship Num2' and: dicesGame maxRoll.
+	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
+	
+	boardGame := Board withCells: 10 andWormholes: #(  ).
 
 
 	self
 		should: [
-		Game startWithShips: spaceShipsGame board: boardGame dice: dicesGame ]
+			Game
+				startWithShips: spaceShipsGame
+				board: boardGame
+				dice: dicesGame ]
 		raise: Error
-		withMessageText: 'At least one die is required to initialize the game'
+		withMessageText:
+		'At least one die is required to initialize the game'
 ]
 
 { #category : 'tests' }
 GameTest >> testWhenGameCreatedWithoutTwoOrMoreShipsThenIsInvalid [
 
 	| spaceShip1 spaceShipsGame dice1 dice2 dicesGame boardGame |
-	spaceShip1 := Spaceship withName: 'Ship Num1'.
-	spaceShipsGame := OrderedCollection with: spaceShip1.
-
 	dice1 := Die withSides: 1.
 	dice2 := Die withSides: 6.
-	dicesGame := OrderedCollection with: dice1 with: dice2.
+	dicesGame := DiceCup with:
+		             (OrderedCollection with: dice1 with: dice2).
 
-	boardGame := Board withCells: 10 andWormholes: #().
+	spaceShip1 := Spaceship withName: 'Ship Num1' and: dicesGame maxRoll.
+	spaceShipsGame := OrderedCollection with: spaceShip1.
+
+	boardGame := Board withCells: 10 andWormholes: #(  ).
 
 
 

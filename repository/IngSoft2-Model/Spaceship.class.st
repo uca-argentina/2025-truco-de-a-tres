@@ -8,7 +8,6 @@ Class {
 		'penaltyTurns',
 		'maxFuel',
 		'fuel',
-
 		'lap'
 	],
 	#category : 'IngSoft2-Model',
@@ -33,22 +32,20 @@ Spaceship >> hasReachedGoalOn: aBoard [
 ]
 
 { #category : 'initialize' }
-
 Spaceship >> incrementLap [
 	lap := lap + 1.
 ]
 
 { #category : 'initialize' }
-
 Spaceship >> initializeWith: aName and: aMaxRoll [
 
 	aName isEmpty ifTrue: [ self error: 'Name cannot be empty' ].
 
 	playerName := aName.
 	position := 0.
-  maxFuel := aMaxRoll * 2.
+	maxFuel := aMaxRoll * 2.
 	fuel := maxFuel.
-	lap := 0.
+	lap := 0
 ]
 
 { #category : 'initialize' }
