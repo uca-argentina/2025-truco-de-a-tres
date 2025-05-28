@@ -37,3 +37,19 @@ HyperJumpEffect >> allowsEntryWithRoll: aRoll [
 HyperJumpEffect >> applyTo: aSpaceship [
 	aSpaceship moveForward: 3.
 ]
+
+{ #category : 'operations' }
+HyperJumpEffect >> applyTo: aSpaceship inGame: aGame [
+    | jumpValue requiredFuel |
+    jumpValue := 3.
+    requiredFuel := jumpValue.
+    
+    (aSpaceship hasFuelFor: requiredFuel)
+        ifTrue: [ 
+            aSpaceship moveForward: jumpValue 
+        ]
+        ifFalse: [ 
+            aSpaceship resetPosition.
+            aGame penalize: aSpaceship forTurns: 2.
+        ]
+]

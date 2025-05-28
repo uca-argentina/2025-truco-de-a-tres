@@ -17,3 +17,27 @@ MoonWalkEffect >> applyTo: aSpaceship inContextOf: allSpaceships [
 	allSpaceships do: [:ship |
 		ship = aSpaceship ifFalse: [ ship moveBack: 2 ]].
 ]
+
+{ #category : 'operations' }
+MoonWalkEffect >> applyTo: aSpaceship inGame: aGame [
+    | stepsBack |
+    stepsBack := 2.
+
+    aGame spaceShips do: [:ship |
+        ship == aSpaceship ifFalse: [
+            | requiredFuel |
+            requiredFuel := stepsBack min: ship position.
+
+            (ship hasFuelFor: requiredFuel)
+                ifTrue: [
+                    "Consumo explícito (opcional)"
+                    ship consumeFuel: requiredFuel.
+                    ship moveBack: requiredFuel
+                ]
+                ifFalse: [
+                    ship resetPosition.
+                    aGame penalize: ship forTurns: 2
+                ]
+        ]
+    ]
+]

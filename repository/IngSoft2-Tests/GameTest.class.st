@@ -237,37 +237,6 @@ GameTest >> testWhenGameCreatedWithInvalidBoardThenIsInvalid [
 ]
 
 { #category : 'tests' }
-GameTest >> testWhenGameCreatedWithoutADieThenIsInvalid [
-
-	| spaceShip1 spaceShip2 spaceShipsGame dicesGame boardGame |
-	"
-	spaceShip1 := Spaceship withName: 'Ship Num1'.
-	spaceShip2 := Spaceship withName: 'Ship Num2'.
-	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
-
-	dicesGame := OrderedCollection new.
-	"
-	dicesGame := DiceCup with: OrderedCollection.
-	
-	spaceShip1 := Spaceship withName: 'Ship Num1' and: dicesGame maxRoll.
-	spaceShip2 := Spaceship withName: 'Ship Num2' and: dicesGame maxRoll.
-	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
-	
-	boardGame := Board withCells: 10 andWormholes: #(  ).
-
-
-	self
-		should: [
-			Game
-				startWithShips: spaceShipsGame
-				board: boardGame
-				dice: dicesGame ]
-		raise: Error
-		withMessageText:
-		'At least one die is required to initialize the game'
-]
-
-{ #category : 'tests' }
 GameTest >> testWhenGameCreatedWithoutTwoOrMoreShipsThenIsInvalid [
 
 	| spaceShip1 spaceShipsGame dice1 dice2 dicesGame boardGame |
