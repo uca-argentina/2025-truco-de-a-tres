@@ -38,8 +38,8 @@ Spaceship >> fuel [
 ]
 
 { #category : 'process actions' }
-Spaceship >> hasFuelFor: steps [
-    ^ fuel >= steps
+Spaceship >> hasFuelFor: distance [
+    ^ fuel >= distance
 ]
 
 { #category : 'initialize' }
