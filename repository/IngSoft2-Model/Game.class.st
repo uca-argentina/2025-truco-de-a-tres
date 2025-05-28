@@ -180,7 +180,11 @@ Game >> playTurn [
 		from: previousPosition
 		withSteps: steps.
 
-	(ship hasReachedGoalOn: board) ifTrue: [ winner := ship ].
+(ship hasReachedGoalOn: board) ifTrue: [
+	(self hasWonByLaps: ship) ifTrue: [
+		winner := ship
+	]
+].
 
 	self advanceTurn
 ]
