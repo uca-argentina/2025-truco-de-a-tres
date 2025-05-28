@@ -72,20 +72,22 @@ Game >> currentTurnIndex [
 Game >> findPenaltyFor: aShip [
     ^ penalizedShips detect: [ :penalty | penalty isFor: aShip ] ifNone: [ PenalizedShip noPenaltyFor: aShip ]
 
-
-
 ]
 
 { #category : 'as yet unclassified' }
 Game >> hasWonByLaps: aShip [
 	^ (self lapTrackerFor: aShip) hasWonWithTotalLaps: totalLaps
+
+{ #category : 'accessing' }
+Game >> dice [
+    ^ dice
 ]
 
 { #category : 'initialization' }
 Game >> initializeWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps [
 
 	self validateMinimumSpaceShips: someShips.
-	self validateMinimumDice: someDices.
+	"self validateMinimumDice: someDices."
 	self validateBoard: aBoard.
 
 	spaceShips := someShips.
@@ -149,9 +151,10 @@ Game >> playTurn [
 		self setWantsToPassTurnFor: ship to: false.
 		ship restoreFuel.
 		^ self advanceTurn ].
-	steps := dice sum: [ :eachDie | eachDie roll ].
+    
+	steps := dice normalRoll.
+  previousPosition := ship position.
 
-	previousPosition := ship position.
 	newPosition := board newPositionFrom: ship position steps: steps.
 	ship moveTo: newPosition.
 
