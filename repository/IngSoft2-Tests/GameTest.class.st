@@ -142,6 +142,40 @@ GameTest >> testShipStatusReturnsCorrectValues [
 ]
 
 { #category : 'tests' }
+GameTest >> testShipStatusReturnsCurrentPosition [
+
+	| spaceShip1 spaceShip2  spaceShipsGame die dicesGame boardGame game status1 status2 realShip1 realShip2 |
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
+	spaceShip2 := Spaceship withName: 'Ship Num2'.
+	spaceShipsGame := OrderedCollection
+		                  with: spaceShip1
+		                  with: spaceShip2.
+
+	die := Die withSides: 1.
+	dicesGame := OrderedCollection with: die.
+
+	boardGame := Board withCells: 2 andWormholes: #(  ).
+
+	game := Game
+		        startWithShips: spaceShipsGame
+		        board: boardGame
+		        dice: dicesGame
+		        laps: 1.
+
+	realShip1 := game spaceShips first.
+	realShip2 := game spaceShips second.
+	
+	game playUntilFinish.
+	
+	status1 := game statusFor: realShip1.
+	status2 := game statusFor: realShip2.
+
+	self assert: status1 position equals: 2.
+	self assert: status2 position equals: 1.
+
+]
+
+{ #category : 'tests' }
 GameTest >> testSpaceshipPositionsReturnsCorrectPositions [
 
 	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game positions |
@@ -294,40 +328,6 @@ GameTest >> testWhenGameCreatedWithoutTwoOrMoreShipsThenIsInvalid [
 				laps: 1 ]
 		raise: Error
 		withMessageText: 'Need 2 space ships or more to initialize the game'
-]
-
-{ #category : 'tests' }
-GameTest >> testWhenGameFinishedThenReturnCurrentPosition [
-
-	| spaceShip1 spaceShip2  spaceShipsGame die dicesGame boardGame game status1 status2 realShip1 realShip2 |
-	spaceShip1 := Spaceship withName: 'Ship Num1'.
-	spaceShip2 := Spaceship withName: 'Ship Num2'.
-	spaceShipsGame := OrderedCollection
-		                  with: spaceShip1
-		                  with: spaceShip2.
-
-	die := Die withSides: 1.
-	dicesGame := OrderedCollection with: die.
-
-	boardGame := Board withCells: 2 andWormholes: #(  ).
-
-	game := Game
-		        startWithShips: spaceShipsGame
-		        board: boardGame
-		        dice: dicesGame
-		        laps: 1.
-
-	realShip1 := game spaceShips first.
-	realShip2 := game spaceShips second.
-	
-	game playUntilFinish.
-	
-	status1 := game statusFor: realShip1.
-	status2 := game statusFor: realShip2.
-
-	self assert: status1 position equals: 2.
-	self assert: status2 position equals: 1.
-
 ]
 
 { #category : 'tests' }
