@@ -119,7 +119,8 @@ GameTest >> testSpaceshipPositionsReturnsCorrectPositions [
 	game := Game
 		        startWithShips: spaceShipsGame
 		        board: boardGame
-		        dice: dicesGame.
+		        dice: dicesGame
+		        laps: 1.
 
 	game playTurn.
 
@@ -145,7 +146,8 @@ GameTest >> testWhenAShipTriesToPlayOutOfTurnThenError [
 	game := Game
 		        startWithShips: spaceShipsGame
 		        board: boardGame
-		        dice: dicesGame.
+		        dice: dicesGame
+		        laps: 1.
 
 	game playTurn.
 
@@ -173,7 +175,8 @@ GameTest >> testWhenGameCorrectlyCreatedThenNotNil [
 	game := Game
 		        startWithShips: spaceShipsGame
 		        board: boardGame
-		        dice: dicesGame.
+		        dice: dicesGame
+		        laps: 1.
 
 	self assert: game notNil
 ]
@@ -220,7 +223,8 @@ GameTest >> testWhenGameCreatedWithoutADieThenIsInvalid [
 			Game
 				startWithShips: spaceShipsGame
 				board: boardGame
-				dice: dicesGame ]
+				dice: dicesGame
+				laps: 1 ]
 		raise: Error
 		withMessageText:
 		'At least one die is required to initialize the game'
@@ -246,7 +250,8 @@ GameTest >> testWhenGameCreatedWithoutTwoOrMoreShipsThenIsInvalid [
 			Game
 				startWithShips: spaceShipsGame
 				board: boardGame
-				dice: dicesGame ]
+				dice: dicesGame
+				laps: 1 ]
 		raise: Error
 		withMessageText: 'Need 2 space ships or more to initialize the game'
 ]
@@ -269,7 +274,8 @@ GameTest >> testWhenPlayTurnThenAdvancesShip [
 	game := Game
 		        startWithShips: spaceShipsGame
 		        board: boardGame
-		        dice: dicesGame.
+		        dice: dicesGame
+		        laps: 1.
 
 	originalPosition := spaceShip1 position.
 	game playTurn.
@@ -419,7 +425,8 @@ GameTest >> testWhenSpaceShipEndsTurnThenRotatesPlayerTurn [
 	game := Game
 		        startWithShips: spaceShipsGame
 		        board: boardGame
-		        dice: dicesGame.
+		        dice: dicesGame
+		        laps: 1.
 
 	expectedSequence := OrderedCollection withAll: {
 			                    spaceShip1.

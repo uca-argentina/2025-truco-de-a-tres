@@ -27,12 +27,6 @@ Game class >> new [
 ]
 
 { #category : 'initialize' }
-Game class >> startWithShips: someShips board: aBoard dice: someDices [
-
-	^ super new initializeWithShips: someShips board: aBoard dice: someDices
-]
-
-{ #category : 'initialize' }
 Game class >> startWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps [
 
 	^ super new initializeWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps
@@ -50,6 +44,11 @@ Game >> advanceTurn [
 	currentTurnIndex := currentTurnIndex + 1.
 	currentTurnIndex > spaceShips size ifTrue: [ currentTurnIndex := 1 ].
 	turn := turn + 1
+]
+
+{ #category : 'as yet unclassified' }
+Game >> allStatuses [
+	^ self spaceShips collect: [ :ship | self statusFor: ship ]
 ]
 
 { #category : 'accessing' }
@@ -193,6 +192,20 @@ Game >> playTurn [
 Game >> playUntilFinish [
 
 	[ self isGameOver] whileFalse: [ self playTurn ]
+]
+
+{ #category : 'as yet unclassified' }
+Game >> ranking [
+
+	^ self allStatuses sort: [ :a :b |
+		  a lapCount = b lapCount
+			  ifTrue: [
+				  a position = b position
+					  ifTrue: [
+						  (self spaceShips indexOf: a ship)
+						  < (self spaceShips indexOf: b ship) ]
+					  ifFalse: [ a position > b position ] ]
+			  ifFalse: [ a lapCount > b lapCount ] ]
 ]
 
 { #category : 'testing' }
