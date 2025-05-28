@@ -142,6 +142,42 @@ GameTest >> testShipStatusReturnsCorrectValues [
 ]
 
 { #category : 'tests' }
+GameTest >> testShipStatusReturnsCurrentLap [
+
+	| spaceShip1 spaceShip2  spaceShipsGame die dicesGame boardGame game status1 status2 realShip1 realShip2 |
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
+	spaceShip2 := Spaceship withName: 'Ship Num2'.
+	spaceShipsGame := OrderedCollection
+		                  with: spaceShip1
+		                  with: spaceShip2.
+
+	die := Die withSides: 1.
+	dicesGame := OrderedCollection with: die.
+
+	boardGame := Board withCells: 2 andWormholes: #(  ).
+
+	game := Game
+		        startWithShips: spaceShipsGame
+		        board: boardGame
+		        dice: dicesGame
+		        laps: 2.
+
+	realShip1 := game spaceShips first.
+	realShip2 := game spaceShips second.
+	
+	game playTurn.
+	game playTurn.
+	game playTurn.
+	
+	status1 := game statusFor: realShip1.
+	status2 := game statusFor: realShip2.
+
+	self assert: status1 lapCount equals: 1.
+	self assert: status2 lapCount equals: 0.
+
+]
+
+{ #category : 'tests' }
 GameTest >> testShipStatusReturnsCurrentPosition [
 
 	| spaceShip1 spaceShip2  spaceShipsGame die dicesGame boardGame game status1 status2 realShip1 realShip2 |
