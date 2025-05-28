@@ -69,6 +69,12 @@ Game >> currentTurnIndex [
 	^ currentTurnIndex 
 ]
 
+{ #category : 'accessing' }
+Game >> dice [
+    ^ dice
+
+]
+
 { #category : 'testing' }
 Game >> findPenaltyFor: aShip [
     ^ penalizedShips detect: [ :penalty | penalty isFor: aShip ] ifNone: [ PenalizedShip noPenaltyFor: aShip ]
