@@ -8,27 +8,27 @@ Class {
 { #category : 'tests - instance' }
 BoardTest >> testAtomicBombEffectResetsPositionsButKeepsLaps [
 
-	| effect nave1 nave2 nave3 allShips |
+	| effect ship1 ship2 ship3 allShips |
 	effect := AtomicBombEffect new.
 
-	nave1 := Spaceship withName: 'Rojo'.
-	nave2 := Spaceship withName: 'Azul'.
-	nave3 := Spaceship withName: 'Verde'.
+	ship1 := Spaceship withName: 'Red'.
+	ship2 := Spaceship withName: 'Blue'.
+	ship3 := Spaceship withName: 'Green'.
 
-	nave1 moveTo: 6.
-	nave2 moveTo: 3.
-	nave3 moveTo: 9.
+	ship1 moveTo: 6.
+	ship2 moveTo: 3.
+	ship3 moveTo: 9.
 
 	allShips := {
-		            nave1.
-		            nave2.
-		            nave3 }.
+		ship1.
+		ship2.
+		ship3 }.
 
-	effect applyTo: nave2 inContextOf: allShips.
+	effect applyTo: ship2 inContextOf: allShips.
 
-	self assert: (LappedShip for: nave1) lapCount equals: 0.
-	self assert: (LappedShip for: nave2) lapCount equals: 0.
-	self assert: (LappedShip for: nave3) lapCount equals: 0.
+	self assert: (LappedShip for: ship1) lapCount equals: 0.
+	self assert: (LappedShip for: ship2) lapCount equals: 0.
+	self assert: (LappedShip for: ship3) lapCount equals: 0.
 ]
 
 { #category : 'tests - instance' }
@@ -38,27 +38,10 @@ BoardTest >> testBlackHoleEffectMovesSpaceshipBackwards [
 	ship := Spaceship withName: 'Lucas'.
 	ship moveTo: 3.
 
-	board cells at: 4 put: BlackHoleEffect new.  "posición 3 → índice 4 (1-based)"
+	board cells at: 4 put: BlackHoleEffect new.
 	board applyEffectTo: ship.
 
 	self assert: ship position equals: 0.
-
-]
-
-{ #category : 'tests - instance' }
-BoardTest >> testBoardAllowsEntryToHyperGravityCellWithSufficientRoll [
-	| board ship effect newPosition |
-	board := Board withCells: 5 andWormholes: #().
-	ship := Spaceship withName: 'Lucas'.
-	ship moveTo: 2.
-
-	effect := HyperGravityEffect new.
-	effect requiredRoll: 4.  "Tirada mínima conocida y controlada"
-	board cells at: 3 put: effect.
-
-	newPosition := board newPositionFrom: ship position steps: 1 for: ship withRoll: 5.
-
-	self assert: newPosition equals: 3.  "Sí avanzó"
 
 ]
 
@@ -85,21 +68,28 @@ BoardTest >> testBoardInitializesCorrectNumberOfEffects [
 
 { #category : 'tests - instance' }
 BoardTest >> testBoardPreventsEntryToHyperGravityCellWithLowRoll [
-	| board ship newPosition |
+	| board ship effect newPosition |
+
 	board := Board withCells: 5 andWormholes: #().
-	
+
 	ship := Spaceship withName: 'Lucas'.
 	ship moveTo: 2.
 
-	board cells at: 3 put: HyperGravityEffect new.  "posición 2 → índice 3"
+	effect := HyperGravityEffect new.
+	effect requiredRoll: 4.
+	board cells at: 4 put: effect.
 
-	self assert: ((board cells at: 3) requiredRoll) equals: 4.
+	self assert: effect requiredRoll equals: 4.
 
 	newPosition := board newPositionFrom: ship position steps: 1 for: (LappedShip for: ship) withRoll: 2.
+	self assert: newPosition equals: 2.
 
-	self assert: newPosition equals: 2.  "No avanzó"
-	self assert: ship lap equals: 0.  "No contó vuelta"
+	ship moveTo: newPosition.
+	self assert: ship position equals: 2.
 
+	board applyEffectTo: ship.
+
+	self assert: ship lap equals: 0.
 ]
 
 { #category : 'tests - instance' }
@@ -118,11 +108,31 @@ BoardTest >> testCannotEnterHyperGravityCellWithLowRoll [
 	| board effect |
 	board := Board withCells: 5 andWormholes: #().
 	effect := HyperGravityEffect new.
-	board cells at: 3 put: effect.  "Casillero 2 → índice 3"
+	board cells at: 3 put: effect.
 
-	"Simulamos una tirada menor al requerido (por default, 4)"
 	self deny: (effect allowsEntryWithRoll: 2).
 
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testHyperGravityAllowsEntryWhenRollIsSufficient [
+	| board ship effect newPosition |
+
+	board := Board withCells: 5 andWormholes: #().
+	ship := Spaceship withName: 'Lucas'.
+	ship moveTo: 2.
+
+	effect := HyperGravityEffect new.
+	effect requiredRoll: 4.
+	board cells at: 4 put: effect.
+
+	newPosition := board newPositionFrom: ship position steps: 1 for: (LappedShip for: ship) withRoll: 5.
+	self assert: newPosition equals: 3.
+
+	ship moveTo: newPosition.
+	board applyEffectTo: ship.
+
+	self assert: ship position equals: 3.
 ]
 
 { #category : 'tests - instance' }
@@ -135,27 +145,27 @@ BoardTest >> testHyperGravityEffectHasCorrectDefaultRoll [
 
 { #category : 'tests - instance' }
 BoardTest >> testHyperJumpEffectJumpsShipForward [
-	| board ship newPosition effect |
-	
+	| board ship effect newPosition |
+
 	board := Board withCells: 10 andWormholes: #().
-	
-	HyperJumpEffect resetJumpIndex.  "deja el salto en 3"
+	self assert: board cells size equals: 10.
 
 	effect := HyperJumpEffect new.
-	board cells at: 6 put: effect.  "🔒 esto se hace después de initializeCells"
-
-	self assert: (board effectAt: 5) class equals: HyperJumpEffect.
+	board cells at: 7 put: effect.
 
 	ship := Spaceship withName: 'Apollo'.
 	ship moveTo: 5.
+	self assert: ship position equals: 5.
 
-	newPosition := board newPositionFrom: ship position steps: 1 for: ship withRoll: 4.
+	newPosition := board newPositionFrom: ship position steps: 1 for: ship withRoll: 1.
+	self assert: newPosition equals: 6.
+
 	ship moveTo: newPosition.
-	
-	board applyEffectTo: ship.
-
 	self assert: ship position equals: 6.
 
+	board applyEffectTo: ship.
+
+	self assert: ship position equals: 9.
 ]
 
 { #category : 'tests - instance' }
@@ -199,29 +209,25 @@ BoardTest >> testLapIncrementsWhenPassingLastCell [
 
 { #category : 'tests - instance' }
 BoardTest >> testMoonWalkEffectMovesOtherSpaceshipsBackwards [
-	| effect nave1 nave2 nave3 allShips |
-	
+	| effect ship1 ship2 ship3 allShips |
+
 	effect := MoonWalkEffect new.
 
-	nave1 := Spaceship withName: 'Jugador1'.
-	nave2 := Spaceship withName: 'Jugador2'.
-	nave3 := Spaceship withName: 'Jugador3'.
+	ship1 := Spaceship withName: 'Player1'.
+	ship2 := Spaceship withName: 'Player2'.
+	ship3 := Spaceship withName: 'Player3'.
 
-	nave1 moveTo: 5.
-	nave2 moveTo: 7.
-	nave3 moveTo: 3.
+	ship1 moveTo: 5.
+	ship2 moveTo: 7.
+	ship3 moveTo: 3.
 
-	allShips := { nave1. nave2. nave3 }.
+	allShips := { ship1. ship2. ship3 }.
 
-	effect applyTo: nave2 inContextOf: allShips.
+	effect applyTo: ship2 inContextOf: allShips.
 
-	"nave2 fue quien activó el efecto, no debe moverse"
-	self assert: nave2 position equals: 7.
-
-	"las demás naves retroceden 2"
-	self assert: nave1 position equals: 3.
-	self assert: nave3 position equals: 1.
-
+	self assert: ship2 position equals: 7.
+	self assert: ship1 position equals: 3.
+	self assert: ship3 position equals: 1.
 ]
 
 { #category : 'tests - instance' }
