@@ -108,6 +108,29 @@ GameTest >> testMonito [
 ]
 
 { #category : 'tests' }
+GameTest >> testPenaltyTurnSequence [
+
+	| ship1 ship2 spaceShipsGame game |
+	ship1 := Spaceship withName: 'TestShip' and: 3.
+	ship2 := Spaceship withName: 'TestShip' and: 3.
+	spaceShipsGame := OrderedCollection with: ship1 with: ship2.
+	game := Game
+		        startWithShips: spaceShipsGame
+		        board: (Board withCells: 10)
+		        dice: (DiceCup with: { (Die withSides: 6) }).
+
+	ship1 consumeFuel: 6.
+	game playTurn.
+
+
+	[ game isPenalized: ship1 ] whileTrue: [
+		self assert: ship1 position equals: 0.
+		game playTurn ].
+
+	self deny: (game isPenalized: ship1)
+]
+
+{ #category : 'tests' }
 GameTest >> testSpaceshipPositionsReturnsCorrectPositions [
 
 	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game positions |

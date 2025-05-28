@@ -118,8 +118,15 @@ Game >> playTurn [
 		self setWantsToPassTurnFor: ship to: false.
 		ship restoreFuel.
 		^ self advanceTurn ].
-	"steps := dice sum: [ :eachDie | eachDie roll ]."
+	
 	steps := dice normalRoll.
+	
+	(ship hasFuelFor: steps) ifFalse: [
+		ship resetPosition.
+		self penalize: ship forTurns: 2.
+		ship restoreFuel.
+		^ self advanceTurn ]. "Validacion suficiente combustible"
+	
 	newPosition := board newPositionFrom: ship position steps: steps.
 	ship moveTo: newPosition.
 
