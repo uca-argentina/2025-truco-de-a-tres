@@ -77,7 +77,7 @@ Game >> findPenaltyFor: aShip [
 { #category : 'as yet unclassified' }
 Game >> hasWonByLaps: aShip [
 	^ (self lapTrackerFor: aShip) hasWonWithTotalLaps: totalLaps
-
+]
 { #category : 'accessing' }
 Game >> dice [
     ^ dice
