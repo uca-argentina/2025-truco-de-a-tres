@@ -39,7 +39,7 @@ BoardTest >> testAtomicBombEffectResetsPositionsButKeepsLaps [
 BoardTest >> testBlackHoleEffectMovesSpaceshipBackwards [
 	| board ship |
 	board := Board withCells: 5 andWormholes: #().
-	ship := Spaceship withName: 'Lucas'.
+	ship := Spaceship withName: 'Lucas' and: 4.
 	ship moveTo: 3.
 
 	board cells at: 4 put: BlackHoleEffect new.
@@ -126,7 +126,7 @@ BoardTest >> testHyperGravityAllowsEntryWhenRollIsSufficient [
 	| board ship effect newPosition |
 
 	board := Board withCells: 5 andWormholes: #().
-	ship := Spaceship withName: 'Lucas'.
+	ship := Spaceship withName: 'Lucas' and: 4.
 	ship moveTo: 2.
 
 	effect := HyperGravityEffect new.
@@ -182,7 +182,7 @@ BoardTest >> testHyperJumpEffectJumpsShipForward [
 	
 	"Crear contexto mínimo del juego para aplicar efecto"
 	game := Game startWithShips: {ship} board: board dice: dicesGame laps: 1.
-	effect applyTo: ship inGame: game.
+	effect applyTo: ship.
 	
 	"Verificar salto de 3 posiciones (6 + 3 = 9)"
 	self assert: ship position equals: 9.
@@ -204,7 +204,7 @@ BoardTest >> testIsGoalReached [
 BoardTest >> testLapDoesNotIncrementWhenStayingWithinBounds [
 	| board ship newPosition |
 	board := Board withCells: 10 andWormholes: OrderedCollection new.
-	ship := Spaceship withName: 'Lucas'.
+	ship := Spaceship withName: 'Lucas' and: 4.
 	ship moveTo: 3.
 
 	newPosition := board circularPositionFrom: ship position steps: 4 for: ship.
@@ -260,7 +260,7 @@ BoardTest >> testMoonWalkEffectMovesOtherSpaceshipsBackwards [
 BoardTest >> testNewPositionWithWormhole [
 	| board ship |
 	board := Board withCells: 25 andWormholes: (OrderedCollection with: (Wormhole from: 6 to: 20)).
-	ship := Spaceship withName: 'Test'.
+	ship := Spaceship withName: 'Test' and: 4.
 
 	self assert: (board newPositionFrom: 2 steps: 4 for: ship) equals: 20.
 
@@ -270,7 +270,7 @@ BoardTest >> testNewPositionWithWormhole [
 BoardTest >> testNewPositionWithoutWormhole [
 	| board ship |
 	board := Board withCells: 25 andWormholes: #().
-	ship := Spaceship withName: 'Test'.
+	ship := Spaceship withName: 'Test' and: 4.
 
 	self assert: (board newPositionFrom: 2 steps: 2 for: ship) equals: 4.
 
