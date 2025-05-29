@@ -160,7 +160,7 @@ Game >> penalize: aShip forTurns: turns [
 { #category : 'process actions' }
 Game >> playTurn [
 
-	| ship steps newPosition previousPosition|
+	| ship steps newPosition previousPosition |
 	self isGameOver ifTrue: [ self error: 'Game is already over' ].
 
 	ship := self currentShip.
@@ -173,15 +173,19 @@ Game >> playTurn [
 		self setWantsToPassTurnFor: ship to: false.
 		ship restoreFuel.
 		^ self advanceTurn ].
-	steps := dice sum: [ :eachDie | eachDie roll ].
-	
+	steps := dice normalRoll.
+
 	previousPosition := ship position.
 	newPosition := board newPositionFrom: ship position steps: steps.
 	ship moveTo: newPosition.
 
-	self registerLapIfNeededFor: ship from: previousPosition to: newPosition.
-	
-	(ship hasReachedGoalOn: board) ifTrue: [ winner := ship ].
+	self
+		registerLapIfNeededFor: ship
+		from: previousPosition
+		withSteps: steps.
+
+	(ship hasReachedGoalOn: board) ifTrue: [
+		(self hasWonByLaps: ship) ifTrue: [ winner := ship ] ].
 
 	self advanceTurn
 ]
@@ -214,17 +218,6 @@ Game >> reducePenaltyFor: aShip [
 	penalty reduceTurn.
 	penalty hasPenalty ifFalse: [ penalizedShips remove: penalty ].
 	aShip restoreFuel "A implementar Tomi"
-]
-
-{ #category : 'as yet unclassified' }
-Game >> registerLapIfNeededFor: aShip from: oldPosition to: newPosition [
-
-	| cellCount lap |
-	cellCount := board cellCount.
-
-	oldPosition > newPosition ifTrue: [ ^ self ].
-	lap := self lapTrackerFor: aShip.
-	lap addLap
 ]
 
 { #category : 'as yet unclassified' }
