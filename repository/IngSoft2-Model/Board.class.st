@@ -3,7 +3,9 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'cellCount',
-		'wormholes'
+		'wormholes',
+		'cells',
+		'effects'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -15,14 +17,24 @@ Board class >> new [
 ]
 
 { #category : 'initialize' }
-Board class >> withCells: aCount and: aWormhole [
+Board class >> withCells: aCount andWormholes: aCollection [
+    ^ super new initializeWithCells: aCount andWormholes: aCollection.
 
-	^ self new initializeWithCells: aCount wormholes: aWormhole.
 ]
 
 { #category : 'initialize' }
-Board class >> withCells: aCount andWormholes: aCollection [
-    ^ super new initializeWithCells: aCount andWormholes: aCollection.
+Board >> applyEffectTo: aSpaceship [
+	| effect |
+	effect := self effectAt: aSpaceship position.
+	effect ifNotNil: [ effect applyTo: aSpaceship ].
+
+]
+
+{ #category : 'initialize' }
+Board >> applyEffectsTo: aSpaceship [
+    | currentCell |
+    currentCell := cells at: aSpaceship position.
+    currentCell applyEffectTo: aSpaceship.
 
 ]
 
@@ -49,14 +61,45 @@ Board >> assertValidState [
 ]
 
 { #category : 'initialize' }
+Board >> canEnterPosition: aPosition withRoll: roll [
+	| effect |
+	effect := self effectAt: aPosition.
+	^ effect allowsEntryWithRoll: roll.
+
+
+]
+
+{ #category : 'initialize' }
 Board >> cellCount [
     ^ cellCount
 ]
 
 { #category : 'initialize' }
-Board >> initializeWithCells: aCount and: aWormhole [
-	cellCount := aCount.
-   wormholes := aWormhole.
+Board >> cells [
+	^ cells
+
+]
+
+{ #category : 'initialize' }
+Board >> circularPositionFrom: current steps: steps for: aLappedSpaceship [
+	| newPosition |
+	newPosition := (current + steps) \\ cellCount.
+
+	(newPosition <= current) ifTrue: [ aLappedSpaceship addLap ].
+
+	^ newPosition
+]
+
+{ #category : 'initialize' }
+Board >> effectAt: aPosition [
+	^ cells at: aPosition + 1
+
+]
+
+{ #category : 'initialize' }
+Board >> initializeCells [
+	cells := (1 to: cellCount) collect: [:i | self randomEffect ].
+
 ]
 
 { #category : 'initialize' }
@@ -64,6 +107,14 @@ Board >> initializeWithCells: aCount andWormholes: aCollection [
     cellCount := aCount.
     wormholes := aCollection.
     self assertValidState.
+	 self initializeCells.
+]
+
+{ #category : 'initialize' }
+Board >> initializeWithoutEffectsWithCells: aCount wormholes: aCollection [
+	cellCount := aCount.
+	wormholes := aCollection.
+	cells := (1 to: cellCount) collect: [:i | nil ].
 ]
 
 { #category : 'initialize' }
@@ -87,6 +138,33 @@ Board >> newPositionFrom: aPosition steps: steps [
 ]
 
 { #category : 'initialize' }
-Board >> wormholes [
-	^ wormholes
+Board >> newPositionFrom: aPosition steps: steps for: aLappedSpaceship [
+    | position |
+    position := (aPosition + steps) \\ cellCount.
+    
+    (position <= aPosition) ifTrue: [  aLappedSpaceship addLap ].
+    
+    ^ self applyWormholeIfPresentAt: position
+
+]
+
+{ #category : 'initialize' }
+Board >> newPositionFrom: aPosition steps: steps for: aLappedSpaceship withRoll: roll [
+	| position effect |
+	position := (aPosition + steps) \\ cellCount.
+
+	(position <= aPosition) ifTrue: [  aLappedSpaceship addLap ].
+
+	effect := cells at: position + 1.
+	(effect allowsEntryWithRoll: roll)
+		ifTrue: [ ^ position ]
+		ifFalse: [ ^ aPosition ].
+
+]
+
+{ #category : 'initialize' }
+Board >> randomEffect [
+	effects := { BlackHoleEffect. HyperGravityEffect }.
+	^ (effects atRandom) new
+
 ]
