@@ -79,7 +79,7 @@ GameTest >> testGameReturnsFinalPositionsOfSpaceships [
 { #category : 'tests' }
 GameTest >> testRankingReturnsShipsOrderedByLapsAndPosition [
 
-	| spaceShip1 spaceShip2 spaceShip3 spaceShipsGame die dicesGame boardGame game ranking realShip1 realShip2 realShip3 |
+	| spaceShip1 spaceShip2 spaceShip3 spaceShipsGame  dice1  dicesGame boardGame game ranking realShip1 realShip2 realShip3 |
   
   dice1 := Die withSides: 1.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).

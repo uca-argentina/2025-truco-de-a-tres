@@ -109,8 +109,8 @@ Game >> initializeWithShips: someShips board: aBoard dice: someDices [
 Game >> initializeWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps [
 
 	self validateMinimumSpaceShips: someShips.
-	self validateMinimumDice: someDices.
 	self validateBoard: aBoard.
+	DiceCup with: someDices.
 
 	spaceShips := someShips.
 	board := aBoard.
@@ -275,13 +275,6 @@ Game >> validateIsCurrentPlayer: aSpaceship [
 	self currentShip = aSpaceship ifFalse: [
 		self error: 'It is not the turn of this spaceship'
 	].
-]
-
-{ #category : 'validation' }
-Game >> validateMinimumDice: arg1 [
-
-	arg1 ifEmpty: [
-		self error: 'At least one die is required to initialize the game' ]
 ]
 
 { #category : 'validation' }
