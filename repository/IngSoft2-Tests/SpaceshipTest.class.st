@@ -9,7 +9,7 @@ Class {
 SpaceshipTest >> testHasNotReachedGoalWhenBehind [
     | board spaceship |
     board := Board withCells: 10 andWormholes: #().
-    spaceship := Spaceship withName: 'Endeavour'.
+    spaceship := Spaceship withName: 'Endeavour' and: 4.
 
     spaceship moveTo: 9.
 
@@ -21,7 +21,7 @@ SpaceshipTest >> testHasNotReachedGoalWhenBehind [
 SpaceshipTest >> testHasReachedGoalWhenAtGoal [
     | board spaceship |
     board := Board withCells: 10 andWormholes: #().
-    spaceship := Spaceship withName: 'Orion'.
+    spaceship := Spaceship withName: 'Orion' and: 4.
 
     spaceship moveTo: 10.
 
@@ -33,7 +33,7 @@ SpaceshipTest >> testHasReachedGoalWhenAtGoal [
 SpaceshipTest >> testInitializeInPositionZero [
 
 	|player |
-	player := Spaceship withName: 'JohnDoe'.
+	player := Spaceship withName: 'JohnDoe' and: 4.
 	
 	self assert: player position equals: 0. 
 ]
@@ -42,7 +42,7 @@ SpaceshipTest >> testInitializeInPositionZero [
 SpaceshipTest >> testInitializeWithEmptyNameRaisesError [
 	| errorThrown |
 	
-	errorThrown := [ Spaceship withName: '' ] on: Error do: [ :e | e ].
+	errorThrown := [ Spaceship withName: '' and: 4 ] on: Error do: [ :e | e ].
 
 	self assert: errorThrown messageText equals: 'Name cannot be empty'.
 
