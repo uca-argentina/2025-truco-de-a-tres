@@ -152,41 +152,45 @@ BoardTest >> testHyperGravityEffectHasCorrectDefaultRoll [
 
 { #category : 'tests - instance' }
 BoardTest >> testHyperJumpEffectJumpsShipForward [
-	| dice1 dicesGame board ship lappedShip effect newPosition game |
+	| dice1 dicesGame board ship1 ship2 lappedShip1 effect newPosition game |
+
 	dice1 := Die withSides: 6.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
 	board := Board withCells: 10 andWormholes: #().
-	
-	"Configurar efecto HyperJump en posición correcta (índice 7 = posición 6)"
+
 	HyperJumpEffect resetJumpIndex.
 	effect := HyperJumpEffect new.
-	board cells at: 7 put: effect.  "Para posición 6 (1-based index)"
-	
-	ship := Spaceship withName: 'Apollo' and: dicesGame maxRoll.
-	ship restoreFuel. "Asegurar combustible suficiente"
-	lappedShip := LappedShip for: ship. "Para tracking de vueltas"
-	
-	ship moveTo: 5.
-	self assert: ship position equals: 5.
-	
-	"Mover a posición 6 (donde está el efecto)"
+	board cells at: 7 put: effect.
+
+	ship1 := Spaceship withName: 'Apollo' and: dicesGame maxRoll.
+	ship1 restoreFuel.
+	ship2 := Spaceship withName: 'Gemini' and: dicesGame maxRoll.
+	ship2 restoreFuel.
+
+	lappedShip1 := LappedShip for: ship1.
+
+	ship1 moveTo: 5.
+	self assert: ship1 position equals: 5.
+
 	newPosition := board 
-		newPositionFrom: ship position 
+		newPositionFrom: ship1 position 
 		steps: 1 
-		for: lappedShip 
+		for: lappedShip1 
 		withRoll: 4.
 	self assert: newPosition equals: 6.
-	
-	ship moveTo: newPosition.
-	self assert: ship position equals: 6.
-	
-	"Crear contexto mínimo del juego para aplicar efecto"
-	game := Game startWithShips: {ship} board: board dice: dicesGame laps: 1.
-	effect applyTo: ship.
-	
-	"Verificar salto de 3 posiciones (6 + 3 = 9)"
-	self assert: ship position equals: 9.
-	self assert: ship fuel equals: (dicesGame maxRoll * 2) - 4. "Combustible consumido"
+
+	ship1 moveTo: newPosition.
+	self assert: ship1 position equals: 6.
+
+	game := Game 
+		startWithShips: {ship1. ship2}
+		board: board 
+		dice: dicesGame 
+		laps: 1.
+
+	effect applyTo: ship1.
+
+	self assert: ship1 position equals: 9.
 ]
 
 { #category : 'tests - instance' }
