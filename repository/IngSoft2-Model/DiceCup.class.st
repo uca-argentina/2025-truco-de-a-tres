@@ -44,6 +44,6 @@ DiceCup >> normalRoll [
 { #category : 'validation' }
 DiceCup >> validateMinimumDice: someDice [
 
-	someDice ifEmpty: [
+	someDice ifNil: [
 		self error: 'At least one die is required to initialize the game' ]
 ]

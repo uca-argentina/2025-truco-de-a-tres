@@ -8,7 +8,6 @@ Class {
 		'penaltyTurns',
 		'maxFuel',
 		'fuel',
-
 		'lap'
 	],
 	#category : 'IngSoft2-Model',
@@ -31,7 +30,6 @@ Spaceship >> hasReachedGoalOn: aBoard [
     ^ aBoard isGoalReachedAt: position
 
 ]
-
 
 { #category : 'initialize' }
 Spaceship >> initializeWith: aName and: aMaxRoll [
