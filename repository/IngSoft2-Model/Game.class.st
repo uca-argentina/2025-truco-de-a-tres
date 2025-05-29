@@ -32,12 +32,6 @@ Game class >> startWithShips: someShips board: aBoard dice: someDices laps: aNum
 	^ super new initializeWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps
 ]
 
-{ #category : 'as yet unclassified' }
-Game >> addLapTo: aShip [
-
-	(self lapTrackerFor: aShip) addLap
-]
-
 { #category : 'process actions' }
 Game >> advanceTurn [
 
@@ -46,7 +40,7 @@ Game >> advanceTurn [
 	turn := turn + 1
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'process actions' }
 Game >> allStatuses [
 	^ self spaceShips collect: [ :ship | self statusFor: ship ]
 ]
@@ -81,28 +75,9 @@ Game >> findPenaltyFor: aShip [
 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'testing' }
 Game >> hasWonByLaps: aShip [
 	^ (self lapTrackerFor: aShip) hasWonWithTotalLaps: totalLaps
-]
-
-{ #category : 'initialization' }
-Game >> initializeWithShips: someShips board: aBoard dice: someDices [
-"NO VA A QUEDAR EN FUNCIONAMIENTO, ES EL QUE DA TODO EN VERDE PERO VAMOS A UTILIZAR EL OTRO INICIALIZADOR"
-
-	self validateMinimumSpaceShips: someShips.
-	self validateMinimumDice: someDices.
-	self validateBoard: aBoard.
-
-	spaceShips := someShips.
-	board := aBoard.
-	dice := someDices.
-	turn := 1. "Amounts of turns played"
-	currentTurnIndex := 1. "Es el indice del jugador que debe jugar" "Seria el indice de la ordered collection para saber de que nave es el turno. EJ: si currentTurnIndex es 1 entonces es el turno de la primer nave que esta en el orderedCollection"
-	penalizedShips  := OrderedCollection new.
-	wantsToPassTurn := Dictionary new.
-	lappedShips := spaceShips collect: [ :ship | LappedShip for: ship ].
-	winner := nil
 ]
 
 { #category : 'initialization' }
@@ -138,7 +113,7 @@ Game >> isPenalized: aShip [
 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'testing' }
 Game >> lapTrackerFor: aShip [
 
 	^ lappedShips detect: [ :lap | lap ship = aShip ]
@@ -196,7 +171,7 @@ Game >> playUntilFinish [
 	[ self isGameOver] whileFalse: [ self playTurn ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'process actions' }
 Game >> ranking [
 
 	^ self allStatuses sort: [ :a :b |
@@ -220,7 +195,7 @@ Game >> reducePenaltyFor: aShip [
 	aShip restoreFuel "A implementar Tomi"
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'testing' }
 Game >> registerLapIfNeededFor: aShip from: oldPosition withSteps: someSteps [
 
 	| cellCount lap |
@@ -231,7 +206,7 @@ Game >> registerLapIfNeededFor: aShip from: oldPosition withSteps: someSteps [
 	lap addLap
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'testing' }
 Game >> setWantsToPassTurnFor: aShip to: aBoolean [
 
 	wantsToPassTurn at: aShip put: aBoolean
@@ -277,7 +252,7 @@ Game >> validateMinimumSpaceShips: someShips [
 		self error: 'Need 2 space ships or more to initialize the game' ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'process actions' }
 Game >> wantsToPassTurn: aShip [
 	^ (wantsToPassTurn at: aShip ifAbsent: [ false ]).
 ]

@@ -17,28 +17,9 @@ Board class >> new [
 ]
 
 { #category : 'initialize' }
-Board class >> withCells: aCount [
-    ^ self withCells: aCount andWormholes: OrderedCollection new.
-]
-
-{ #category : 'initialize' }
-Board class >> withCells: aCount and: aWormhole [
-
-	^ self new initializeWithCells: aCount wormholes: aWormhole.
-]
-
-{ #category : 'initialize' }
 Board class >> withCells: aCount andWormholes: aCollection [
     ^ super new initializeWithCells: aCount andWormholes: aCollection.
 
-]
-
-{ #category : 'initialize' }
-Board class >> withEmptyCells: aCount andWormholes: aCollection [
-	| board |
-	board := self new.
-	board initializeWithoutEffectsWithCells: aCount wormholes: aCollection.
-	^ board.
 ]
 
 { #category : 'initialize' }
@@ -122,23 +103,11 @@ Board >> initializeCells [
 ]
 
 { #category : 'initialize' }
-Board >> initializeWithCells: aCount and: aWormhole [
-	cellCount := aCount.
-   wormholes := aWormhole.
-]
-
-{ #category : 'initialize' }
 Board >> initializeWithCells: aCount andWormholes: aCollection [
     cellCount := aCount.
     wormholes := aCollection.
     self assertValidState.
 	 self initializeCells.
-]
-
-{ #category : 'initialize' }
-Board >> initializeWithCells: aCount wormholes: aDictionary [
-	cellCount := aCount.
-   wormholes := aDictionary.  "NO USAR MAS, AHORA USAMOS initializeWithCells: aCount and: aWormhole"
 ]
 
 { #category : 'initialize' }
@@ -198,9 +167,4 @@ Board >> randomEffect [
 	effects := { BlackHoleEffect. HyperGravityEffect }.
 	^ (effects atRandom) new
 
-]
-
-{ #category : 'initialize' }
-Board >> wormholes [
-	^ wormholes
 ]

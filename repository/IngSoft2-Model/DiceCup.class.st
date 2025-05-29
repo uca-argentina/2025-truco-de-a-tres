@@ -16,12 +16,6 @@ DiceCup class >> with: someDice [
 	^ super new initializeWith: someDice 
 ]
 
-{ #category : 'accessing' }
-DiceCup >> diceCollection [
-
-	^ diceCollection
-]
-
 { #category : 'initialize' }
 DiceCup >> initializeWith: someDice [
 
