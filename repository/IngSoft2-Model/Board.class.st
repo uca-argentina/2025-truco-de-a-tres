@@ -13,7 +13,7 @@ Class {
 
 { #category : 'initialize' }
 Board class >> new [
-    self error: 'Use Board withCells:andWormholes: instead'.
+    self error: 'Use Board of:andWormholeAt: instead'.
 ]
 
 { #category : 'initialize' }

@@ -6,6 +6,46 @@ Class {
 }
 
 { #category : 'tests - instance' }
+BoardTest >> testApplyEffectToDoesNothingIfNoEffect [
+
+    | board ship cells |
+
+    ship := Spaceship withName: 'Ship' and: 4.
+    ship moveTo: 2.
+
+    board := Board of: 5 andWormholeAt: {}.
+
+    cells := (1 to: 5) collect: [:i | nil].
+    board instVarNamed: 'cells' put: cells asArray.
+
+    board applyEffectTo: ship.
+
+    self assert: ship position equals: 2.
+
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testApplyWormholeIfPresentReturnsExit [
+
+    | board wormhole |
+
+    wormhole := Wormhole from: 2 to: 7.
+    board := Board of: 10 andWormholeAt: { wormhole }.
+
+    self assert: (board applyWormholeIfPresentAt: 2) equals: 7.
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testApplyWormholeIfPresentReturnsSameWhenAbsent [
+
+    | board |
+
+    board := Board of: 10 andWormholeAt: {}.
+
+    self assert: (board applyWormholeIfPresentAt: 3) equals: 3.
+]
+
+{ #category : 'tests - instance' }
 BoardTest >> testAtomicBombEffectResetsPositionsButKeepsLaps [
 
 	| dice1 dicesGame effect ship1 ship2 ship3 allShips |
@@ -203,6 +243,25 @@ BoardTest >> testHyperJumpEffectJumpsShipForward [
 ]
 
 { #category : 'tests - instance' }
+BoardTest >> testInvalidBoardCellCountRaisesError [
+    self should: [
+        Board new initializeWithCells: 0 andWormholes: {}
+    ] raise: Error.
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testInvalidBoardWithInvalidWormholeRaisesError [
+
+    | fakeWormhole |
+
+    fakeWormhole := Object new.
+
+    self should: [
+        Board new initializeWithCells: 5 andWormholes: { fakeWormhole }
+    ] raise: Error.
+]
+
+{ #category : 'tests - instance' }
 BoardTest >> testIsGoalReached [
     | board |
     board := Board of: 10 andWormholeAt: #().
@@ -211,6 +270,36 @@ BoardTest >> testIsGoalReached [
     self assert: (board isGoalReachedAt: 11).
     self deny: (board isGoalReachedAt: 9).
 
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testIsGoalReachedAtReturnsFalseIfPositionLower [
+
+    | board |
+
+    board := Board of: 5 andWormholeAt: {}.
+
+    self deny: (board isGoalReachedAt: 4).
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testIsGoalReachedAtReturnsTrueIfPositionEqual [
+
+    | board |
+
+    board := Board of: 5 andWormholeAt: {}.
+
+    self assert: (board isGoalReachedAt: 5).
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testIsGoalReachedAtReturnsTrueIfPositionGreater [
+
+    | board |
+
+    board := Board of: 5 andWormholeAt: {}.
+
+    self assert: (board isGoalReachedAt: 7).
 ]
 
 { #category : 'tests - instance' }
