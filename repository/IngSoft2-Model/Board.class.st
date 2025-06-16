@@ -61,6 +61,16 @@ Board >> assertValidState [
 ]
 
 { #category : 'initialize' }
+Board >> calculateNewPositionFrom: current after: steps moves: aLappedSpaceship [
+	| newPosition |
+	newPosition := (current + steps) \\ cellCount.
+
+	(newPosition <= current) ifTrue: [ aLappedSpaceship addLap ].
+
+	^ newPosition
+]
+
+{ #category : 'initialize' }
 Board >> cellCount [
     ^ cellCount
 ]
@@ -69,16 +79,6 @@ Board >> cellCount [
 Board >> cells [
 	^ cells
 
-]
-
-{ #category : 'initialize' }
-Board >> circularPositionFrom: current steps: steps for: aLappedSpaceship [
-	| newPosition |
-	newPosition := (current + steps) \\ cellCount.
-
-	(newPosition <= current) ifTrue: [ aLappedSpaceship addLap ].
-
-	^ newPosition
 ]
 
 { #category : 'initialize' }

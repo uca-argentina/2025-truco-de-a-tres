@@ -211,7 +211,7 @@ BoardTest >> testLapDoesNotIncrementWhenStayingWithinBounds [
 	ship := Spaceship withName: 'Lucas' and: 4.
 	ship moveTo: 3.
 
-	newPosition := board circularPositionFrom: ship position steps: 4 for: ship.
+	newPosition := board calculateNewPositionFrom: ship position after: 4 moves: ship.
 
 	self assert: newPosition equals: 7.
 	self assert: ship lap equals: 0.
@@ -227,7 +227,7 @@ BoardTest >> testLapIncrementsWhenPassingLastCell [
 	ship := Spaceship withName: 'Lucas' and: dicesGame maxRoll.
 	ship moveTo: 8.
 
-	newPosition := board circularPositionFrom: ship position steps: 3 for: (LappedShip for: ship) .
+	newPosition := board calculateNewPositionFrom: ship position after: 3 moves: (LappedShip for: ship) .
 
 	self assert: newPosition equals: 1.
 	self assert: (LappedShip for: ship) lapCount equals: 0.
