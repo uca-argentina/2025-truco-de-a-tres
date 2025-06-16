@@ -17,9 +17,9 @@ Board class >> new [
 ]
 
 { #category : 'initialize' }
-Board class >> withCells: aCount andWormholes: aCollection [
+Board class >> of: anAmountOfCells andWormholeAt: positions [
 
-	^ super new initializeWithCells: aCount andWormholes: aCollection
+	^ super new initializeWithCells: anAmountOfCells andWormholes: positions
 ]
 
 { #category : 'initialize' }

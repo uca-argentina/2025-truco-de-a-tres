@@ -8,7 +8,7 @@ Class {
 { #category : 'tests - instance' }
 SpaceshipTest >> testHasNotReachedGoalWhenBehind [
     | board spaceship |
-    board := Board withCells: 10 andWormholes: #().
+    board := Board of: 10 andWormholeAt: #().
     spaceship := Spaceship withName: 'Endeavour' and: 4.
 
     spaceship moveTo: 9.
@@ -20,7 +20,7 @@ SpaceshipTest >> testHasNotReachedGoalWhenBehind [
 { #category : 'tests - instance' }
 SpaceshipTest >> testHasReachedGoalWhenAtGoal [
     | board spaceship |
-    board := Board withCells: 10 andWormholes: #().
+    board := Board of: 10 andWormholeAt: #().
     spaceship := Spaceship withName: 'Orion' and: 4.
 
     spaceship moveTo: 10.

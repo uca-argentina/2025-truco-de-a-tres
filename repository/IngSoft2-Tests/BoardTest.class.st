@@ -38,7 +38,7 @@ BoardTest >> testAtomicBombEffectResetsPositionsButKeepsLaps [
 { #category : 'tests - instance' }
 BoardTest >> testBlackHoleEffectMovesSpaceshipBackwards [
 	| board ship |
-	board := Board withCells: 5 andWormholes: #().
+	board := Board of: 5 andWormholeAt: #().
 	ship := Spaceship withName: 'Lucas' and: 4.
 	ship moveTo: 3.
 
@@ -54,7 +54,7 @@ BoardTest >> testBoardCellsContainRecognizedEffects [
 	| board validClasses |
 	validClasses := { BlackHoleEffect. HyperGravityEffect }.
 
-	board := Board withCells: 20 andWormholes: OrderedCollection new.
+	board := Board of: 20 andWormholeAt: OrderedCollection new.
 
 	self assert: (board cells allSatisfy: [:e |
 		validClasses anySatisfy: [:c | e class = c ] ]).
@@ -64,7 +64,7 @@ BoardTest >> testBoardCellsContainRecognizedEffects [
 { #category : 'tests - instance' }
 BoardTest >> testBoardInitializesCorrectNumberOfEffects [
 	| board |
-	board := Board withCells: 20 andWormholes: OrderedCollection new.
+	board := Board of: 20 andWormholeAt: OrderedCollection new.
 
 	self assert: board cells size equals: 20.
 
@@ -75,7 +75,7 @@ BoardTest >> testBoardPreventsEntryToHyperGravityCellWithLowRoll [
 	| dice1 dicesGame board ship lappedShip effect newPosition |
 	dice1 := Die withSides: 6.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
-	board := Board withCells: 5 andWormholes: #().
+	board := Board of: 5 andWormholeAt: #().
 	
 	ship := Spaceship withName: 'Lucas' and: dicesGame maxRoll.
 	ship moveTo: 2.
@@ -102,7 +102,7 @@ BoardTest >> testBoardPreventsEntryToHyperGravityCellWithLowRoll [
 { #category : 'tests - instance' }
 BoardTest >> testCanEnterHyperGravityCellWithSufficientRoll [
 	| board effect |
-	board := Board withCells: 5 andWormholes: #().
+	board := Board of: 5 andWormholeAt: #().
 	effect := HyperGravityEffect new.
 	board cells at: 3 put: effect.
 
@@ -113,7 +113,7 @@ BoardTest >> testCanEnterHyperGravityCellWithSufficientRoll [
 { #category : 'tests - instance' }
 BoardTest >> testCannotEnterHyperGravityCellWithLowRoll [
 	| board effect |
-	board := Board withCells: 5 andWormholes: #().
+	board := Board of: 5 andWormholeAt: #().
 	effect := HyperGravityEffect new.
 	board cells at: 3 put: effect.
 
@@ -125,7 +125,7 @@ BoardTest >> testCannotEnterHyperGravityCellWithLowRoll [
 BoardTest >> testHyperGravityAllowsEntryWhenRollIsSufficient [
 	| board ship effect newPosition |
 
-	board := Board withCells: 5 andWormholes: #().
+	board := Board of: 5 andWormholeAt: #().
 	ship := Spaceship withName: 'Lucas' and: 4.
 	ship moveTo: 2.
 
@@ -156,7 +156,7 @@ BoardTest >> testHyperJumpEffectJumpsShipForward [
 
 	dice1 := Die withSides: 6.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
-	board := Board withCells: 10 andWormholes: #().
+	board := Board of: 10 andWormholeAt: #().
 
 	HyperJumpEffect resetJumpIndex.
 	effect := HyperJumpEffect new.
@@ -196,7 +196,7 @@ BoardTest >> testHyperJumpEffectJumpsShipForward [
 { #category : 'tests - instance' }
 BoardTest >> testIsGoalReached [
     | board |
-    board := Board withCells: 10 andWormholes: #().
+    board := Board of: 10 andWormholeAt: #().
 
     self assert: (board isGoalReachedAt: 10).
     self assert: (board isGoalReachedAt: 11).
@@ -207,7 +207,7 @@ BoardTest >> testIsGoalReached [
 { #category : 'tests - instance' }
 BoardTest >> testLapDoesNotIncrementWhenStayingWithinBounds [
 	| board ship newPosition |
-	board := Board withCells: 10 andWormholes: OrderedCollection new.
+	board := Board of: 10 andWormholeAt: OrderedCollection new.
 	ship := Spaceship withName: 'Lucas' and: 4.
 	ship moveTo: 3.
 
@@ -223,7 +223,7 @@ BoardTest >> testLapIncrementsWhenPassingLastCell [
 	| dice1 dicesGame board ship newPosition |
 	dice1 := Die withSides: 6.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
-	board := Board withCells: 10 andWormholes: OrderedCollection new.
+	board := Board of: 10 andWormholeAt: OrderedCollection new.
 	ship := Spaceship withName: 'Lucas' and: dicesGame maxRoll.
 	ship moveTo: 8.
 
@@ -263,7 +263,7 @@ BoardTest >> testMoonWalkEffectMovesOtherSpaceshipsBackwards [
 { #category : 'tests - instance' }
 BoardTest >> testNewPositionWithWormhole [
 	| board ship |
-	board := Board withCells: 25 andWormholes: (OrderedCollection with: (Wormhole from: 6 to: 20)).
+	board := Board of: 25 andWormholeAt: (OrderedCollection with: (Wormhole from: 6 to: 20)).
 	ship := Spaceship withName: 'Test' and: 4.
 
 	self assert: (board newPositionFrom: 2 steps: 4 for: ship) equals: 20.
@@ -273,7 +273,7 @@ BoardTest >> testNewPositionWithWormhole [
 { #category : 'tests - instance' }
 BoardTest >> testNewPositionWithoutWormhole [
 	| board ship |
-	board := Board withCells: 25 andWormholes: #().
+	board := Board of: 25 andWormholeAt: #().
 	ship := Spaceship withName: 'Test' and: 4.
 
 	self assert: (board newPositionFrom: 2 steps: 2 for: ship) equals: 4.
@@ -283,7 +283,7 @@ BoardTest >> testNewPositionWithoutWormhole [
 { #category : 'tests - instance' }
 BoardTest >> testPositionWithoutWormholeReturnsSame [
     | board |
-    board := Board withCells: 10 andWormholes: #().
+    board := Board of: 10 andWormholeAt: #().
 
     self assert: (board applyWormholeIfPresentAt: 5) equals: 5.
 
@@ -292,7 +292,7 @@ BoardTest >> testPositionWithoutWormholeReturnsSame [
 { #category : 'tests - instance' }
 BoardTest >> testWormholeTransportsCorrectly [
     | board |
-    board := Board withCells: 20 andWormholes: (OrderedCollection withAll: {
+    board := Board of: 20 andWormholeAt: (OrderedCollection withAll: {
         Wormhole from: 2 to: 10.
         Wormhole from: 10 to: 2.
     }).
