@@ -13,6 +13,7 @@ AtomicBombEffect >> applyTo: aSpaceship [
 
 { #category : 'operations' }
 AtomicBombEffect >> applyTo: aSpaceship inContextOf: allSpaceships [
+
 	allSpaceships do: [:ship | ship moveTo: 0 ].
 
 ]

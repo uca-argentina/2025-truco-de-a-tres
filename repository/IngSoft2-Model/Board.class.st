@@ -17,16 +17,15 @@ Board class >> new [
 ]
 
 { #category : 'initialize' }
-
 Board class >> of: anAmountOfCells andWormholeAt: positions [
 
-	^ super new initializeWithCells: anAmountOfCells andWormholes: positions
+	^ super new initializeWithCells: anAmountOfCells andWormholes: positions.
 ]
-
 
 { #category : 'initialize' }
 Board >> applyEffectTo: aSpaceship [
 	| effect |
+	
 	effect := self effectAt: aSpaceship position.
 	effect ifNotNil: [ effect applyTo: aSpaceship ].
 
@@ -34,7 +33,9 @@ Board >> applyEffectTo: aSpaceship [
 
 { #category : 'initialize' }
 Board >> applyEffectsTo: aSpaceship [
+
     | currentCell |
+
     currentCell := cells at: aSpaceship position.
     currentCell applyEffectTo: aSpaceship.
 
@@ -43,7 +44,9 @@ Board >> applyEffectsTo: aSpaceship [
 { #category : 'initialize' }
 Board >> applyWormholeIfPresentAt: aPosition [
     | matches |
+
     matches := wormholes select: [ :w | w hasEntryAt: aPosition ].
+
     ^ matches
         ifEmpty: [ aPosition ]
         ifNotEmpty: [ matches first exit ].
@@ -52,39 +55,39 @@ Board >> applyWormholeIfPresentAt: aPosition [
 { #category : 'initialize' }
 Board >> assertValidState [
     (cellCount isInteger and: [ cellCount > 0 ]) ifFalse: [
-        self error: 'Board must have a positive number of cells'
+        self error: 'Board must have a positive number of cells'.
     ].
 
     (wormholes isCollection and: [
-        wormholes allSatisfy: [ :each | each isValid ]
+        wormholes allSatisfy: [ :each | each isValid ].
     ]) ifFalse: [
-        self error: 'All wormholes must be valid objects'
+        self error: 'All wormholes must be valid objects'.
     ].
 ]
 
 { #category : 'initialize' }
 Board >> calculateNewPositionFrom: current after: steps moves: aLappedSpaceship [
 	| newPosition |
+	
 	newPosition := (current + steps) \\ cellCount.
 
 	(newPosition <= current) ifTrue: [ aLappedSpaceship addLap ].
 
-	^ newPosition
+	^ newPosition.
 ]
 
 { #category : 'initialize' }
 Board >> cellCount [
-    ^ cellCount
+    ^ cellCount.
 ]
 
 { #category : 'initialize' }
 Board >> cells [
-	^ cells
+	^ cells.
 
 ]
 
 { #category : 'initialize' }
-
 Board >> effectAt: aPosition [
 	^ cells at: aPosition + 1
 
@@ -98,19 +101,18 @@ Board >> initializeCells [
 
 { #category : 'initialize' }
 Board >> initializeWithCells: aCount andWormholes: aCollection [
-
-
 	cellCount := aCount.
 	wormholes := aCollection.
+	
 	self assertValidState.
-	self initializeCells
+	self initializeCells.
 ]
-
 
 { #category : 'initialize' }
 Board >> initializeWithoutEffectsWithCells: aCount wormholes: aCollection [
 	cellCount := aCount.
 	wormholes := aCollection.
+	
 	cells := (1 to: cellCount) collect: [:i | nil ].
 ]
 
@@ -121,13 +123,15 @@ Board >> isBoardValid [
 
 { #category : 'initialize' }
 Board >> isGoalReachedAt: aPosition [
-    ^ aPosition >= cellCount
+    ^ aPosition >= cellCount.
 ]
 
 { #category : 'initialize' }
 Board >> isPossibleToReach: aPosition after: roll [
 	| effect |
+	
 	effect := self effectAt: aPosition.
+	
 	^ effect allowsEntryWithRoll: roll.
 
 
@@ -143,29 +147,28 @@ Board >> newPositionFrom: aPosition steps: steps [
     ^ self applyWormholeIfPresentAt: (aPosition + steps).
 ]
 
-
 { #category : 'moves' }
-
 Board >> newPositionFrom: aPosition steps: steps for: aLappedSpaceship [
     | position |
+
     position := (aPosition + steps) \\ cellCount.
     
     (position <= aPosition) ifTrue: [  aLappedSpaceship addLap ].
     
-    ^ self applyWormholeIfPresentAt: position
+    ^ self applyWormholeIfPresentAt: position.
 
 ]
 
-
 { #category : 'moves' }
-
 Board >> newPositionFrom: aPosition steps: steps for: aLappedSpaceship withRoll: roll [
 	| position effect |
+	
 	position := (aPosition + steps) \\ cellCount.
 
 	(position <= aPosition) ifTrue: [  aLappedSpaceship addLap ].
 
 	effect := cells at: position + 1.
+	
 	(effect allowsEntryWithRoll: roll)
 		ifTrue: [ ^ position ]
 		ifFalse: [ ^ aPosition ].
@@ -175,6 +178,7 @@ Board >> newPositionFrom: aPosition steps: steps for: aLappedSpaceship withRoll:
 { #category : 'initialize' }
 Board >> randomEffect [
 	effects := { BlackHoleEffect. HyperGravityEffect }.
-	^ (effects atRandom) new
+	
+	^ (effects atRandom) new.
 
 ]
