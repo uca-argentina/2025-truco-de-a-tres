@@ -71,6 +71,17 @@ SpaceshipTest >> testMoveForwardIncreasesPosition [
 ]
 
 { #category : 'tests - instance' }
+SpaceshipTest >> testMoveToChangesPosition [
+
+    | ship |
+
+    ship := Spaceship withName: 'Move' and: 4.
+    ship moveTo: 5.
+
+    self assert: (ship position) equals: 5.
+]
+
+{ #category : 'tests - instance' }
 SpaceshipTest >> testNewRaisesError [
 
     self should: [ Spaceship new ] raise: Error.

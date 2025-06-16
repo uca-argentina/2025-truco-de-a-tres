@@ -194,6 +194,26 @@ GameTest >> testIsGameOverReturnsTrueWhenWinnerExists [
 ]
 
 { #category : 'tests' }
+GameTest >> testIsPenalizedDetectsPenalizedShip [
+
+    | ship1 ship2 game dice |
+
+    ship1 := Spaceship withName: 'P1' and: 4.
+    ship2 := Spaceship withName: 'P2' and: 4.
+    dice := DiceCup new initializeWith: 1.
+    game := Game
+        startWithShips: { ship1. ship2 }
+        board: (Board of: 5 andWormholeAt: {})
+        dice: dice
+        laps: 1.
+
+    game penalize: ship1 forTurns: 2.
+
+    self assert: (game isPenalized: ship1).
+    self deny: (game isPenalized: ship2).
+]
+
+{ #category : 'tests' }
 GameTest >> testPassTurnAdvancesIndex [
 
     | ship1 ship2 game board dice |
@@ -397,6 +417,30 @@ GameTest >> testReducePenaltyDecreasesTurnCount [
     game reducePenaltyFor: ship1.
 
     self deny: (game isPenalized: ship1).
+]
+
+{ #category : 'tests' }
+GameTest >> testReducePenaltyRemovesPenaltyEventually [
+
+    | ship game dice penalty |
+
+    ship := Spaceship withName: 'Penalized' and: 4.
+    dice := DiceCup new initializeWith: 1.
+    game := Game
+        startWithShips: { ship. Spaceship withName: 'Other' and: 4 }
+        board: (Board of: 5 andWormholeAt: {})
+        dice: dice
+        laps: 1.
+
+    game penalize: ship forTurns: 1.
+    penalty := game findPenaltyFor: ship.
+    
+    self assert: (penalty hasPenalty).
+    
+    game reducePenaltyFor: ship.
+
+    self deny: (penalty hasPenalty).
+
 ]
 
 { #category : 'accessing' }

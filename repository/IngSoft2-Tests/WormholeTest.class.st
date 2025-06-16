@@ -19,6 +19,26 @@ WormholeTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorM
 ]
 
 { #category : 'tests - instance' }
+WormholeTest >> testExitRaisesIfNotEntry [
+
+    | wormhole |
+
+    wormhole := Wormhole from: 1 to: 3.
+
+    self should: [ wormhole exit: 5 ] raise: Error.
+]
+
+{ #category : 'tests - instance' }
+WormholeTest >> testHasEntryAtFalseReturnsFalse [
+
+    | wormhole |
+
+    wormhole := Wormhole from: 1 to: 3.
+
+    self deny: (wormhole hasEntryAt: 5).
+]
+
+{ #category : 'tests - instance' }
 WormholeTest >> testHasEntryAtReturnsTrueOnlyWhenMatched [
 
     | wormhole |
