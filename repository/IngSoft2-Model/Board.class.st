@@ -104,10 +104,11 @@ Board >> initializeCells [
 
 { #category : 'initialize' }
 Board >> initializeWithCells: aCount andWormholes: aCollection [
-    cellCount := aCount.
-    wormholes := aCollection.
-    self assertValidState.
-	 self initializeCells.
+
+	self assertValidState.
+	cellCount := aCount.
+	wormholes := aCollection.
+	self initializeCells
 ]
 
 { #category : 'initialize' }

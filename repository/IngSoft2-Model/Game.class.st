@@ -192,7 +192,7 @@ Game >> reducePenaltyFor: aShip [
 	penalty := self findPenaltyFor: aShip.
 	penalty reduceTurn.
 	penalty hasPenalty ifFalse: [ penalizedShips remove: penalty ].
-	aShip restoreFuel "A implementar Tomi"
+	aShip restoreFuel
 ]
 
 { #category : 'testing' }
