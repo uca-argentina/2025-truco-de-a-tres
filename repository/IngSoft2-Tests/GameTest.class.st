@@ -330,7 +330,6 @@ GameTest >> testWhenGameCreatedWithInvalidBoardThenIsInvalid [
 	spaceShip2 := Spaceship withName: 'Ship Num2' and: dicesGame maxRoll.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
-
 	self
 		should: [
 			| boardGame |
@@ -343,7 +342,7 @@ GameTest >> testWhenGameCreatedWithInvalidBoardThenIsInvalid [
 				dice: dicesGame 
 				laps: 1]
 		raise: Error
-		withMessageText: 'Board must have a positive number of cells'
+		withMessageText: 'Board must have a positive number of cells'.
 ]
 
 { #category : 'tests' }
@@ -427,16 +426,15 @@ GameTest >> testWhenShipDecidesToPassTurnThenSkipTurn [
 		        laps: 1.
 
 	realShip1 := game spaceShips first.
-	game playTurn. "RealShip1 plays turn"
-	game playTurn. "RealShip2 plays turn"
-
+	
+	game playTurn.
+	game playTurn.
 	game setWantsToPassTurnFor: realShip1 to: true.
-	game playTurn. "RealShip2 decides not to play"
+	game playTurn.
+	
 	self assert: game currentShip equals: game spaceShips second.
 
-
-
-	game playUntilFinish
+	game playUntilFinish.
 ]
 
 { #category : 'tests' }
@@ -549,10 +547,7 @@ GameTest >> testWhenSpaceShipEndsTurnThenRotatesPlayerTurn [
 	spaceShip2 := Spaceship withName: 'Ship Num2' and: dicesGame maxRoll.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
-
 	boardGame := Board of: 5 andWormholeAt: #(  ).
-
-
 
 	game := Game
 		        startWithShips: spaceShipsGame
@@ -570,11 +565,11 @@ GameTest >> testWhenSpaceShipEndsTurnThenRotatesPlayerTurn [
 	actualSequence := OrderedCollection new.
 
 
-	[
-	actualSequence size < expectedSequence size and: game isGameOver not ]
+	[ actualSequence size < expectedSequence size and: game isGameOver not ]
 		whileTrue: [
 			actualSequence add: game currentShip.
-			game playTurn ].
+			game playTurn 
+		].
 
 	self assert: actualSequence equals: expectedSequence
 ]
@@ -583,6 +578,7 @@ GameTest >> testWhenSpaceShipEndsTurnThenRotatesPlayerTurn [
 GameTest >> testWhenWinnerSpaceShipIsCorrectWhenGameEnds [
 
 	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game |
+	
 	dice1 := Die withSides: 100.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
 
@@ -590,16 +586,14 @@ GameTest >> testWhenWinnerSpaceShipIsCorrectWhenGameEnds [
 	spaceShip2 := Spaceship withName: 'Ship Num2' and: dicesGame maxRoll.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
-
 	boardGame := Board of: 1 andWormholeAt: #(  ).
-
-
 
 	game := Game
 		        startWithShips: spaceShipsGame
 		        board: boardGame
 		        dice: dicesGame
 		        laps: 1.
+		
 	game playTurn.
 
 	self assert: game winner equals: spaceShip1

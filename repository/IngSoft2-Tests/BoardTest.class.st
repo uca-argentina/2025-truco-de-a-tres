@@ -26,7 +26,8 @@ BoardTest >> testAtomicBombEffectResetsPositionsButKeepsLaps [
 	allShips := {
 		ship1.
 		ship2.
-		ship3 }.
+		ship3.
+	}.
 
 	effect applyTo: ship2 inContextOf: allShips.
 
