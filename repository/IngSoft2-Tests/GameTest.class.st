@@ -64,6 +64,23 @@ GameTest >> testCurrentShipReturnsCorrectShip [
 ]
 
 { #category : 'tests' }
+GameTest >> testFindPenaltyForReturnsExistingPenalty [
+
+    | ship1 ship2 board dice game |
+
+    ship1 := Spaceship withName: 'Penalized' and: 4.
+    ship2 := Spaceship withName: 'Unpunished' and: 4.
+    board := Board of: 10 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+    game penalize: ship1 forTurns: 2.
+
+    self assert: (game findPenaltyFor: ship1) notNil.
+
+]
+
+{ #category : 'tests' }
 GameTest >> testGameEndsWithPlayUntilFinish [
 
 	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game |
@@ -158,6 +175,22 @@ GameTest >> testHasWonByLapsReturnsTrueWhenEnoughLaps [
     game registerLapIfNeededFor: ship1 from: 9 withSteps: 1.
 
     self assert: (game hasWonByLaps: ship1).
+]
+
+{ #category : 'tests' }
+GameTest >> testIsGameOverReturnsTrueWhenWinnerExists [
+
+    | ship1 ship2 board dice game |
+
+    ship1 := Spaceship withName: 'Closer' and: 4.
+    ship2 := Spaceship withName: 'Later' and: 4.
+    board := Board of: 5 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 6 }.
+
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+    game playUntilFinish.
+
+    self assert: game isGameOver.
 ]
 
 { #category : 'tests' }
@@ -290,6 +323,22 @@ GameTest >> testPlayTurnSkipsPenalizedShip [
 
     self assert: game currentShip equals: ship2.
 
+]
+
+{ #category : 'tests' }
+GameTest >> testPlayUntilFinishDeclaresWinner [
+
+    | ship1 ship2 board dice game |
+
+    ship1 := Spaceship withName: 'Fast' and: 4.
+    ship2 := Spaceship withName: 'Slow' and: 4.
+    board := Board of: 5 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 6 }.
+
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+    game playUntilFinish.
+
+    self assert: (game winner) equals: ship1.
 ]
 
 { #category : 'tests' }
@@ -606,6 +655,21 @@ GameTest >> testStatusForReturnsCorrectShipStatus [
 
     self assert: status ship equals: ship1.
     self assert: status position equals: 0.
+]
+
+{ #category : 'tests' }
+GameTest >> testValidateIsCurrentPlayerRaisesError [
+
+    | ship1 ship2 board dice game |
+
+    ship1 := Spaceship withName: 'First' and: 4.
+    ship2 := Spaceship withName: 'Second' and: 4.
+    board := Board of: 5 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 6 }.
+
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+
+    self should: [ game validateIsCurrentPlayer: ship2 ] raise: Error.
 ]
 
 { #category : 'tests' }
