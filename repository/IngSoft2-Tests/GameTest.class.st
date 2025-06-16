@@ -19,6 +19,34 @@ GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessa
 ]
 
 { #category : 'tests' }
+GameTest >> testAdvanceTurnCyclesCorrectly [
+
+    | ship1 ship2 ship3 board dice game |
+
+    ship1 := Spaceship withName: 'One' and: 4.
+    ship2 := Spaceship withName: 'Two' and: 4.
+    ship3 := Spaceship withName: 'Three' and: 4.
+
+    board := Board of: 10 andWormholeAt: #().
+    dice := DiceCup with: { Die withSides: 1 }.
+
+    game := Game
+        startWithShips: { ship1. ship2. ship3 }
+        board: board
+        dice: dice
+        laps: 1.
+
+    game advanceTurn.
+    self assert: game currentTurnIndex equals: 2.
+
+    game advanceTurn.
+    self assert: game currentTurnIndex equals: 3.
+
+    game advanceTurn.
+    self assert: game currentTurnIndex equals: 1.
+]
+
+{ #category : 'tests' }
 GameTest >> testGameEndsWithPlayUntilFinish [
 
 	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game |
@@ -77,6 +105,121 @@ GameTest >> testGameReturnsFinalPositionsOfSpaceships [
 
 	self assert: (positions at: spaceShip1) equals: finalPositionShip1.
 	self assert: (positions at: spaceShip2) equals: finalPositionShip2
+]
+
+{ #category : 'tests' }
+GameTest >> testPenalizeAddsPenalizedShip [
+
+    | ship1 ship2 board dice game |
+
+    ship1 := Spaceship withName: 'Solo' and: 4.
+    ship2 := Spaceship withName: 'Dummy' and: 4.
+    board := Board of: 10 andWormholeAt: #().
+    dice := DiceCup with: { Die withSides: 1 }.
+
+    game := Game
+        startWithShips: { ship1. ship2 }
+        board: board
+        dice: dice
+        laps: 1.
+
+    game penalize: ship1 forTurns: 2.
+
+    self assert: (game isPenalized: ship1).
+]
+
+{ #category : 'tests' }
+GameTest >> testPlayTurnHandlesPassTurnCorrectly [
+
+    | ship1 ship2 board dice game |
+
+    ship1 := Spaceship withName: 'Passing' and: 4.
+    ship2 := Spaceship withName: 'Next' and: 4.
+    board := Board of: 10 andWormholeAt: #().
+    dice := DiceCup with: { Die withSides: 1 }.
+
+    game := Game
+        startWithShips: { ship1. ship2 }
+        board: board
+        dice: dice
+        laps: 1.
+
+    game setWantsToPassTurnFor: ship1 to: true.
+    game playTurn.
+
+    self assert: game currentShip equals: ship2.
+    self deny: (game wantsToPassTurn: ship1).
+
+]
+
+{ #category : 'tests' }
+GameTest >> testPlayTurnMovesShipAndAdvancesTurn [
+
+    | ship1 ship2 board dice game |
+
+    ship1 := Spaceship withName: 'Player1' and: 4.
+    ship2 := Spaceship withName: 'Player2' and: 4.
+    board := Board of: 10 andWormholeAt: #().
+    dice := DiceCup with: { Die withSides: 1 }.
+
+    game := Game
+        startWithShips: { ship1. ship2 }
+        board: board
+        dice: dice
+        laps: 1.
+
+    game playTurn.
+
+    self assert: ship1 position equals: 1.
+    self assert: game currentShip = ship2.
+
+]
+
+{ #category : 'tests' }
+GameTest >> testPlayTurnRaisesErrorWhenGameIsOver [
+
+    | ship1 ship2 board dice game |
+
+    ship1 := Spaceship withName: 'One' and: 4.
+    ship2 := Spaceship withName: 'Two' and: 4.
+    board := Board of: 2 andWormholeAt: #().
+    dice := DiceCup with: { Die withSides: 1 }.
+
+    game := Game
+        startWithShips: { ship1. ship2 }
+        board: board
+        dice: dice
+        laps: 1.
+
+    ship1 moveTo: 1.
+    game playTurn.
+
+    self assert: (game isGameOver).
+    self should: [ game playTurn ] raise: Error.
+
+]
+
+{ #category : 'tests' }
+GameTest >> testPlayTurnSkipsPenalizedShip [
+
+    | ship1 ship2 board dice game |
+
+    ship1 := Spaceship withName: 'Penalized' and: 4.
+    ship2 := Spaceship withName: 'Next' and: 4.
+    board := Board of: 10 andWormholeAt: #().
+    dice := DiceCup with: { Die withSides: 1 }.
+
+    game := Game
+        startWithShips: { ship1. ship2 }
+        board: board
+        dice: dice
+        laps: 1.
+
+    game penalize: ship1 forTurns: 1.
+    game playTurn.
+
+    self assert: game currentShip equals: ship2.
+
 ]
 
 { #category : 'tests' }
@@ -227,6 +370,28 @@ GameTest >> testShipStatusReturnsCurrentPosition [
 ]
 
 { #category : 'tests' }
+GameTest >> testSpaceshipPositionsReturnsCorrectDict [
+
+    | ship1 ship2 board dice game positions |
+
+    ship1 := Spaceship withName: 'Alpha' and: 4.
+    ship2 := Spaceship withName: 'Beta' and: 4.
+    board := Board of: 10 andWormholeAt: #().
+    dice := DiceCup with: { Die withSides: 1 }.
+
+    game := Game
+        startWithShips: { ship1. ship2 }
+        board: board
+        dice: dice
+        laps: 1.
+
+    positions := game spaceshipPositions.
+
+    self assert: (positions at: ship1) equals: 0.
+    self assert: (positions at: ship2) equals: 0.
+]
+
+{ #category : 'tests' }
 GameTest >> testSpaceshipPositionsReturnsCorrectPositions [
 
 	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game positions |
@@ -256,6 +421,30 @@ GameTest >> testSpaceshipPositionsReturnsCorrectPositions [
 
 	self assert: (positions at: spaceShip1) equals: 1.
 	self assert: (positions at: spaceShip2) equals: 0
+]
+
+{ #category : 'tests' }
+GameTest >> testStatusForReturnsCorrectInfo [
+
+    | ship1 ship2 board dice game status |
+
+    ship1 := Spaceship withName: 'StatusShip' and: 4.
+    ship2 := Spaceship withName: 'Dummy' and: 4.
+    board := Board of: 10 andWormholeAt: #().
+    dice := DiceCup with: { Die withSides: 1 }.
+
+    game := Game
+        startWithShips: { ship1. ship2 }
+        board: board
+        dice: dice
+        laps: 1.
+
+    status := game statusFor: ship1.
+
+    self assert: status ship == ship1.
+    self assert: status position equals: 0.
+    self assert: status lapCount equals: 0.
+    self deny: status isPenalized.
 ]
 
 { #category : 'tests' }
