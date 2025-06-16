@@ -46,6 +46,26 @@ GameTest >> testAdvanceTurnCyclesCorrectly [
     self assert: game currentTurnIndex equals: 1.
 ]
 
+{ #category : 'tests' }
+GameTest >> testAdvanceTurnRotatesToNextShip [
+
+    | ship1 ship2 game dice |
+
+    ship1 := Spaceship withName: 'One' and: 4.
+    ship2 := Spaceship withName: 'Two' and: 4.
+    dice := DiceCup new initializeWith: 1.
+    game := Game
+        startWithShips: { ship1. ship2 }
+        board: (Board of: 5 andWormholeAt: {})
+        dice: dice
+        laps: 1.
+
+    self assert: (game currentShip == ship1).
+    game advanceTurn.
+    self assert: (game currentShip == ship2).
+
+]
+
 { #category : 'accessing' }
 GameTest >> testCurrentShipReturnsCorrectShip [
 
@@ -359,6 +379,24 @@ GameTest >> testPlayUntilFinishDeclaresWinner [
     game playUntilFinish.
 
     self assert: (game winner) equals: ship1.
+]
+
+{ #category : 'accessing' }
+GameTest >> testPlayUntilFinishEndsWhenWinnerIsFound [
+    | ship1 ship2 game dice |
+    ship1 := Spaceship withName: 'Rápida' and: 4.
+    ship2 := Spaceship withName: 'Lenta' and: 4.
+	 dice := DiceCup new initializeWith: { Die withSides: 6 }.
+
+    game := Game
+        startWithShips: { ship1. ship2 }
+        board: (Board of: 2 andWormholeAt: {})
+        dice: dice
+        laps: 1.
+
+    game playUntilFinish.
+
+    self assert: game isGameOver.
 ]
 
 { #category : 'tests' }
