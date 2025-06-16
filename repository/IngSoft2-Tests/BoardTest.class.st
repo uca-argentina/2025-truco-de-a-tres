@@ -38,7 +38,9 @@ BoardTest >> testAtomicBombEffectResetsPositionsButKeepsLaps [
 { #category : 'tests - instance' }
 BoardTest >> testBlackHoleEffectMovesSpaceshipBackwards [
 	| board ship |
+
 	board := Board of: 5 andWormholeAt: #().
+
 	ship := Spaceship withName: 'Lucas' and: 4.
 	ship moveTo: 3.
 
@@ -75,7 +77,9 @@ BoardTest >> testBoardPreventsEntryToHyperGravityCellWithLowRoll [
 	| dice1 dicesGame board ship lappedShip effect newPosition |
 	dice1 := Die withSides: 6.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
+
 	board := Board of: 5 andWormholeAt: #().
+
 	
 	ship := Spaceship withName: 'Lucas' and: dicesGame maxRoll.
 	ship moveTo: 2.
@@ -125,7 +129,9 @@ BoardTest >> testCannotEnterHyperGravityCellWithLowRoll [
 BoardTest >> testHyperGravityAllowsEntryWhenRollIsSufficient [
 	| board ship effect newPosition |
 
+
 	board := Board of: 5 andWormholeAt: #().
+
 	ship := Spaceship withName: 'Lucas' and: 4.
 	ship moveTo: 2.
 
@@ -154,9 +160,11 @@ BoardTest >> testHyperGravityEffectHasCorrectDefaultRoll [
 BoardTest >> testHyperJumpEffectJumpsShipForward [
 	| dice1 dicesGame board ship1 ship2 lappedShip1 effect newPosition game |
 
+
 	dice1 := Die withSides: 6.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
 	board := Board of: 10 andWormholeAt: #().
+
 
 	HyperJumpEffect resetJumpIndex.
 	effect := HyperJumpEffect new.
@@ -207,7 +215,9 @@ BoardTest >> testIsGoalReached [
 { #category : 'tests - instance' }
 BoardTest >> testLapDoesNotIncrementWhenStayingWithinBounds [
 	| board ship newPosition |
+
 	board := Board of: 10 andWormholeAt: OrderedCollection new.
+
 	ship := Spaceship withName: 'Lucas' and: 4.
 	ship moveTo: 3.
 
@@ -223,11 +233,13 @@ BoardTest >> testLapIncrementsWhenPassingLastCell [
 	| dice1 dicesGame board ship newPosition |
 	dice1 := Die withSides: 6.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
+
 	board := Board of: 10 andWormholeAt: OrderedCollection new.
 	ship := Spaceship withName: 'Lucas' and: dicesGame maxRoll.
 	ship moveTo: 8.
 
 	newPosition := board calculateNewPositionFrom: ship position after: 3 moves: (LappedShip for: ship) .
+
 
 	self assert: newPosition equals: 1.
 	self assert: (LappedShip for: ship) lapCount equals: 0.
@@ -263,7 +275,9 @@ BoardTest >> testMoonWalkEffectMovesOtherSpaceshipsBackwards [
 { #category : 'tests - instance' }
 BoardTest >> testNewPositionWithWormhole [
 	| board ship |
+
 	board := Board of: 25 andWormholeAt: (OrderedCollection with: (Wormhole from: 6 to: 20)).
+
 	ship := Spaceship withName: 'Test' and: 4.
 
 	self assert: (board newPositionFrom: 2 steps: 4 for: ship) equals: 20.
@@ -273,7 +287,9 @@ BoardTest >> testNewPositionWithWormhole [
 { #category : 'tests - instance' }
 BoardTest >> testNewPositionWithoutWormhole [
 	| board ship |
+
 	board := Board of: 25 andWormholeAt: #().
+
 	ship := Spaceship withName: 'Test' and: 4.
 
 	self assert: (board newPositionFrom: 2 steps: 2 for: ship) equals: 4.

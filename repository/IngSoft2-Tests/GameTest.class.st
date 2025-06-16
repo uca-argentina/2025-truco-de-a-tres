@@ -31,9 +31,11 @@ GameTest >> testGameEndsWithPlayUntilFinish [
 	spaceShip2 := Spaceship withName: 'Ship Num2' and: dicesGame maxRoll.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
+
 	boardGame := Board of: 25 andWormholeAt: #(  ).
 
 	game := Game
+
 		        startWithShips: spaceShipsGame
 		        board: boardGame
 		        dice: dicesGame
@@ -56,7 +58,9 @@ GameTest >> testGameReturnsFinalPositionsOfSpaceships [
 	spaceShip2 := Spaceship withName: 'Ship Num2' and: dicesGame maxRoll.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
+
 	boardGame := Board of: 10 andWormholeAt: #(  ).
+
 
 
 	game := Game
@@ -89,7 +93,9 @@ GameTest >> testRankingReturnsShipsOrderedByLapsAndPosition [
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2 with: spaceShip3.
   
 
+
 	boardGame := Board of: 3 andWormholeAt: #(  ).
+
 
 	game := Game
 		        startWithShips: spaceShipsGame
@@ -157,7 +163,9 @@ GameTest >> testShipStatusReturnsCurrentLap [
 		                  with: spaceShip1
 		                  with: spaceShip2.
 
+
 	boardGame := Board of: 2 andWormholeAt: #(  ).
+
 
 	game := Game
 		        startWithShips: spaceShipsGame
@@ -174,6 +182,7 @@ GameTest >> testShipStatusReturnsCurrentLap [
 	
 	status1 := game statusFor: realShip1.
 	status2 := game statusFor: realShip2.
+
 
 	self assert: status1 lapCount equals: 1.
 	self assert: status2 lapCount equals: 0.
@@ -194,7 +203,9 @@ GameTest >> testShipStatusReturnsCurrentPosition [
 		                  with: spaceShip1
 		                  with: spaceShip2.
 
+
 	boardGame := Board of: 2 andWormholeAt: #(  ).
+
 
 	game := Game
 		        startWithShips: spaceShipsGame
@@ -228,7 +239,9 @@ GameTest >> testSpaceshipPositionsReturnsCorrectPositions [
 	spaceShip2 := Spaceship withName: 'Ship Num2' and: dicesGame maxRoll.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
+
 	boardGame := Board of: 10 andWormholeAt: #(  ).
+
 
 
 	game := Game
@@ -257,7 +270,9 @@ GameTest >> testWhenAShipTriesToPlayOutOfTurnThenError [
 	spaceShip2 := Spaceship withName: 'Ship Num2' and: dicesGame maxRoll.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
+
 	boardGame := Board of: 25 andWormholeAt: #(  ).
+
 
 	game := Game
 		        startWithShips: spaceShipsGame
@@ -289,7 +304,9 @@ GameTest >> testWhenGameCorrectlyCreatedThenNotNil [
 
 
 
+
 	boardGame := Board of: 10 andWormholeAt: #(  ).
+
 
 
 	game := Game
@@ -317,7 +334,9 @@ GameTest >> testWhenGameCreatedWithInvalidBoardThenIsInvalid [
 	self
 		should: [
 			| boardGame |
+
 			boardGame := Board of: 0 andWormholeAt: #(  ).
+
 			Game
 				startWithShips: spaceShipsGame
 				board: boardGame
@@ -338,7 +357,9 @@ GameTest >> testWhenGameCreatedWithoutTwoOrMoreShipsThenIsInvalid [
 	spaceShip1 := Spaceship withName: 'Ship Num1' and: dicesGame maxRoll.
 	spaceShipsGame := OrderedCollection with: spaceShip1.
 
+
 	boardGame := Board of: 10 andWormholeAt: #(  ).
+
 
 
 
@@ -367,7 +388,9 @@ GameTest >> testWhenPlayTurnThenAdvancesShip [
 	spaceShip2 := Spaceship withName: 'Ship Num2' and: dicesGame maxRoll.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
+
 	boardGame := Board of: 10 andWormholeAt: #(  ).
+
 
 
 	game := Game
@@ -423,6 +446,7 @@ GameTest >> testWhenShipIsPenalizedThenSkipsTurnAndReducesPenalty [
 	dice1 := Die withSides: 6.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
 
+
 	spaceShip1 := Spaceship withName: 'Ship Num1' and: dicesGame maxRoll.
 	spaceShip2 := Spaceship withName: 'Ship Num2' and: dicesGame maxRoll.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
@@ -467,7 +491,9 @@ GameTest >> testWhenShipReachesGoalThenGameEnds [
 	spaceShip2 := Spaceship withName: 'Ship Num2' and: dicesGame maxRoll.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
+
 	boardGame := Board of: 1 andWormholeAt: #(  ).
+
 
 
 	game := Game
@@ -484,6 +510,7 @@ GameTest >> testWhenShipReachesGoalThenGameEnds [
 { #category : 'tests' }
 GameTest >> testWhenShipWinsByCompletingRequiredLapsThenEndsGame [
 
+
 	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame totalLaps game realShip1 |
 	dice1 := Die withSides: 1.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
@@ -495,6 +522,7 @@ GameTest >> testWhenShipWinsByCompletingRequiredLapsThenEndsGame [
 	boardGame := Board of: 3 andWormholeAt: #(  ).
 
 	totalLaps := 3.
+
 
 	game := Game
 		        startWithShips: spaceShipsGame
@@ -521,7 +549,9 @@ GameTest >> testWhenSpaceShipEndsTurnThenRotatesPlayerTurn [
 	spaceShip2 := Spaceship withName: 'Ship Num2' and: dicesGame maxRoll.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
+
 	boardGame := Board of: 5 andWormholeAt: #(  ).
+
 
 
 	game := Game
@@ -560,7 +590,9 @@ GameTest >> testWhenWinnerSpaceShipIsCorrectWhenGameEnds [
 	spaceShip2 := Spaceship withName: 'Ship Num2' and: dicesGame maxRoll.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
+
 	boardGame := Board of: 1 andWormholeAt: #(  ).
+
 
 
 	game := Game

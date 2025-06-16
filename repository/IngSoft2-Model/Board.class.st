@@ -17,10 +17,12 @@ Board class >> new [
 ]
 
 { #category : 'initialize' }
+
 Board class >> of: anAmountOfCells andWormholeAt: positions [
 
 	^ super new initializeWithCells: anAmountOfCells andWormholes: positions
 ]
+
 
 { #category : 'initialize' }
 Board >> applyEffectTo: aSpaceship [
@@ -82,6 +84,7 @@ Board >> cells [
 ]
 
 { #category : 'initialize' }
+
 Board >> effectAt: aPosition [
 	^ cells at: aPosition + 1
 
@@ -96,11 +99,13 @@ Board >> initializeCells [
 { #category : 'initialize' }
 Board >> initializeWithCells: aCount andWormholes: aCollection [
 
+
 	cellCount := aCount.
 	wormholes := aCollection.
 	self assertValidState.
 	self initializeCells
 ]
+
 
 { #category : 'initialize' }
 Board >> initializeWithoutEffectsWithCells: aCount wormholes: aCollection [
@@ -138,7 +143,9 @@ Board >> newPositionFrom: aPosition steps: steps [
     ^ self applyWormholeIfPresentAt: (aPosition + steps).
 ]
 
+
 { #category : 'moves' }
+
 Board >> newPositionFrom: aPosition steps: steps for: aLappedSpaceship [
     | position |
     position := (aPosition + steps) \\ cellCount.
@@ -149,7 +156,9 @@ Board >> newPositionFrom: aPosition steps: steps for: aLappedSpaceship [
 
 ]
 
+
 { #category : 'moves' }
+
 Board >> newPositionFrom: aPosition steps: steps for: aLappedSpaceship withRoll: roll [
 	| position effect |
 	position := (aPosition + steps) \\ cellCount.

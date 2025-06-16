@@ -2,11 +2,13 @@ Class {
 	#name : 'DiceCup',
 	#superclass : 'Object',
 	#instVars : [
+
 		'diceCollection'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
+
 
 { #category : 'validation' }
 DiceCup class >> validateMinimumDice: someDice [
@@ -25,10 +27,12 @@ DiceCup class >> with: someDice [
 	self validateMinimumDice: someDice.
 	
 	^ self new initializeWith: someDice 
+
 ]
 
 { #category : 'initialize' }
 DiceCup >> initializeWith: someDice [
+
 
 	diceCollection := someDice
 ]
@@ -40,7 +44,9 @@ DiceCup >> maxRoll [
 ]
 
 { #category : 'process actions' }
+
 DiceCup >> roll [
 
 	^ diceCollection sum: [ :die | die roll ]
 ]
+

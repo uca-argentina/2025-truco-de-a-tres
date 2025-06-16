@@ -85,7 +85,9 @@ Game >> initializeWithShips: someShips board: aBoard dice: someDices laps: aNumb
 
 	self validateMinimumSpaceShips: someShips.
 	self validateBoard: aBoard.
+
 	"DiceCup with: someDices."
+
 
 	spaceShips := someShips.
 	board := aBoard.
@@ -148,7 +150,9 @@ Game >> playTurn [
 		self setWantsToPassTurnFor: ship to: false.
 		ship restoreFuel.
 		^ self advanceTurn ].
+
 	steps := dice roll.
+
 
 	previousPosition := ship position.
 	newPosition := board newPositionFrom: ship position steps: steps.
@@ -192,7 +196,9 @@ Game >> reducePenaltyFor: aShip [
 	penalty := self findPenaltyFor: aShip.
 	penalty reduceTurn.
 	penalty hasPenalty ifFalse: [ penalizedShips remove: penalty ].
+
 	aShip restoreFuel
+
 ]
 
 { #category : 'testing' }
