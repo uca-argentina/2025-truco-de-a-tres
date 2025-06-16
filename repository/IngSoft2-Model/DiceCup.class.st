@@ -2,24 +2,38 @@ Class {
 	#name : 'DiceCup',
 	#superclass : 'Object',
 	#instVars : [
-		'dice',
-		'diceCup',
+
 		'diceCollection'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
+
+{ #category : 'validation' }
+DiceCup class >> validateMinimumDice: someDice [
+
+
+	(someDice isCollection and: [ someDice notEmpty ]) ifFalse: [
+		self error: 'At least one die is required to initialize the game' ].
+
+	"someDice ifNil: [
+		self error: 'At least one die is required to initialize the game' ]"
+]
+
 { #category : 'initalize' }
 DiceCup class >> with: someDice [
 
-	^ super new initializeWith: someDice 
+	self validateMinimumDice: someDice.
+	
+	^ self new initializeWith: someDice 
+
 ]
 
 { #category : 'initialize' }
 DiceCup >> initializeWith: someDice [
 
-	self validateMinimumDice: someDice.
+
 	diceCollection := someDice
 ]
 
@@ -30,14 +44,9 @@ DiceCup >> maxRoll [
 ]
 
 { #category : 'process actions' }
-DiceCup >> normalRoll [
+
+DiceCup >> roll [
 
 	^ diceCollection sum: [ :die | die roll ]
 ]
 
-{ #category : 'validation' }
-DiceCup >> validateMinimumDice: someDice [
-
-	someDice ifNil: [
-		self error: 'At least one die is required to initialize the game' ]
-]

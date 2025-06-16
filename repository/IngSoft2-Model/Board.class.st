@@ -17,10 +17,12 @@ Board class >> new [
 ]
 
 { #category : 'initialize' }
-Board class >> withCells: aCount andWormholes: aCollection [
-    ^ super new initializeWithCells: aCount andWormholes: aCollection.
 
+Board class >> of: anAmountOfCells andWormholeAt: positions [
+
+	^ super new initializeWithCells: anAmountOfCells andWormholes: positions
 ]
+
 
 { #category : 'initialize' }
 Board >> applyEffectTo: aSpaceship [
@@ -61,12 +63,13 @@ Board >> assertValidState [
 ]
 
 { #category : 'initialize' }
-Board >> canEnterPosition: aPosition withRoll: roll [
-	| effect |
-	effect := self effectAt: aPosition.
-	^ effect allowsEntryWithRoll: roll.
+Board >> calculateNewPositionFrom: current after: steps moves: aLappedSpaceship [
+	| newPosition |
+	newPosition := (current + steps) \\ cellCount.
 
+	(newPosition <= current) ifTrue: [ aLappedSpaceship addLap ].
 
+	^ newPosition
 ]
 
 { #category : 'initialize' }
@@ -81,16 +84,7 @@ Board >> cells [
 ]
 
 { #category : 'initialize' }
-Board >> circularPositionFrom: current steps: steps for: aLappedSpaceship [
-	| newPosition |
-	newPosition := (current + steps) \\ cellCount.
 
-	(newPosition <= current) ifTrue: [ aLappedSpaceship addLap ].
-
-	^ newPosition
-]
-
-{ #category : 'initialize' }
 Board >> effectAt: aPosition [
 	^ cells at: aPosition + 1
 
@@ -104,11 +98,14 @@ Board >> initializeCells [
 
 { #category : 'initialize' }
 Board >> initializeWithCells: aCount andWormholes: aCollection [
-    cellCount := aCount.
-    wormholes := aCollection.
-    self assertValidState.
-	 self initializeCells.
+
+
+	cellCount := aCount.
+	wormholes := aCollection.
+	self assertValidState.
+	self initializeCells
 ]
+
 
 { #category : 'initialize' }
 Board >> initializeWithoutEffectsWithCells: aCount wormholes: aCollection [
@@ -117,7 +114,7 @@ Board >> initializeWithoutEffectsWithCells: aCount wormholes: aCollection [
 	cells := (1 to: cellCount) collect: [:i | nil ].
 ]
 
-{ #category : 'initialize' }
+{ #category : 'validation' }
 Board >> isBoardValid [
     [ self assertValidState. true ] on: Error do: [ false ].
 ]
@@ -128,16 +125,27 @@ Board >> isGoalReachedAt: aPosition [
 ]
 
 { #category : 'initialize' }
+Board >> isPossibleToReach: aPosition after: roll [
+	| effect |
+	effect := self effectAt: aPosition.
+	^ effect allowsEntryWithRoll: roll.
+
+
+]
+
+{ #category : 'validation' }
 Board >> isValid [
     ^ [ self assertValidState. true ] on: Error do: [ false ].
 ]
 
-{ #category : 'initialize' }
+{ #category : 'moves' }
 Board >> newPositionFrom: aPosition steps: steps [
     ^ self applyWormholeIfPresentAt: (aPosition + steps).
 ]
 
-{ #category : 'initialize' }
+
+{ #category : 'moves' }
+
 Board >> newPositionFrom: aPosition steps: steps for: aLappedSpaceship [
     | position |
     position := (aPosition + steps) \\ cellCount.
@@ -148,7 +156,9 @@ Board >> newPositionFrom: aPosition steps: steps for: aLappedSpaceship [
 
 ]
 
-{ #category : 'initialize' }
+
+{ #category : 'moves' }
+
 Board >> newPositionFrom: aPosition steps: steps for: aLappedSpaceship withRoll: roll [
 	| position effect |
 	position := (aPosition + steps) \\ cellCount.
