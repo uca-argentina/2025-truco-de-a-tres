@@ -61,15 +61,6 @@ Board >> assertValidState [
 ]
 
 { #category : 'initialize' }
-Board >> canEnterPosition: aPosition withRoll: roll [
-	| effect |
-	effect := self effectAt: aPosition.
-	^ effect allowsEntryWithRoll: roll.
-
-
-]
-
-{ #category : 'initialize' }
 Board >> cellCount [
     ^ cellCount
 ]
@@ -126,6 +117,15 @@ Board >> isBoardValid [
 { #category : 'initialize' }
 Board >> isGoalReachedAt: aPosition [
     ^ aPosition >= cellCount
+]
+
+{ #category : 'initialize' }
+Board >> isPossibleToReach: aPosition after: roll [
+	| effect |
+	effect := self effectAt: aPosition.
+	^ effect allowsEntryWithRoll: roll.
+
+
 ]
 
 { #category : 'validation' }
