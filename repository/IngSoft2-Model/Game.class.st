@@ -148,7 +148,7 @@ Game >> playTurn [
 		self setWantsToPassTurnFor: ship to: false.
 		ship restoreFuel.
 		^ self advanceTurn ].
-	steps := dice normalRoll.
+	steps := dice roll.
 
 	previousPosition := ship position.
 	newPosition := board newPositionFrom: ship position steps: steps.
