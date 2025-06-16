@@ -49,19 +49,19 @@ Spaceship >> lap [
 
 ]
 
-{ #category : 'initialize' }
+{ #category : 'methods' }
 Spaceship >> moveBack: steps [
     position := (position - steps) max: 0.
 
 ]
 
-{ #category : 'initialize' }
+{ #category : 'methods' }
 Spaceship >> moveForward: steps [
 	position := position + steps.
 
 ]
 
-{ #category : 'initialize' }
+{ #category : 'methods' }
 Spaceship >> moveTo: aPosition [
     position := aPosition
 
@@ -77,6 +77,6 @@ Spaceship >> position [
     ^ position
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'methods' }
 Spaceship >> restoreFuel [
 ]
