@@ -34,7 +34,6 @@ GameTest >> testGameEndsWithPlayUntilFinish [
 	boardGame := Board withCells: 25 andWormholes: #(  ).
 
 	game := Game
-
 		        startWithShips: spaceShipsGame
 		        board: boardGame
 		        dice: dicesGame

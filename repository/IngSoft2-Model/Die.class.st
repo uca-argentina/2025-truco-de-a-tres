@@ -2,8 +2,6 @@ Class {
 	#name : 'Die',
 	#superclass : 'Object',
 	#instVars : [
-		'side',
-		'dado',
 		'sides'
 	],
 	#category : 'IngSoft2-Model',
@@ -25,7 +23,7 @@ Die >> initializeWithSides: aNumberOfSides [
     sides := aNumberOfSides.
 ]
 
-{ #category : 'initialize' }
+{ #category : 'method' }
 Die >> roll [
 
 	^ sides atRandom

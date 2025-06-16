@@ -85,7 +85,7 @@ Game >> initializeWithShips: someShips board: aBoard dice: someDices laps: aNumb
 
 	self validateMinimumSpaceShips: someShips.
 	self validateBoard: aBoard.
-	DiceCup with: someDices.
+	"DiceCup with: someDices."
 
 	spaceShips := someShips.
 	board := aBoard.
