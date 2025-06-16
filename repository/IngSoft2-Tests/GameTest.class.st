@@ -46,6 +46,23 @@ GameTest >> testAdvanceTurnCyclesCorrectly [
     self assert: game currentTurnIndex equals: 1.
 ]
 
+{ #category : 'accessing' }
+GameTest >> testCurrentShipReturnsCorrectShip [
+
+    | ship1 ship2 board dice game |
+
+    ship1 := Spaceship withName: 'First' and: 4.
+    ship2 := Spaceship withName: 'Second' and: 4.
+    board := Board of: 10 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+
+    self assert: game currentShip equals: ship1.
+    game advanceTurn.
+    self assert: game currentShip equals: ship2.
+]
+
 { #category : 'tests' }
 GameTest >> testGameEndsWithPlayUntilFinish [
 
@@ -105,6 +122,42 @@ GameTest >> testGameReturnsFinalPositionsOfSpaceships [
 
 	self assert: (positions at: spaceShip1) equals: finalPositionShip1.
 	self assert: (positions at: spaceShip2) equals: finalPositionShip2
+]
+
+{ #category : 'accessing' }
+GameTest >> testHasWonByLapsReturnsFalseIfNotEnoughLaps [
+
+    | ship1 ship2 board dice game |
+
+    ship1 := Spaceship withName: 'Almost' and: 4.
+    ship2 := Spaceship withName: 'Filler' and: 4.
+    board := Board of: 10 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 2.
+
+    ship1 moveTo: 10.
+    game registerLapIfNeededFor: ship1 from: 9 withSteps: 1.
+
+    self deny: (game hasWonByLaps: ship1).
+]
+
+{ #category : 'accessing' }
+GameTest >> testHasWonByLapsReturnsTrueWhenEnoughLaps [
+
+    | ship1 ship2 board dice game |
+
+    ship1 := Spaceship withName: 'Winner' and: 4.
+    ship2 := Spaceship withName: 'Loser' and: 4.
+    board := Board of: 10 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+
+    ship1 moveTo: 10.
+    game registerLapIfNeededFor: ship1 from: 9 withSteps: 1.
+
+    self assert: (game hasWonByLaps: ship1).
 ]
 
 { #category : 'tests' }
@@ -260,6 +313,59 @@ GameTest >> testRankingReturnsShipsOrderedByLapsAndPosition [
 	self assert: ranking first ship equals: realShip1.
 	self assert: ranking second ship equals: realShip2.
 	self assert: ranking third ship equals: realShip3
+]
+
+{ #category : 'accessing' }
+GameTest >> testReducePenaltyDecreasesTurnCount [
+
+    | ship1 ship2 board dice game |
+
+    ship1 := Spaceship withName: 'PenaltyShip' and: 4.
+    ship2 := Spaceship withName: 'Other' and: 4.
+    board := Board of: 10 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+    game penalize: ship1 forTurns: 2.
+    game reducePenaltyFor: ship1.
+    game reducePenaltyFor: ship1.
+
+    self deny: (game isPenalized: ship1).
+]
+
+{ #category : 'accessing' }
+GameTest >> testRegisterLapWhenCrossesFinishLine [
+
+    | ship1 ship2 board dice game |
+
+    ship1 := Spaceship withName: 'Runner' and: 4.
+    ship2 := Spaceship withName: 'Other' and: 4.
+    board := Board of: 10 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+
+    ship1 moveTo: 9.
+    game registerLapIfNeededFor: ship1 from: 9 withSteps: 2.
+
+    self assert: ((game lapTrackerFor: ship1) lapCount) equals: 1.
+]
+
+{ #category : 'accessing' }
+GameTest >> testSetAndQueryWantsToPassTurn [
+
+    | ship1 ship2 board dice game |
+
+    ship1 := Spaceship withName: 'Picky' and: 4.
+    ship2 := Spaceship withName: 'Spare' and: 4.
+    board := Board of: 10 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+    self deny: (game wantsToPassTurn: ship1).
+
+    game setWantsToPassTurnFor: ship1 to: true.
+    self assert: (game wantsToPassTurn: ship1).
 ]
 
 { #category : 'accessing' }
