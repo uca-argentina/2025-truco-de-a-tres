@@ -27,10 +27,12 @@ Die >> initializeWithSides: aNumberOfSides [
 
 { #category : 'initialize' }
 Die >> roll [
-	^ (1 to: (self sides)) atRandom.
+
+	^ sides atRandom
 ]
 
 { #category : 'initialize' }
 Die >> sides [
-	^ sides.
+
+	^ sides
 ]
