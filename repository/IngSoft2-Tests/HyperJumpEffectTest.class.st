@@ -18,3 +18,26 @@ HyperJumpEffectTest >> testApplyToMovesShipForwardBy3 [
 
     self assert: ship position equals: 5.
 ]
+
+{ #category : 'tests' }
+HyperJumpEffectTest >> testNextJumpValueCyclesCorrectly [
+
+    HyperJumpEffect resetJumpIndex.
+
+    self assert: HyperJumpEffect nextJumpValue equals: 3.
+    self assert: HyperJumpEffect nextJumpValue equals: 5.
+    self assert: HyperJumpEffect nextJumpValue equals: 2.
+    self assert: HyperJumpEffect nextJumpValue equals: 4.
+    self assert: HyperJumpEffect nextJumpValue equals: 3.
+]
+
+{ #category : 'tests' }
+HyperJumpEffectTest >> testResetJumpIndexRestartsSequence [
+
+    HyperJumpEffect resetJumpIndex.
+    HyperJumpEffect nextJumpValue.
+    HyperJumpEffect nextJumpValue.
+    HyperJumpEffect resetJumpIndex.
+
+    self assert: HyperJumpEffect nextJumpValue equals: 3.
+]
