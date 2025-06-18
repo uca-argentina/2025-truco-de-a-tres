@@ -15,14 +15,9 @@ Class {
 }
 
 { #category : 'initialize' }
-Spaceship class >> new [
-    self error: 'Use Spaceship withName: instead.'.
-]
-
-{ #category : 'initialize' }
 Spaceship class >> withName: aName and: aMaxRoll [
 
-	^ super new initializeWith: aName and: aMaxRoll.
+	^ self new initializeWith: aName and: aMaxRoll.
 ]
 
 { #category : 'initialize' }

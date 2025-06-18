@@ -82,12 +82,6 @@ SpaceshipTest >> testMoveToChangesPosition [
 ]
 
 { #category : 'tests - instance' }
-SpaceshipTest >> testNewRaisesError [
-
-    self should: [ Spaceship new ] raise: Error.
-]
-
-{ #category : 'tests - instance' }
 SpaceshipTest >> testRestoreFuelRestoresToMax [
 
     | ship |
