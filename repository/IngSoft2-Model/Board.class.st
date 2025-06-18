@@ -11,17 +11,12 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'instance creation' }
-Board class >> new [
-    self error: 'Use Board of:andWormholeAt: instead'.
-]
-
 { #category : 'initialize' }
 Board class >> of: anAmountOfCells andWormholeAt: positions [
 
 	self validateCellCount: anAmountOfCells.
 	self validateWormholes: positions.
-	^ super new
+	^ self new
 		  initializeWithCells: anAmountOfCells
 		  andWormholes: positions
 ]
