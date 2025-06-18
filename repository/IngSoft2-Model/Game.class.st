@@ -29,7 +29,23 @@ Game class >> new [
 { #category : 'initialize' }
 Game class >> startWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps [
 
+	self validateMinimumSpaceShips: someShips.
+	self validateBoard: aBoard.
 	^ super new initializeWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps.
+]
+
+{ #category : 'initialize' }
+Game class >> validateBoard: aBoard [
+
+    aBoard isValid ifFalse: [ self error: 'Board is invalid' ].
+]
+
+{ #category : 'initialize' }
+Game class >> validateMinimumSpaceShips: someShips [
+
+	someShips size < 2 ifTrue: [
+		self error: 'Need 2 space ships or more to initialize the game' 
+	].
 ]
 
 { #category : 'process actions' }
@@ -82,9 +98,6 @@ Game >> hasWonByLaps: aShip [
 
 { #category : 'initialization' }
 Game >> initializeWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps [
-
-	self validateMinimumSpaceShips: someShips.
-	self validateBoard: aBoard.
 
 	"DiceCup with: someDices."
 
@@ -254,25 +267,10 @@ Game >> statusFor: aShip [
 ]
 
 { #category : 'validation' }
-Game >> validateBoard: aBoard [
-
-    aBoard isValid ifFalse: [ self error: 'Board is invalid' ].
-
-]
-
-{ #category : 'validation' }
 Game >> validateIsCurrentPlayer: aSpaceship [
 
 	self currentShip = aSpaceship ifFalse: [
 		self error: 'It is not the turn of this spaceship'
-	].
-]
-
-{ #category : 'validation' }
-Game >> validateMinimumSpaceShips: someShips [
-
-	someShips size < 2 ifTrue: [
-		self error: 'Need 2 space ships or more to initialize the game' 
 	].
 ]
 

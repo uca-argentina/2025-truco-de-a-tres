@@ -11,7 +11,7 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'initialize' }
+{ #category : 'instance creation' }
 Board class >> new [
     self error: 'Use Board of:andWormholeAt: instead'.
 ]
@@ -19,7 +19,26 @@ Board class >> new [
 { #category : 'initialize' }
 Board class >> of: anAmountOfCells andWormholeAt: positions [
 
-	^ super new initializeWithCells: anAmountOfCells andWormholes: positions.
+	self validateCellCount: anAmountOfCells.
+	self validateWormholes: positions.
+	^ super new
+		  initializeWithCells: anAmountOfCells
+		  andWormholes: positions
+]
+
+{ #category : 'initialize' }
+Board class >> validateCellCount: aCount [
+
+	(aCount isInteger and: [ aCount > 0 ]) ifFalse: [
+		self error: 'Board must have a positive number of cells' ]
+]
+
+{ #category : 'initialize' }
+Board class >> validateWormholes: aCollection [
+
+	(aCollection isCollection and: [
+		 aCollection allSatisfy: [ :each | each isValid ] ]) ifFalse: [
+		self error: 'All wormholes must be valid objects' ]
 ]
 
 { #category : 'initialize' }
@@ -103,8 +122,6 @@ Board >> initializeCells [
 Board >> initializeWithCells: aCount andWormholes: aCollection [
 	cellCount := aCount.
 	wormholes := aCollection.
-	
-	self assertValidState.
 	self initializeCells.
 ]
 

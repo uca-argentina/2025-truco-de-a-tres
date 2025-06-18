@@ -5,6 +5,16 @@ Class {
 	#package : 'IngSoft2-Tests'
 }
 
+{ #category : 'asserting' }
+BoardTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessage [
+
+	self
+		should: anErrorBlock
+		raise: anErrorClass
+		withExceptionDo: [ :error |
+		self assert: error messageText equals: errorMessage ]
+]
+
 { #category : 'tests - instance' }
 BoardTest >> testApplyEffectToDoesNothingIfNoEffect [
 
@@ -244,21 +254,32 @@ BoardTest >> testHyperJumpEffectJumpsShipForward [
 
 { #category : 'tests - instance' }
 BoardTest >> testInvalidBoardCellCountRaisesError [
-    self should: [
-        Board new initializeWithCells: 0 andWormholes: {}
-    ] raise: Error.
+
+	self
+		should: [Board of: 0 andWormholeAt: #(). ]
+		raise: Error
+		withMessageText: 'Board must have a positive number of cells'
 ]
 
 { #category : 'tests - instance' }
 BoardTest >> testInvalidBoardWithInvalidWormholeRaisesError [
 
-    | fakeWormhole |
+	| fakeWormhole |
+	fakeWormhole := Object new.
 
-    fakeWormhole := Object new.
+	self
+		should: [ Board of: 10 andWormholeAt: fakeWormhole ]
+		raise: Error
+		withMessageText: 'All wormholes must be valid objects'
+]
 
-    self should: [
-        Board new initializeWithCells: 5 andWormholes: { fakeWormhole }
-    ] raise: Error.
+{ #category : 'tests - instance' }
+BoardTest >> testInvalidCreationBoard [
+
+	self
+		should: [ Board new initializeWithCells: 10 andWormholes: {  } ]
+		raise: Error
+		withMessageText: 'Use Board of:andWormholeAt: instead'
 ]
 
 { #category : 'tests - instance' }
