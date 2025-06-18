@@ -22,11 +22,6 @@ Class {
 }
 
 { #category : 'initialize' }
-Game class >> new [
-    self error: 'Use Game startWithShips:board:dice: instead.'.
-]
-
-{ #category : 'initialize' }
 Game class >> startWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps [
 
 	self validateMinimumSpaceShips: someShips.

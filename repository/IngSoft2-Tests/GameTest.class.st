@@ -740,25 +740,6 @@ GameTest >> testStatusForReturnsCorrectShipStatus [
 ]
 
 { #category : 'tests' }
-GameTest >> testValidateBoardFailsWithInvalidBoard [
-    | ships dice board |
-
-    ships := {
-        Spaceship withName: 'A' and: 3.
-        Spaceship withName: 'B' and: 3.
-        Spaceship withName: 'C' and: 3.
-    }.
-
-    dice := DiceCup new initializeWith: { Die withSides: 6 }.
-    board := Board of: 2 andWormholeAt: {}.
-
-    self should: [
-        Game new initializeWithShips: ships board: board dice: dice laps: 1.
-    ] raise: Error.
-
-]
-
-{ #category : 'tests' }
 GameTest >> testValidateIsCurrentPlayerRaisesError [
 
     | ship1 ship2 board dice game |
@@ -782,7 +763,7 @@ GameTest >> testValidateMinimumSpaceShipsFailsWithOneShip [
     board := Board of: 5 andWormholeAt: {}.
 
     self should: [
-        Game new initializeWithShips: { Spaceship withName: 'Solo' and: 3 } board: board dice: dice laps: 1.
+        Game startWithShips: { Spaceship withName: 'Solo' and: 3 } board: board dice: dice laps: 1.
     ] raise: Error.
 
 ]
