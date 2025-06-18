@@ -31,7 +31,7 @@ Game class >> startWithShips: someShips board: aBoard dice: someDices laps: aNum
 
 	self validateMinimumSpaceShips: someShips.
 	self validateBoard: aBoard.
-	^ super new initializeWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps.
+	^ self new initializeWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps.
 ]
 
 { #category : 'initialize' }
@@ -99,16 +99,13 @@ Game >> hasWonByLaps: aShip [
 { #category : 'initialization' }
 Game >> initializeWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps [
 
-	"DiceCup with: someDices."
-
-
 	spaceShips := someShips.
 	board := aBoard.
 	dice := someDices.
 	totalLaps := aNumberLaps.
 	turn := 1. "Amounts of turns played"
 	currentTurnIndex := 1. "Es el indice del jugador que debe jugar" "Seria el indice de la ordered collection para saber de que nave es el turno. EJ: si currentTurnIndex es 1 entonces es el turno de la primer nave que esta en el orderedCollection"
-	penalizedShips  := OrderedCollection new.
+	penalizedShips := OrderedCollection new.
 	wantsToPassTurn := Dictionary new.
 	lappedShips := spaceShips collect: [ :ship | LappedShip for: ship ].
 	winner := nil
