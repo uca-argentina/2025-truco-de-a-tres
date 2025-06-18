@@ -11,20 +11,26 @@ Class {
 
 { #category : 'class initialization' }
 HyperJumpEffect class >> initialize [
+
 	JumpValues := #(3 5 2 4).
 	CurrentIndex := 1.
 ]
 
 { #category : 'class initialization' }
 HyperJumpEffect class >> nextJumpValue [
+
 	| value |
+	
 	value := JumpValues at: CurrentIndex.
+	
 	CurrentIndex := (CurrentIndex \\ JumpValues size) + 1.
-	^ value
+	
+	^ value.
 ]
 
 { #category : 'class initialization' }
 HyperJumpEffect class >> resetJumpIndex [
+
 	CurrentIndex := 1.
 ]
 

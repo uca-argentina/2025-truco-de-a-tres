@@ -10,19 +10,21 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 PenalizedShip class >> for: aShip withTurns: aNumber [
-^self new initializeFor: aShip withTurns: aNumber.
+
+	^ self new initializeFor: aShip withTurns: aNumber.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 PenalizedShip class >> noPenaltyFor: aShip [
     ^ self for: aShip withTurns: 0.
 ]
 
 { #category : 'testing' }
 PenalizedShip >> hasPenalty [
-	^ turnsRemaining > 0
+
+	^ turnsRemaining > 0.
 ]
 
 { #category : 'initialize' }
@@ -30,23 +32,24 @@ PenalizedShip >> initializeFor: aShip withTurns: aNumber [
 
 	ship := aShip.
 	turnsRemaining := aNumber.
-	^self
+	
+	^ self.
 ]
 
 { #category : 'accessing' }
 PenalizedShip >> isFor: aShip [
 
-	^ ship = aShip
+	^ ship = aShip.
 ]
 
 { #category : 'process actions' }
 PenalizedShip >> reduceTurn [
 
-	turnsRemaining := turnsRemaining - 1
+	turnsRemaining := turnsRemaining - 1.
 ]
 
 { #category : 'accessing' }
 PenalizedShip >> ship [
 
-	^ ship
+	^ ship.
 ]
