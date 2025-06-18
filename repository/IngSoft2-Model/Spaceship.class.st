@@ -2,10 +2,8 @@ Class {
 	#name : 'Spaceship',
 	#superclass : 'Object',
 	#instVars : [
-		'name',
 		'position',
 		'playerName',
-		'penaltyTurns',
 		'maxFuel',
 		'fuel',
 		'lap'
