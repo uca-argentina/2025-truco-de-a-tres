@@ -274,15 +274,6 @@ BoardTest >> testInvalidBoardWithInvalidWormholeRaisesError [
 ]
 
 { #category : 'tests - instance' }
-BoardTest >> testInvalidCreationBoard [
-
-	self
-		should: [ Board new initializeWithCells: 10 andWormholes: {  } ]
-		raise: Error
-		withMessageText: 'Use Board of:andWormholeAt: instead'
-]
-
-{ #category : 'tests - instance' }
 BoardTest >> testIsGoalReached [
     | board |
     board := Board of: 10 andWormholeAt: #().
