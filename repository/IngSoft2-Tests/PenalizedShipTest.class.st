@@ -6,6 +6,20 @@ Class {
 }
 
 { #category : 'tests' }
+PenalizedShipTest >> testDecreaseTurn [
+
+    | ship penalized |
+
+    ship := Spaceship withName: 'Apollo' and: 4.
+
+    penalized := PenalizedShip for: ship withTurns: 2.
+    penalized decreaseTurns.
+    penalized decreaseTurns.
+
+    self deny: (penalized hasPenalty).
+]
+
+{ #category : 'tests' }
 PenalizedShipTest >> testInitializationWithPenalty [
 
     | ship penalized |
@@ -26,20 +40,6 @@ PenalizedShipTest >> testInitializationWithoutPenalty [
     penalized := PenalizedShip noPenaltyFor: ship.
 
     self assert: (penalized isFor: ship).
-    self deny: (penalized hasPenalty).
-]
-
-{ #category : 'tests' }
-PenalizedShipTest >> testReduceTurn [
-
-    | ship penalized |
-
-    ship := Spaceship withName: 'Apollo' and: 4.
-
-    penalized := PenalizedShip for: ship withTurns: 2.
-    penalized reduceTurn.
-    penalized reduceTurn.
-
     self deny: (penalized hasPenalty).
 ]
 

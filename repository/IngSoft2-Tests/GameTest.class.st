@@ -133,7 +133,7 @@ GameTest >> testGameReturnsFinalPositionsOfSpaceships [
 
 	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game positions finalPositionShip1 finalPositionShip2 |
 
-	dice1 := Die withSides: 100. "Al ser 10 cells con un dado de 100 termina en una tirada"
+	dice1 := Die withSides: 100.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
 	
 	spaceShip1 := Spaceship withName: 'Ship Num1' and: dicesGame maxRoll.
