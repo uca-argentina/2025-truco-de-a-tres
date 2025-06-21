@@ -57,13 +57,9 @@ Board >> applyEffectsTo: aSpaceship [
 
 { #category : 'initialize' }
 Board >> applyWormholeIfPresentAt: aPosition [
-    | matches |
-
-    matches := wormholes select: [ :w | w hasEntryAt: aPosition ].
-
-    ^ matches
-        ifEmpty: [ aPosition ]
-        ifNotEmpty: [ matches first exit ].
+    ^ (wormholes detect: [ :w | w hasEntryAt: aPosition ] ifNone: [ nil ])
+        ifNil: [ aPosition ]
+        ifNotNil: [ :w | w exit ]
 ]
 
 { #category : 'initialize' }
