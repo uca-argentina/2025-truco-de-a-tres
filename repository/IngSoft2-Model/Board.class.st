@@ -46,16 +46,6 @@ Board >> applyEffectTo: aSpaceship [
 ]
 
 { #category : 'initialize' }
-Board >> applyEffectsTo: aSpaceship [
-
-    | currentCell |
-
-    currentCell := cells at: aSpaceship position.
-    currentCell applyEffectTo: aSpaceship.
-
-]
-
-{ #category : 'initialize' }
 Board >> applyWormholeIfPresentAt: aPosition [
     ^ (wormholes detect: [ :w | w hasEntryAt: aPosition ] ifNone: [ nil ])
         ifNil: [ aPosition ]
@@ -97,6 +87,39 @@ Board >> cells [
 
 ]
 
+{ #category : 'moves' }
+Board >> determineNewPositionFrom: aPosition after: steps [
+    ^ self applyWormholeIfPresentAt: (aPosition + steps).
+]
+
+{ #category : 'moves' }
+Board >> determineNewPositionFrom: aPosition after: steps for: aLappedSpaceship [
+    | position |
+
+    position := (aPosition + steps) \\ cellCount.
+    
+    (position <= aPosition) ifTrue: [  aLappedSpaceship addLap ].
+    
+    ^ self applyWormholeIfPresentAt: position.
+
+]
+
+{ #category : 'moves' }
+Board >> determineNewPositionFrom: aPosition after: steps for: aLappedSpaceship withRoll: roll [
+	| position effect |
+	
+	position := (aPosition + steps) \\ cellCount.
+
+	(position <= aPosition) ifTrue: [  aLappedSpaceship addLap ].
+
+	effect := cells at: position + 1.
+	
+	(effect allowsEntryWithRoll: roll)
+		ifTrue: [ ^ position ]
+		ifFalse: [ ^ aPosition ].
+
+]
+
 { #category : 'initialize' }
 Board >> effectAt: aPosition [
 	^ cells at: aPosition + 1
@@ -121,53 +144,9 @@ Board >> isGoalReachedAt: aPosition [
     ^ aPosition >= cellCount.
 ]
 
-{ #category : 'initialize' }
-Board >> isPossibleToReach: aPosition after: roll [
-	| effect |
-	
-	effect := self effectAt: aPosition.
-	
-	^ effect allowsEntryWithRoll: roll.
-
-
-]
-
 { #category : 'validation' }
 Board >> isValid [
     ^ [ self assertValidState. true ] on: Error do: [ false ].
-]
-
-{ #category : 'moves' }
-Board >> newPositionFrom: aPosition steps: steps [
-    ^ self applyWormholeIfPresentAt: (aPosition + steps).
-]
-
-{ #category : 'moves' }
-Board >> newPositionFrom: aPosition steps: steps for: aLappedSpaceship [
-    | position |
-
-    position := (aPosition + steps) \\ cellCount.
-    
-    (position <= aPosition) ifTrue: [  aLappedSpaceship addLap ].
-    
-    ^ self applyWormholeIfPresentAt: position.
-
-]
-
-{ #category : 'moves' }
-Board >> newPositionFrom: aPosition steps: steps for: aLappedSpaceship withRoll: roll [
-	| position effect |
-	
-	position := (aPosition + steps) \\ cellCount.
-
-	(position <= aPosition) ifTrue: [  aLappedSpaceship addLap ].
-
-	effect := cells at: position + 1.
-	
-	(effect allowsEntryWithRoll: roll)
-		ifTrue: [ ^ position ]
-		ifFalse: [ ^ aPosition ].
-
 ]
 
 { #category : 'initialize' }

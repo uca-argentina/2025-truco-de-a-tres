@@ -66,12 +66,6 @@ Spaceship >> moveTo: aPosition [
 ]
 
 { #category : 'initialize' }
-Spaceship >> playerName [
-
-    ^ playerName.
-]
-
-{ #category : 'initialize' }
 Spaceship >> position [
 
     ^ position.

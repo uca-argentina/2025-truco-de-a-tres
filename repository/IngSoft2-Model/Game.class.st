@@ -62,20 +62,9 @@ Game >> currentShip [
 ]
 
 { #category : 'accessing' }
-Game >> currentTurn [
-
-	^ turn
-]
-
-{ #category : 'accessing' }
 Game >> currentTurnIndex [
 
 	^ currentTurnIndex 
-]
-
-{ #category : 'accessing' }
-Game >> dice [
-    ^ dice
 ]
 
 { #category : 'testing' }
@@ -160,7 +149,7 @@ Game >> playTurn [
 
 
 	previousPosition := ship position.
-	newPosition := board newPositionFrom: ship position steps: steps.
+	newPosition := board determineNewPositionFrom: ship position after: steps.
 	ship moveTo: newPosition.
 
 	self

@@ -90,16 +90,6 @@ Wormhole >> isValid [
 		  do: [ false ]
 ]
 
-{ #category : 'validation' }
-Wormhole >> isWormholeValid [
-
-	^ [
-	  self class validatePositionIsNotTheSame: positionA and: positionB.
-	  true ]
-		  on: Error
-		  do: [ false ]
-]
-
 { #category : 'initialize' }
 Wormhole >> positionA [
 
