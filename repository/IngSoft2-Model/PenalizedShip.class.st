@@ -21,6 +21,12 @@ PenalizedShip class >> noPenaltyFor: aShip [
     ^ self for: aShip withTurns: 0.
 ]
 
+{ #category : 'initialize' }
+PenalizedShip >> decreaseTurns [
+
+	turnsRemaining := turnsRemaining - 1.
+]
+
 { #category : 'testing' }
 PenalizedShip >> hasPenalty [
 
@@ -40,12 +46,6 @@ PenalizedShip >> initializeFor: aShip withTurns: aNumber [
 PenalizedShip >> isFor: aShip [
 
 	^ ship = aShip.
-]
-
-{ #category : 'process actions' }
-PenalizedShip >> reduceTurn [
-
-	turnsRemaining := turnsRemaining - 1.
 ]
 
 { #category : 'accessing' }

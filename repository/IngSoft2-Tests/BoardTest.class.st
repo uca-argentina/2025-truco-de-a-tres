@@ -103,6 +103,16 @@ BoardTest >> testBlackHoleEffectMovesSpaceshipBackwards [
 ]
 
 { #category : 'tests - instance' }
+BoardTest >> testBoardCellCountIsCorrect [
+    | board size |
+
+    size := 7.
+    board := Board of: size andWormholeAt: #().
+
+    self assert: board cells size equals: size.
+]
+
+{ #category : 'tests - instance' }
 BoardTest >> testBoardCellsContainRecognizedEffects [
 	| board validClasses |
 	validClasses := { BlackHoleEffect. HyperGravityEffect }.
@@ -141,8 +151,8 @@ BoardTest >> testBoardPreventsEntryToHyperGravityCellWithLowRoll [
 	board cells at: 4 put: effect. "posición 3 → índice 4 (1-based)"
 
 	newPosition := board 
-		newPositionFrom: ship position 
-		steps: 1 
+		determineNewPositionFrom: ship position 
+		after: 1 
 		for: lappedShip  "Pasar LappedShip para tracking de vueltas"
 		withRoll: 2.
 
@@ -190,7 +200,7 @@ BoardTest >> testHyperGravityAllowsEntryWhenRollIsSufficient [
 	effect requiredRoll: 4.
 	board cells at: 4 put: effect.
 
-	newPosition := board newPositionFrom: ship position steps: 1 for: (LappedShip for: ship) withRoll: 5.
+	newPosition := board determineNewPositionFrom: ship position after: 1 for: (LappedShip for: ship) withRoll: 5.
 	self assert: newPosition equals: 3.
 
 	ship moveTo: newPosition.
@@ -232,8 +242,8 @@ BoardTest >> testHyperJumpEffectJumpsShipForward [
 	self assert: ship1 position equals: 5.
 
 	newPosition := board 
-		newPositionFrom: ship1 position 
-		steps: 1 
+		determineNewPositionFrom: ship1 position 
+		after: 1 
 		for: lappedShip1 
 		withRoll: 4.
 	self assert: newPosition equals: 6.
@@ -382,7 +392,7 @@ BoardTest >> testNewPositionWithWormhole [
 
 	ship := Spaceship withName: 'Test' and: 4.
 
-	self assert: (board newPositionFrom: 2 steps: 4 for: ship) equals: 20.
+	self assert: (board determineNewPositionFrom: 2 after: 4 for: ship) equals: 20.
 
 ]
 
@@ -394,7 +404,7 @@ BoardTest >> testNewPositionWithoutWormhole [
 
 	ship := Spaceship withName: 'Test' and: 4.
 
-	self assert: (board newPositionFrom: 2 steps: 2 for: ship) equals: 4.
+	self assert: (board determineNewPositionFrom: 2 after: 2 for: ship) equals: 4.
 
 ]
 
