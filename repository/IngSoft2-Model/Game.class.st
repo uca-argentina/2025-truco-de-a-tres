@@ -210,7 +210,7 @@ Game >> reducePenaltyFor: aShip [
 	| penalty |
 	
 	penalty := self findPenaltyFor: aShip.
-	penalty reduceTurn.
+	penalty decreaseTurns.
 	penalty hasPenalty ifFalse: [ penalizedShips remove: penalty ].
 
 	aShip restoreFuel.
