@@ -287,7 +287,7 @@ GameTest >> testPlayTurnHandlesPassTurnCorrectly [
         dice: dice
         laps: 1.
 
-    game setWantsToPassTurnFor: ship1 to: true.
+    game markShipAsWantingToPassTurn: ship1 to: true.
     game playTurn.
 
     self assert: game currentShip equals: ship2.
@@ -512,7 +512,7 @@ GameTest >> testSetAndQueryWantsToPassTurn [
     game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
     self deny: (game wantsToPassTurn: ship1).
 
-    game setWantsToPassTurnFor: ship1 to: true.
+    game markShipAsWantingToPassTurn: ship1 to: true.
     self assert: (game wantsToPassTurn: ship1).
 ]
 
@@ -939,7 +939,7 @@ GameTest >> testWhenShipDecidesToPassTurnThenSkipTurn [
 	
 	game playTurn.
 	game playTurn.
-	game setWantsToPassTurnFor: realShip1 to: true.
+	game markShipAsWantingToPassTurn: realShip1 to: true.
 	game playTurn.
 	
 	self assert: game currentShip equals: game spaceShips second.
