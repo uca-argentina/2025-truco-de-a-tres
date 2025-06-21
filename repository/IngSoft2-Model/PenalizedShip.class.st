@@ -3,8 +3,7 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'ship',
-		'turnsRemaining',
-		'penalizedShips'
+		'turnsRemaining'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
