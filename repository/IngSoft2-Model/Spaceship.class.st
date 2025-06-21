@@ -13,7 +13,7 @@ Class {
 }
 
 { #category : 'initialize' }
-Spaceship class >> withName: aName and: aMaxRoll [
+Spaceship class >> named: aName and: aMaxRoll [
 
 	^ self new initializeWith: aName and: aMaxRoll.
 ]

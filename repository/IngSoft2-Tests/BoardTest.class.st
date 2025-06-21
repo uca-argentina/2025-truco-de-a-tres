@@ -20,7 +20,7 @@ BoardTest >> testApplyEffectToDoesNothingIfNoEffect [
 
     | board ship cells |
 
-    ship := Spaceship withName: 'Ship' and: 4.
+    ship := Spaceship named: 'Ship' and: 4.
     ship moveTo: 2.
 
     board := Board of: 5 andWormholeAt: {}.
@@ -65,9 +65,9 @@ BoardTest >> testAtomicBombEffectResetsPositionsButKeepsLaps [
 
 	effect := AtomicBombEffect new.
 
-	ship1 := Spaceship withName: 'Red' and: dicesGame maxRoll.
-	ship2 := Spaceship withName: 'Blue' and: dicesGame maxRoll.
-	ship3 := Spaceship withName: 'Green' and: dicesGame maxRoll.
+	ship1 := Spaceship named: 'Red' and: dicesGame maxRoll.
+	ship2 := Spaceship named: 'Blue' and: dicesGame maxRoll.
+	ship3 := Spaceship named: 'Green' and: dicesGame maxRoll.
 
 	ship1 moveTo: 6.
 	ship2 moveTo: 3.
@@ -92,7 +92,7 @@ BoardTest >> testBlackHoleEffectMovesSpaceshipBackwards [
 
 	board := Board of: 5 andWormholeAt: #().
 
-	ship := Spaceship withName: 'Lucas' and: 4.
+	ship := Spaceship named: 'Lucas' and: 4.
 	ship moveTo: 3.
 
 	board cells at: 4 put: BlackHoleEffect new.
@@ -142,7 +142,7 @@ BoardTest >> testBoardPreventsEntryToHyperGravityCellWithLowRoll [
 	board := Board of: 5 andWormholeAt: #().
 
 	
-	ship := Spaceship withName: 'Lucas' and: dicesGame maxRoll.
+	ship := Spaceship named: 'Lucas' and: dicesGame maxRoll.
 	ship moveTo: 2.
 	lappedShip := LappedShip for: ship.  "Usar LappedShip para vueltas"
 
@@ -193,7 +193,7 @@ BoardTest >> testHyperGravityAllowsEntryWhenRollIsSufficient [
 
 	board := Board of: 5 andWormholeAt: #().
 
-	ship := Spaceship withName: 'Lucas' and: 4.
+	ship := Spaceship named: 'Lucas' and: 4.
 	ship moveTo: 2.
 
 	effect := HyperGravityEffect new.
@@ -231,9 +231,9 @@ BoardTest >> testHyperJumpEffectJumpsShipForward [
 	effect := HyperJumpEffect new.
 	board cells at: 7 put: effect.
 
-	ship1 := Spaceship withName: 'Apollo' and: dicesGame maxRoll.
+	ship1 := Spaceship named: 'Apollo' and: dicesGame maxRoll.
 	ship1 restoreFuel.
-	ship2 := Spaceship withName: 'Gemini' and: dicesGame maxRoll.
+	ship2 := Spaceship named: 'Gemini' and: dicesGame maxRoll.
 	ship2 restoreFuel.
 
 	lappedShip1 := LappedShip for: ship1.
@@ -330,7 +330,7 @@ BoardTest >> testLapDoesNotIncrementWhenStayingWithinBounds [
 
 	board := Board of: 10 andWormholeAt: OrderedCollection new.
 
-	ship := Spaceship withName: 'Lucas' and: 4.
+	ship := Spaceship named: 'Lucas' and: 4.
 	ship moveTo: 3.
 
 	newPosition := board calculateNewPositionFrom: ship position after: 4 moves: ship.
@@ -347,7 +347,7 @@ BoardTest >> testLapIncrementsWhenPassingLastCell [
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
 
 	board := Board of: 10 andWormholeAt: OrderedCollection new.
-	ship := Spaceship withName: 'Lucas' and: dicesGame maxRoll.
+	ship := Spaceship named: 'Lucas' and: dicesGame maxRoll.
 	ship moveTo: 8.
 
 	newPosition := board calculateNewPositionFrom: ship position after: 3 moves: (LappedShip for: ship) .
@@ -367,9 +367,9 @@ BoardTest >> testMoonWalkEffectMovesOtherSpaceshipsBackwards [
 	
 	effect := MoonWalkEffect new.
 
-	ship1 := Spaceship withName: 'Player1' and: dicesGame maxRoll.
-	ship2 := Spaceship withName: 'Player2' and: dicesGame maxRoll.
-	ship3 := Spaceship withName: 'Player3' and: dicesGame maxRoll.
+	ship1 := Spaceship named: 'Player1' and: dicesGame maxRoll.
+	ship2 := Spaceship named: 'Player2' and: dicesGame maxRoll.
+	ship3 := Spaceship named: 'Player3' and: dicesGame maxRoll.
 
 	ship1 moveTo: 5.
 	ship2 moveTo: 7.
@@ -390,7 +390,7 @@ BoardTest >> testNewPositionWithWormhole [
 
 	board := Board of: 25 andWormholeAt: (OrderedCollection with: (Wormhole from: 6 to: 20)).
 
-	ship := Spaceship withName: 'Test' and: 4.
+	ship := Spaceship named: 'Test' and: 4.
 
 	self assert: (board determineNewPositionFrom: 2 after: 4 for: ship) equals: 20.
 
@@ -402,7 +402,7 @@ BoardTest >> testNewPositionWithoutWormhole [
 
 	board := Board of: 25 andWormholeAt: #().
 
-	ship := Spaceship withName: 'Test' and: 4.
+	ship := Spaceship named: 'Test' and: 4.
 
 	self assert: (board determineNewPositionFrom: 2 after: 2 for: ship) equals: 4.
 

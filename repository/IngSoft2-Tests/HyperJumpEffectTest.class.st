@@ -10,7 +10,7 @@ HyperJumpEffectTest >> testApplyToMovesShipForwardBy3 [
 
     | ship effect |
 
-    ship := Spaceship withName: 'Jumper' and: 4.
+    ship := Spaceship named: 'Jumper' and: 4.
     ship moveTo: 2.
 
     effect := HyperJumpEffect new.

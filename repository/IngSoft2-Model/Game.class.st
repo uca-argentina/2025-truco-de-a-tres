@@ -9,7 +9,6 @@ Class {
 		'winner',
 		'currentTurnIndex',
 		'spaceships',
-		'currentPlayerIndex',
 		'die',
 		'wantsToPassTurn',
 		'penaltyShips',

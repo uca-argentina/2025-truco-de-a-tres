@@ -11,7 +11,7 @@ SpaceshipTest >> testHasNotReachedGoalWhenBehind [
 
     board := Board of: 10 andWormholeAt: #().
 
-    spaceship := Spaceship withName: 'Endeavour' and: 4.
+    spaceship := Spaceship named: 'Endeavour' and: 4.
 
     spaceship moveTo: 9.
 
@@ -25,7 +25,7 @@ SpaceshipTest >> testHasReachedGoalWhenAtGoal [
 
     board := Board of: 10 andWormholeAt: #().
 
-    spaceship := Spaceship withName: 'Orion' and: 4.
+    spaceship := Spaceship named: 'Orion' and: 4.
 
     spaceship moveTo: 10.
 
@@ -37,7 +37,7 @@ SpaceshipTest >> testHasReachedGoalWhenAtGoal [
 SpaceshipTest >> testInitializeInPositionZero [
 
 	|player |
-	player := Spaceship withName: 'JohnDoe' and: 4.
+	player := Spaceship named: 'JohnDoe' and: 4.
 	
 	self assert: player position equals: 0. 
 ]
@@ -45,7 +45,7 @@ SpaceshipTest >> testInitializeInPositionZero [
 { #category : 'tests - instance' }
 SpaceshipTest >> testInitializeWithEmptyNameRaisesError [
 
-    self should: [ Spaceship withName: '' and: 4 ] raise: Error.
+    self should: [ Spaceship named: '' and: 4 ] raise: Error.
 ]
 
 { #category : 'tests - instance' }
@@ -53,7 +53,7 @@ SpaceshipTest >> testMoveBackDoesNotGoBelowZero [
 
     | ship |
 
-    ship := Spaceship withName: 'Probe' and: 4.
+    ship := Spaceship named: 'Probe' and: 4.
     ship moveBack: 5.
 
     self assert: ship position equals: 0.
@@ -64,7 +64,7 @@ SpaceshipTest >> testMoveForwardIncreasesPosition [
 
     | ship |
 
-    ship := Spaceship withName: 'Runner' and: 4.
+    ship := Spaceship named: 'Runner' and: 4.
     ship moveForward: 3.
 
     self assert: ship position equals: 3.
@@ -75,7 +75,7 @@ SpaceshipTest >> testMoveToChangesPosition [
 
     | ship |
 
-    ship := Spaceship withName: 'Move' and: 4.
+    ship := Spaceship named: 'Move' and: 4.
     ship moveTo: 5.
 
     self assert: (ship position) equals: 5.
@@ -86,7 +86,7 @@ SpaceshipTest >> testRestoreFuelRestoresToMax [
 
     | ship |
 
-    ship := Spaceship withName: 'Tank' and: 5.
+    ship := Spaceship named: 'Tank' and: 5.
     ship restoreFuel.
 
     self assert: (ship instVarNamed: 'fuel') equals: (ship instVarNamed: 'maxFuel').

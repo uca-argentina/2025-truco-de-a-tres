@@ -12,7 +12,7 @@ EffectDecoratorTest >> testApplyToWithoutWrappedEffectDoesNothing [
 
     decorator := EffectDecorator new.
 
-    ship := Spaceship withName: 'SoloShip' and: 4.
+    ship := Spaceship named: 'SoloShip' and: 4.
     ship moveTo: 3.
 
     originalPosition := ship position.
