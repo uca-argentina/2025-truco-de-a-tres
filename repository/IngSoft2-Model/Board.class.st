@@ -121,19 +121,6 @@ Board >> initializeWithCells: aCount andWormholes: aCollection [
 ]
 
 { #category : 'initialize' }
-Board >> initializeWithoutEffectsWithCells: aCount wormholes: aCollection [
-	cellCount := aCount.
-	wormholes := aCollection.
-	
-	cells := (1 to: cellCount) collect: [:i | nil ].
-]
-
-{ #category : 'validation' }
-Board >> isBoardValid [
-    [ self assertValidState. true ] on: Error do: [ false ].
-]
-
-{ #category : 'initialize' }
 Board >> isGoalReachedAt: aPosition [
     ^ aPosition >= cellCount.
 ]
