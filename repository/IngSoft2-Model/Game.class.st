@@ -153,9 +153,9 @@ Game >> playTurn [
 	ship moveTo: newPosition.
 
 	self
-		registerLapIfNeededFor: ship
+		registerLapFor: ship
 		from: previousPosition
-		withSteps: steps.
+		after: steps.
 
 	(ship hasReachedGoalOn: board) ifTrue: [
 		(self hasWonByLaps: ship) ifTrue: [ winner := ship ] ].
@@ -207,7 +207,7 @@ Game >> reducePenaltyFor: aShip [
 ]
 
 { #category : 'testing' }
-Game >> registerLapIfNeededFor: aShip from: oldPosition withSteps: someSteps [
+Game >> registerLapFor: aShip from: oldPosition after: someSteps [
 
 	| cellCount lap |
 	
