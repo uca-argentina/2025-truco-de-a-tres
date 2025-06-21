@@ -66,6 +66,23 @@ GameTest >> testAdvanceTurnRotatesToNextShip [
 
 ]
 
+{ #category : 'tests' }
+GameTest >> testAllStatusesReturnsOnePerShip [
+    | ship1 ship2 board dice game statuses |
+
+    ship1 := Spaceship withName: 'Red' and: 4.
+    ship2 := Spaceship withName: 'Blue' and: 6.
+    board := Board of: 10 andWormholeAt: #().
+    dice := Die withSides: 6.
+
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+
+    statuses := game allStatuses.
+
+    self assert: statuses size equals: 2.
+    self assert: (statuses allSatisfy: [ :each | each isKindOf: ShipStatus ]).
+]
+
 { #category : 'accessing' }
 GameTest >> testCurrentShipReturnsCorrectShip [
 

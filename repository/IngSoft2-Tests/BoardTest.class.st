@@ -93,7 +93,7 @@ BoardTest >> testBoardCellCountIsCorrect [
     size := 7.
     board := Board of: size andWormholeAt: #().
 
-    self assert: board cells size equals: size.
+    self assert: board cellCount equals: size.
 ]
 
 { #category : 'tests - instance' }
@@ -137,6 +137,38 @@ BoardTest >> testCannotEnterHyperGravityCellWithLowRoll [
 
 	self deny: (effect allowsEntryWithRoll: 2).
 
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testDetermineNewPositionWithMultipleWormholes [
+    | board w1 w2 |
+    w1 := Wormhole from: 5 to: 8.
+    w2 := Wormhole from: 7 to: 2.
+    board := Board of: 10 andWormholeAt: { w1. w2 }.
+    self assert: (board determineNewPositionFrom: 2 after: 3) equals: 8.
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testDetermineNewPositionWithWormholeAtResultingPosition [
+    | board wormhole |
+    wormhole := Wormhole from: 5 to: 9.
+    board := Board of: 10 andWormholeAt: { wormhole }.
+    self assert: (board determineNewPositionFrom: 2 after: 3) equals: 9.
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testDetermineNewPositionWithWormholeElsewhere [
+    | board wormhole |
+    wormhole := Wormhole from: 7 to: 4.
+    board := Board of: 10 andWormholeAt: { wormhole }.
+    self assert: (board determineNewPositionFrom: 2 after: 3) equals: 5.
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testDetermineNewPositionWithoutWormholes [
+    | board |
+    board := Board of: 10 andWormholeAt: #().
+    self assert: (board determineNewPositionFrom: 2 after: 3) equals: 5.
 ]
 
 { #category : 'tests - instance' }
