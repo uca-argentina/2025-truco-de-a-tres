@@ -54,6 +54,12 @@ Wormhole class >> validatePositionIsNotTheSame: aPosition and: anotherPosition [
 ]
 
 { #category : 'validation' }
+Wormhole >> entry [
+
+    ^ entry.
+]
+
+{ #category : 'validation' }
 Wormhole >> exit [
 
     ^ exit.
@@ -68,8 +74,8 @@ Wormhole >> hasEntryAt: aPosition [
 { #category : 'initialize' }
 Wormhole >> initializeConnecting: aPosition and: anotherPosition [
 	
-	positionA := aPosition.
-	positionB := anotherPosition.
+	entry := aPosition.
+	exit := anotherPosition.
 	
 ]
 
@@ -88,16 +94,4 @@ Wormhole >> isValid [
 	  true ]
 		  on: Error
 		  do: [ false ]
-]
-
-{ #category : 'initialize' }
-Wormhole >> positionA [
-
-	^ positionA.
-]
-
-{ #category : 'initialize' }
-Wormhole >> positionB [
-
-	^ positionB.
 ]

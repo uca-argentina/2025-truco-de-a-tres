@@ -113,6 +113,6 @@ WormholeTest >> testValidWormholeCreation [
 	| wormhole |
 	wormhole := Wormhole connecting: 5 and: 10.
 
-	self assert: wormhole positionA equals: 5.
-	self assert: wormhole positionB equals: 10.
+	self assert: wormhole entry equals: 5.
+	self assert: wormhole exit equals: 10.
 ]
