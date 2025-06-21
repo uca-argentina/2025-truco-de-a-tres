@@ -90,6 +90,14 @@ WormholeTest >> testInvalidWormholeCreation [
 ]
 
 { #category : 'tests - instance' }
+WormholeTest >> testIsValidReturnsFalseWhenInvalid [
+    self should: [
+        Wormhole from: 7 to: 7
+    ] raise: Error.
+
+]
+
+{ #category : 'tests - instance' }
 WormholeTest >> testIsValidReturnsTrueForValidWormhole [
 
     | wormhole |
