@@ -92,34 +92,6 @@ Board >> determineNewPositionFrom: aPosition after: steps [
     ^ self applyWormholeIfPresentAt: (aPosition + steps).
 ]
 
-{ #category : 'moves' }
-Board >> determineNewPositionFrom: aPosition after: steps for: aLappedSpaceship [
-    | position |
-
-    position := (aPosition + steps) \\ cellCount.
-    
-    (position <= aPosition) ifTrue: [  aLappedSpaceship addLap ].
-    
-    ^ self applyWormholeIfPresentAt: position.
-
-]
-
-{ #category : 'moves' }
-Board >> determineNewPositionFrom: aPosition after: steps for: aLappedSpaceship withRoll: roll [
-	| position effect |
-	
-	position := (aPosition + steps) \\ cellCount.
-
-	(position <= aPosition) ifTrue: [  aLappedSpaceship addLap ].
-
-	effect := cells at: position + 1.
-	
-	(effect allowsEntryWithRoll: roll)
-		ifTrue: [ ^ position ]
-		ifFalse: [ ^ aPosition ].
-
-]
-
 { #category : 'initialize' }
 Board >> effectAt: aPosition [
 	^ cells at: aPosition + 1

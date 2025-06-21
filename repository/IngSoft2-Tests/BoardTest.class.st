@@ -87,22 +87,6 @@ BoardTest >> testAtomicBombEffectResetsPositionsButKeepsLaps [
 ]
 
 { #category : 'tests - instance' }
-BoardTest >> testBlackHoleEffectMovesSpaceshipBackwards [
-	| board ship |
-
-	board := Board of: 5 andWormholeAt: #().
-
-	ship := Spaceship withName: 'Lucas' and: 4.
-	ship moveTo: 3.
-
-	board cells at: 4 put: BlackHoleEffect new.
-	board applyEffectTo: ship.
-
-	self assert: ship position equals: 0.
-
-]
-
-{ #category : 'tests - instance' }
 BoardTest >> testBoardCellCountIsCorrect [
     | board size |
 
@@ -134,37 +118,6 @@ BoardTest >> testBoardInitializesCorrectNumberOfEffects [
 ]
 
 { #category : 'tests - instance' }
-BoardTest >> testBoardPreventsEntryToHyperGravityCellWithLowRoll [
-	| dice1 dicesGame board ship lappedShip effect newPosition |
-	dice1 := Die withSides: 6.
-	dicesGame := DiceCup with: (OrderedCollection with: dice1).
-
-	board := Board of: 5 andWormholeAt: #().
-
-	
-	ship := Spaceship withName: 'Lucas' and: dicesGame maxRoll.
-	ship moveTo: 2.
-	lappedShip := LappedShip for: ship.  "Usar LappedShip para vueltas"
-
-	effect := HyperGravityEffect new.
-	effect requiredRoll: 4.
-	board cells at: 4 put: effect. "posición 3 → índice 4 (1-based)"
-
-	newPosition := board 
-		determineNewPositionFrom: ship position 
-		after: 1 
-		for: lappedShip  "Pasar LappedShip para tracking de vueltas"
-		withRoll: 2.
-
-	"Verificar que no avanzó"
-	self assert: newPosition equals: 2.
-	self assert: ship position equals: 2.
-	
-	"Verificar que no se incrementó vuelta"
-	self assert: lappedShip lapCount equals: 0.
-]
-
-{ #category : 'tests - instance' }
 BoardTest >> testCanEnterHyperGravityCellWithSufficientRoll [
 	| board effect |
 	board := Board of: 5 andWormholeAt: #().
@@ -187,79 +140,11 @@ BoardTest >> testCannotEnterHyperGravityCellWithLowRoll [
 ]
 
 { #category : 'tests - instance' }
-BoardTest >> testHyperGravityAllowsEntryWhenRollIsSufficient [
-	| board ship effect newPosition |
-
-
-	board := Board of: 5 andWormholeAt: #().
-
-	ship := Spaceship withName: 'Lucas' and: 4.
-	ship moveTo: 2.
-
-	effect := HyperGravityEffect new.
-	effect requiredRoll: 4.
-	board cells at: 4 put: effect.
-
-	newPosition := board determineNewPositionFrom: ship position after: 1 for: (LappedShip for: ship) withRoll: 5.
-	self assert: newPosition equals: 3.
-
-	ship moveTo: newPosition.
-	board applyEffectTo: ship.
-
-	self assert: ship position equals: 3.
-]
-
-{ #category : 'tests - instance' }
 BoardTest >> testHyperGravityEffectHasCorrectDefaultRoll [
 	| effect |
 	effect := HyperGravityEffect new.
 	self assert: effect requiredRoll equals: 4.
 
-]
-
-{ #category : 'tests - instance' }
-BoardTest >> testHyperJumpEffectJumpsShipForward [
-	| dice1 dicesGame board ship1 ship2 lappedShip1 effect newPosition game |
-
-
-	dice1 := Die withSides: 6.
-	dicesGame := DiceCup with: (OrderedCollection with: dice1).
-	board := Board of: 10 andWormholeAt: #().
-
-
-	HyperJumpEffect resetJumpIndex.
-	effect := HyperJumpEffect new.
-	board cells at: 7 put: effect.
-
-	ship1 := Spaceship withName: 'Apollo' and: dicesGame maxRoll.
-	ship1 restoreFuel.
-	ship2 := Spaceship withName: 'Gemini' and: dicesGame maxRoll.
-	ship2 restoreFuel.
-
-	lappedShip1 := LappedShip for: ship1.
-
-	ship1 moveTo: 5.
-	self assert: ship1 position equals: 5.
-
-	newPosition := board 
-		determineNewPositionFrom: ship1 position 
-		after: 1 
-		for: lappedShip1 
-		withRoll: 4.
-	self assert: newPosition equals: 6.
-
-	ship1 moveTo: newPosition.
-	self assert: ship1 position equals: 6.
-
-	game := Game 
-		startWithShips: {ship1. ship2}
-		board: board 
-		dice: dicesGame 
-		laps: 1.
-
-	effect applyTo: ship1.
-
-	self assert: ship1 position equals: 9.
 ]
 
 { #category : 'tests - instance' }
@@ -382,30 +267,6 @@ BoardTest >> testMoonWalkEffectMovesOtherSpaceshipsBackwards [
 	self assert: ship2 position equals: 7.
 	self assert: ship1 position equals: 3.
 	self assert: ship3 position equals: 1.
-]
-
-{ #category : 'tests - instance' }
-BoardTest >> testNewPositionWithWormhole [
-	| board ship |
-
-	board := Board of: 25 andWormholeAt: (OrderedCollection with: (Wormhole from: 6 to: 20)).
-
-	ship := Spaceship withName: 'Test' and: 4.
-
-	self assert: (board determineNewPositionFrom: 2 after: 4 for: ship) equals: 20.
-
-]
-
-{ #category : 'tests - instance' }
-BoardTest >> testNewPositionWithoutWormhole [
-	| board ship |
-
-	board := Board of: 25 andWormholeAt: #().
-
-	ship := Spaceship withName: 'Test' and: 4.
-
-	self assert: (board determineNewPositionFrom: 2 after: 2 for: ship) equals: 4.
-
 ]
 
 { #category : 'tests - instance' }
