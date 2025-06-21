@@ -103,6 +103,16 @@ BoardTest >> testBlackHoleEffectMovesSpaceshipBackwards [
 ]
 
 { #category : 'tests - instance' }
+BoardTest >> testBoardCellCountIsCorrect [
+    | board size |
+
+    size := 7.
+    board := Board of: size andWormholeAt: #().
+
+    self assert: board cells size equals: size.
+]
+
+{ #category : 'tests - instance' }
 BoardTest >> testBoardCellsContainRecognizedEffects [
 	| board validClasses |
 	validClasses := { BlackHoleEffect. HyperGravityEffect }.
