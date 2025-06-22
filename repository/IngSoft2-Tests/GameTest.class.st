@@ -372,7 +372,7 @@ GameTest >> testPlayUntilFinishDeclaresWinner [
 
     ship1 := Spaceship withName: 'Fast' and: 4.
     ship2 := Spaceship withName: 'Slow' and: 4.
-    board := Board of: 5 andWormholeAt: {}.
+    board := Board of: 1 andWormholeAt: {}.
     dice := DiceCup with: { Die withSides: 6 }.
 
     game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
