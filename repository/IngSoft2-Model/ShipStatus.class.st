@@ -11,17 +11,19 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 ShipStatus class >> for: aShip position: aPosition laps: aLapCount penalized: isPenalized [
+
 	^ self new
 		initializeWith: aShip
 		position: aPosition
 		laps: aLapCount
-		penalized: isPenalized
+		penalized: isPenalized.
 ]
 
 { #category : 'initialization' }
 ShipStatus >> initializeWith: aShip position: aPosition laps: aLapCount penalized: isPenalized [
+
 	ship := aShip.
 	position := aPosition.
 	lapCount := aLapCount.
@@ -30,20 +32,24 @@ ShipStatus >> initializeWith: aShip position: aPosition laps: aLapCount penalize
 
 { #category : 'accessing' }
 ShipStatus >> isPenalized [
+
 	^ penalized.
 ]
 
 { #category : 'accessing' }
 ShipStatus >> lapCount [
+
 	^ lapCount.
 ]
 
 { #category : 'accessing' }
 ShipStatus >> position [
+
 	^ position.
 ]
 
 { #category : 'accessing' }
 ShipStatus >> ship [
+
 	^ ship.
 ]

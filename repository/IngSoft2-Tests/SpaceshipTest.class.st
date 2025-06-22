@@ -8,7 +8,9 @@ Class {
 { #category : 'tests - instance' }
 SpaceshipTest >> testHasNotReachedGoalWhenBehind [
     | board spaceship |
-    board := Board withCells: 10 andWormholes: #().
+
+    board := Board of: 10 andWormholeAt: #().
+
     spaceship := Spaceship withName: 'Endeavour' and: 4.
 
     spaceship moveTo: 9.
@@ -20,7 +22,9 @@ SpaceshipTest >> testHasNotReachedGoalWhenBehind [
 { #category : 'tests - instance' }
 SpaceshipTest >> testHasReachedGoalWhenAtGoal [
     | board spaceship |
-    board := Board withCells: 10 andWormholes: #().
+
+    board := Board of: 10 andWormholeAt: #().
+
     spaceship := Spaceship withName: 'Orion' and: 4.
 
     spaceship moveTo: 10.
@@ -40,10 +44,50 @@ SpaceshipTest >> testInitializeInPositionZero [
 
 { #category : 'tests - instance' }
 SpaceshipTest >> testInitializeWithEmptyNameRaisesError [
-	| errorThrown |
-	
-	errorThrown := [ Spaceship withName: '' and: 4 ] on: Error do: [ :e | e ].
 
-	self assert: errorThrown messageText equals: 'Name cannot be empty'.
+    self should: [ Spaceship withName: '' and: 4 ] raise: Error.
+]
 
+{ #category : 'tests - instance' }
+SpaceshipTest >> testMoveBackDoesNotGoBelowZero [
+
+    | ship |
+
+    ship := Spaceship withName: 'Probe' and: 4.
+    ship moveBack: 5.
+
+    self assert: ship position equals: 0.
+]
+
+{ #category : 'tests - instance' }
+SpaceshipTest >> testMoveForwardIncreasesPosition [
+
+    | ship |
+
+    ship := Spaceship withName: 'Runner' and: 4.
+    ship moveForward: 3.
+
+    self assert: ship position equals: 3.
+]
+
+{ #category : 'tests - instance' }
+SpaceshipTest >> testMoveToChangesPosition [
+
+    | ship |
+
+    ship := Spaceship withName: 'Move' and: 4.
+    ship moveTo: 5.
+
+    self assert: (ship position) equals: 5.
+]
+
+{ #category : 'tests - instance' }
+SpaceshipTest >> testRestoreFuelRestoresToMax [
+
+    | ship |
+
+    ship := Spaceship withName: 'Tank' and: 5.
+    ship restoreFuel.
+
+    self assert: (ship instVarNamed: 'fuel') equals: (ship instVarNamed: 'maxFuel').
 ]

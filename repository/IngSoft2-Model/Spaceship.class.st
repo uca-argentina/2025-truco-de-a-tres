@@ -2,10 +2,8 @@ Class {
 	#name : 'Spaceship',
 	#superclass : 'Object',
 	#instVars : [
-		'name',
 		'position',
 		'playerName',
-		'penaltyTurns',
 		'maxFuel',
 		'fuel',
 		'lap'
@@ -15,19 +13,15 @@ Class {
 }
 
 { #category : 'initialize' }
-Spaceship class >> new [
-    self error: 'Use Spaceship withName: instead.'
-]
-
-{ #category : 'initialize' }
 Spaceship class >> withName: aName and: aMaxRoll [
 
-	^ super new initializeWith: aName and: aMaxRoll 
+	^ self new initializeWith: aName and: aMaxRoll.
 ]
 
 { #category : 'initialize' }
 Spaceship >> hasReachedGoalOn: aBoard [
-    ^ aBoard isGoalReachedAt: position
+
+    ^ aBoard isGoalReachedAt: position.
 
 ]
 
@@ -38,45 +32,47 @@ Spaceship >> initializeWith: aName and: aMaxRoll [
 
 	playerName := aName.
 	position := 0.
-  maxFuel := aMaxRoll * 2.
+  	maxFuel := aMaxRoll * 2.
 	fuel := maxFuel.
 	lap := 0.
 ]
 
 { #category : 'initialize' }
 Spaceship >> lap [
-	^ lap
+
+	^ lap.
 
 ]
 
-{ #category : 'initialize' }
+{ #category : 'methods' }
 Spaceship >> moveBack: steps [
+
     position := (position - steps) max: 0.
 
 ]
 
-{ #category : 'initialize' }
+{ #category : 'methods' }
 Spaceship >> moveForward: steps [
+
 	position := position + steps.
 
 ]
 
-{ #category : 'initialize' }
+{ #category : 'methods' }
 Spaceship >> moveTo: aPosition [
-    position := aPosition
 
-]
+    position := aPosition.
 
-{ #category : 'initialize' }
-Spaceship >> playerName [
-    ^ playerName
 ]
 
 { #category : 'initialize' }
 Spaceship >> position [
-    ^ position
+
+    ^ position.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'methods' }
 Spaceship >> restoreFuel [
+	
+	fuel := maxFuel.
 ]

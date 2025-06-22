@@ -11,19 +11,20 @@ Class {
 
 { #category : 'instance creation' }
 LappedShip class >> for: aShip [
-	^ self new initializeWith: aShip
+
+	^ self new initializeWith: aShip.
 ]
 
 { #category : 'adding' }
 LappedShip >> addLap [
 
-	laps := laps + 1
+	laps := laps + 1.
 ]
 
 { #category : 'testing' }
 LappedShip >> hasWonWithTotalLaps: aNumber [
 
-	^ laps >= aNumber
+	^ laps >= aNumber.
 ]
 
 { #category : 'initialize' }
@@ -31,16 +32,18 @@ LappedShip >> initializeWith: aShip [
 
 	ship := aShip.
 	laps := 0.
-	^ self
+	
+	^ self.
 ]
 
 { #category : 'testing' }
 LappedShip >> lapCount [
 
-	^ laps
+	^ laps.
 ]
 
 { #category : 'adding' }
-LappedShip >> ship [ 
-^ship
+LappedShip >> ship [
+
+	^ ship.
 ]

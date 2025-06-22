@@ -7,6 +7,7 @@ Class {
 
 { #category : 'operations' }
 BlackHoleEffect >> applyTo: aSpaceship [
+
     aSpaceship moveBack: 4.
 
 ]
