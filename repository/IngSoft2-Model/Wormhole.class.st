@@ -30,12 +30,8 @@ Wormhole class >> assertValidStateFrom: entry to: exit [
 { #category : 'initialize' }
 Wormhole class >> connecting: aPosition and: anotherPosition [
 	self validatePositionIsNotTheSame: aPosition and: anotherPosition.
-	^ super new initializeConnecting: aPosition and: anotherPosition.
-]
-
-{ #category : 'initialize' }
-Wormhole class >> new [
-    self error: 'Use Wormhole from:to: instead.'.
+	self assertValidStateFrom: aPosition to: anotherPosition .
+	^ self new initializeConnecting: aPosition and: anotherPosition.
 ]
 
 { #category : 'initialize' }
