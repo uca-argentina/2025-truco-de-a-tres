@@ -174,7 +174,7 @@ GameTest >> testHasWonByLapsReturnsFalseIfNotEnoughLaps [
     game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 2.
 
     ship1 moveTo: 10.
-    game registerLapIfNeededFor: ship1 from: 9 withSteps: 1.
+    game registerLapFor: ship1 from: 9 after: 1.
 
     self deny: (game hasWonByLaps: ship1).
 ]
@@ -192,7 +192,7 @@ GameTest >> testHasWonByLapsReturnsTrueWhenEnoughLaps [
     game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
 
     ship1 moveTo: 10.
-    game registerLapIfNeededFor: ship1 from: 9 withSteps: 1.
+    game registerLapFor: ship1 from: 9 after: 1.
 
     self assert: (game hasWonByLaps: ship1).
 ]
@@ -287,7 +287,7 @@ GameTest >> testPlayTurnHandlesPassTurnCorrectly [
         dice: dice
         laps: 1.
 
-    game setWantsToPassTurnFor: ship1 to: true.
+    game markShipAsWantingToPassTurn: ship1 to: true.
     game playTurn.
 
     self assert: game currentShip equals: ship2.
@@ -494,7 +494,7 @@ GameTest >> testRegisterLapWhenCrossesFinishLine [
     game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
 
     ship1 moveTo: 9.
-    game registerLapIfNeededFor: ship1 from: 9 withSteps: 2.
+    game registerLapFor: ship1 from: 9 after: 2.
 
     self assert: ((game lapTrackerFor: ship1) lapCount) equals: 1.
 ]
@@ -512,7 +512,7 @@ GameTest >> testSetAndQueryWantsToPassTurn [
     game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
     self deny: (game wantsToPassTurn: ship1).
 
-    game setWantsToPassTurnFor: ship1 to: true.
+    game markShipAsWantingToPassTurn: ship1 to: true.
     self assert: (game wantsToPassTurn: ship1).
 ]
 
@@ -939,7 +939,7 @@ GameTest >> testWhenShipDecidesToPassTurnThenSkipTurn [
 	
 	game playTurn.
 	game playTurn.
-	game setWantsToPassTurnFor: realShip1 to: true.
+	game markShipAsWantingToPassTurn: realShip1 to: true.
 	game playTurn.
 	
 	self assert: game currentShip equals: game spaceShips second.
