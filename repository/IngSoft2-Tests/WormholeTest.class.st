@@ -23,7 +23,7 @@ WormholeTest >> testExitRaisesIfNotEntry [
 
     | wormhole |
 
-    wormhole := Wormhole from: 1 to: 3.
+    wormhole := Wormhole connecting: 1 and: 2.
 
     self should: [ wormhole exit: 5 ] raise: Error.
 ]
@@ -33,7 +33,7 @@ WormholeTest >> testHasEntryAtFalseReturnsFalse [
 
     | wormhole |
 
-    wormhole := Wormhole from: 1 to: 3.
+    wormhole := Wormhole connecting: 1 and: 3.
 
     self deny: (wormhole hasEntryAt: 5).
 ]
@@ -43,7 +43,7 @@ WormholeTest >> testHasEntryAtReturnsTrueOnlyWhenMatched [
 
     | wormhole |
 
-    wormhole := Wormhole from: 4 to: 9.
+    wormhole := Wormhole connecting: 4 and: 9.
 
     self assert: (wormhole hasEntryAt: 4).
     self deny: (wormhole hasEntryAt: 3).
@@ -74,8 +74,7 @@ WormholeTest >> testInitializeFromToSetsEntryAndExit [
 
     | wormhole |
 
-    wormhole := Wormhole from: 3 to: 8.
-
+    wormhole := Wormhole connecting: 3 and: 8.
     self assert: (wormhole hasEntryAt: 3).
     self assert: wormhole exit equals: 8.
 ]
@@ -102,7 +101,7 @@ WormholeTest >> testIsValidReturnsTrueForValidWormhole [
 
     | wormhole |
 
-    wormhole := Wormhole from: 1 to: 4.
+    wormhole := Wormhole connecting: 1 and: 4.
 
     self assert: wormhole isValid.
 ]

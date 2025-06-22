@@ -80,13 +80,6 @@ Wormhole >> initializeConnecting: aPosition and: anotherPosition [
 ]
 
 { #category : 'validation' }
-Wormhole >> initializeFrom: entryPosition to: exitPosition [
-
-    entry := entryPosition.
-    exit := exitPosition.
-]
-
-{ #category : 'validation' }
 Wormhole >> isValid [
 
 	^ [
