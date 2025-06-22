@@ -115,6 +115,12 @@ Game >> lapTrackerFor: aShip [
 	^ lappedShips detect: [ :lap | lap ship = aShip ]
 ]
 
+{ #category : 'testing' }
+Game >> markShipAsWantingToPassTurn: aShip to: aBoolean [
+
+	wantsToPassTurn at: aShip put: aBoolean.
+]
+
 { #category : 'process actions' }
 Game >> passTurn [
 	self currentShip restoreFuel.
@@ -141,7 +147,7 @@ Game >> playTurn [
 		^ self advanceTurn ].
 
 	(self wantsToPassTurn: ship) ifTrue: [
-		self setWantsToPassTurnFor: ship to: false.
+		self markShipAsWantingToPassTurn: ship to: false.
 		ship restoreFuel.
 		^ self advanceTurn ].
 
@@ -153,9 +159,9 @@ Game >> playTurn [
 	ship moveTo: newPosition.
 
 	self
-		registerLapIfNeededFor: ship
+		registerLapFor: ship
 		from: previousPosition
-		withSteps: steps.
+		after: steps.
 
 	(ship hasReachedGoalOn: board) ifTrue: [
 		(self hasWonByLaps: ship) ifTrue: [ winner := ship ] ].
@@ -207,7 +213,7 @@ Game >> reducePenaltyFor: aShip [
 ]
 
 { #category : 'testing' }
-Game >> registerLapIfNeededFor: aShip from: oldPosition withSteps: someSteps [
+Game >> registerLapFor: aShip from: oldPosition after: someSteps [
 
 	| cellCount lap |
 	
@@ -217,12 +223,6 @@ Game >> registerLapIfNeededFor: aShip from: oldPosition withSteps: someSteps [
 	
 	lap := self lapTrackerFor: aShip.
 	lap addLap.
-]
-
-{ #category : 'testing' }
-Game >> setWantsToPassTurnFor: aShip to: aBoolean [
-
-	wantsToPassTurn at: aShip put: aBoolean.
 ]
 
 { #category : 'accessing' }
