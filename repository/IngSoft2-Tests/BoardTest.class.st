@@ -93,7 +93,7 @@ BoardTest >> testBlackHoleEffectMovesSpaceshipBackwards [
 	board := Board of: 5 andWormholeAt: #().
 
 	ship := Spaceship withName: 'Lucas' and: 4.
-	ship moveTo: 3.
+	ship moveTo: 4.
 
 	board cells at: 4 put: BlackHoleEffect new.
 	board applyEffectTo: ship.
@@ -148,7 +148,7 @@ BoardTest >> testBoardPreventsEntryToHyperGravityCellWithLowRoll [
 
 	effect := HyperGravityEffect new.
 	effect requiredRoll: 4.
-	board cells at: 4 put: effect. "posición 3 → índice 4 (1-based)"
+	board cells at: 3 put: effect. "posición 2 → índice 3 (0-based)"
 
 	newPosition := board 
 		determineNewPositionFrom: ship position 
@@ -188,25 +188,28 @@ BoardTest >> testCannotEnterHyperGravityCellWithLowRoll [
 
 { #category : 'tests - instance' }
 BoardTest >> testHyperGravityAllowsEntryWhenRollIsSufficient [
+
 	| board ship effect newPosition |
-
-
-	board := Board of: 5 andWormholeAt: #().
+	board := Board of: 5 andWormholeAt: #(  ).
 
 	ship := Spaceship withName: 'Lucas' and: 4.
 	ship moveTo: 2.
 
 	effect := HyperGravityEffect new.
 	effect requiredRoll: 4.
-	board cells at: 4 put: effect.
+	board cells at: 3 put: effect. "Position 3 is the 4 square on board (casillero) --> (0-based)"
 
-	newPosition := board determineNewPositionFrom: ship position after: 1 for: (LappedShip for: ship) withRoll: 5.
+	newPosition := board
+		               determineNewPositionFrom: ship position
+		               after: 1
+		               for: (LappedShip for: ship)
+		               withRoll: 5.
 	self assert: newPosition equals: 3.
 
 	ship moveTo: newPosition.
 	board applyEffectTo: ship.
 
-	self assert: ship position equals: 3.
+	self assert: ship position equals: 3
 ]
 
 { #category : 'tests - instance' }
@@ -229,7 +232,7 @@ BoardTest >> testHyperJumpEffectJumpsShipForward [
 
 	HyperJumpEffect resetJumpIndex.
 	effect := HyperJumpEffect new.
-	board cells at: 7 put: effect.
+	board cells at: 6 put: effect.
 
 	ship1 := Spaceship withName: 'Apollo' and: dicesGame maxRoll.
 	ship1 restoreFuel.

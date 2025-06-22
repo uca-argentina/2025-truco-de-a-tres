@@ -112,7 +112,7 @@ Board >> determineNewPositionFrom: aPosition after: steps for: aLappedSpaceship 
 
 	(position <= aPosition) ifTrue: [  aLappedSpaceship addLap ].
 
-	effect := cells at: position + 1.
+	effect := cells at: position.
 	
 	(effect allowsEntryWithRoll: roll)
 		ifTrue: [ ^ position ]
@@ -122,7 +122,7 @@ Board >> determineNewPositionFrom: aPosition after: steps for: aLappedSpaceship 
 
 { #category : 'initialize' }
 Board >> effectAt: aPosition [
-	^ cells at: aPosition + 1
+	^ cells at: aPosition
 
 ]
 
