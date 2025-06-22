@@ -39,7 +39,7 @@ BoardTest >> testApplyWormholeIfPresentReturnsExit [
 
     | board wormhole |
 
-    wormhole := Wormhole from: 2 to: 7.
+    wormhole := Wormhole connecting: 2 and: 7.
     board := Board of: 10 andWormholeAt: { wormhole }.
 
     self assert: (board applyWormholeIfPresentAt: 2) equals: 7.
@@ -391,7 +391,7 @@ BoardTest >> testMoonWalkEffectMovesOtherSpaceshipsBackwards [
 BoardTest >> testNewPositionWithWormhole [
 	| board ship |
 
-	board := Board of: 25 andWormholeAt: (OrderedCollection with: (Wormhole from: 6 to: 20)).
+	board := Board of: 25 andWormholeAt: (OrderedCollection with: (Wormhole connecting: 6 and: 20)).
 
 	ship := Spaceship withName: 'Test' and: 4.
 
@@ -424,8 +424,8 @@ BoardTest >> testPositionWithoutWormholeReturnsSame [
 BoardTest >> testWormholeTransportsCorrectly [
     | board |
     board := Board of: 20 andWormholeAt: (OrderedCollection withAll: {
-        Wormhole from: 2 to: 10.
-        Wormhole from: 10 to: 2.
+        Wormhole connecting: 2 and: 10.
+        Wormhole connecting: 10 and: 2.
     }).
 
     self assert: (board applyWormholeIfPresentAt: 2) equals: 10.
