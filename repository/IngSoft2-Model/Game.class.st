@@ -175,6 +175,7 @@ Game >> penalize: aShip forTurns: turns [
 { #category : 'process actions' }
 Game >> playTurn [
 
+
 	self ensureGameIsNotOver.
 	self handlePenaltyOrPassIfNeeded ifTrue: [ ^ self ].
 	self rollAndMoveCurrentShip.
@@ -183,8 +184,7 @@ Game >> playTurn [
 		from: previousPosition
 		after: lastSteps.
 	self checkWinCondition.
-	self advanceTurn
-]
+
 
 { #category : 'process actions' }
 Game >> playUntilFinish [
@@ -235,6 +235,7 @@ Game >> registerLapFor: aShip from: oldPosition after: someSteps [
 	lap addLap.
 ]
 
+
 { #category : 'as yet unclassified' }
 Game >> rollAndMoveCurrentShip [
 
@@ -248,7 +249,6 @@ Game >> rollAndMoveCurrentShip [
 	ship moveTo: newPosition.
 	lastSteps := steps
 ]
-
 { #category : 'accessing' }
 Game >> spaceShips [
 
