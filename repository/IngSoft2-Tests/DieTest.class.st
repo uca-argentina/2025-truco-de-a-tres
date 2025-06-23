@@ -6,13 +6,6 @@ Class {
 }
 
 { #category : 'tests - instance' }
-DieTest >> testDieReturnsCorrectNumberOfSides [
-    | die |
-    die := Die withSides: 6.
-    self assert: die sides equals: 6.
-]
-
-{ #category : 'tests - instance' }
 DieTest >> testDieWithZeroSidesRaisesError [
 	self should: [ Die withSides: 0 ] raise: Error.
 

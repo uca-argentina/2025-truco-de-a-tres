@@ -13,9 +13,9 @@ Class {
 }
 
 { #category : 'initialize' }
-Spaceship class >> withName: aName [
+Spaceship class >> withName: aName and: aMaxRoll [
 
-	^ self new initializeWith: aName.
+	^ self new initializeWith: aName and: aMaxRoll.
 ]
 
 { #category : 'initialize' }
@@ -26,14 +26,14 @@ Spaceship >> hasReachedGoalOn: aBoard [
 ]
 
 { #category : 'initialize' }
-Spaceship >> initializeWith: aName [
+Spaceship >> initializeWith: aName and: aMaxRoll [
 
 	aName isEmpty ifTrue: [ self error: 'Name cannot be empty' ].
 
 	playerName := aName.
 	position := 0.
-	fuel := 0.
-  	maxFuel := 0.
+  	maxFuel := aMaxRoll * 2.
+	fuel := maxFuel.
 	lap := 0.
 ]
 
