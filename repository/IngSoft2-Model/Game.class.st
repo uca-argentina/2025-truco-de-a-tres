@@ -15,7 +15,8 @@ Class {
 		'penaltyShips',
 		'penalizedShips',
 		'lappedShips',
-		'totalLaps'
+		'totalLaps',
+		'state'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -87,18 +88,15 @@ Game >> initializeWithShips: someShips board: aBoard dice: someDices laps: aNumb
 	board := aBoard.
 	dice := someDices.
 	totalLaps := aNumberLaps.
-	turn := 1. "Amounts of turns played"
-	currentTurnIndex := 1. "Es el indice del jugador que debe jugar" "Seria el indice de la ordered collection para saber de que nave es el turno. EJ: si currentTurnIndex es 1 entonces es el turno de la primer nave que esta en el orderedCollection"
+	
+	turn := 1.
+	currentTurnIndex := 1.
+	
 	penalizedShips := OrderedCollection new.
 	wantsToPassTurn := Dictionary new.
+	
 	lappedShips := spaceShips collect: [ :ship | LappedShip for: ship ].
-	winner := nil
-]
-
-{ #category : 'testing' }
-Game >> isGameOver [
-
-	^ winner notNil
+	state := GameInProgress new.
 ]
 
 { #category : 'testing' }
@@ -139,7 +137,8 @@ Game >> playTurn [
 
 	| ship steps newPosition previousPosition |
 	
-	self isGameOver ifTrue: [ self error: 'Game is already over' ].
+	self whenFinishedDo: [ :aWinner | self error: 'Game is already over' ]
+     whenInProgressDo: [ ].
 
 	ship := self currentShip.
 
@@ -149,10 +148,10 @@ Game >> playTurn [
 	].
 
 	(self wantsToPassTurn: ship) ifTrue: [
-		self wantsToPassTurn: ship.
-		ship restoreFuel.
-		^ self advanceTurn.
-	].
+	wantsToPassTurn removeKey: ship ifAbsent: [].
+	ship restoreFuel.
+	^ self advanceTurn.
+].
 
 	steps := dice roll.
 
@@ -167,8 +166,9 @@ Game >> playTurn [
 		after: steps.
 
 	(ship hasReachedGoalOn: board) ifTrue: [
-		(self hasWonByLaps: ship) ifTrue: [ winner := ship ] 
-	].
+    (self hasWonByLaps: ship) ifTrue: [
+        state := GameFinished withWinner: ship
+    ]].
 
 	self advanceTurn.
 ]
@@ -176,7 +176,10 @@ Game >> playTurn [
 { #category : 'process actions' }
 Game >> playUntilFinish [
 
-	[ self isGameOver] whileFalse: [ self playTurn ]
+	self whenFinishedDo: [ :aWinner | ] whenInProgressDo: [
+    [ self whenFinishedDo: [ :aWinner | false ] whenInProgressDo: [ true ] ]
+        whileTrue: [ self playTurn ].
+].
 ]
 
 { #category : 'process actions' }
@@ -265,8 +268,12 @@ Game >> wantsToPassTurn: aShip [
 	^ (wantsToPassTurn at: aShip ifAbsent: [ false ]).
 ]
 
+{ #category : 'testing' }
+Game >> whenFinishedDo: finishedBlock whenInProgressDo: inProgressBlock [
+    ^ state whenFinishedDo: finishedBlock whenInProgressDo: inProgressBlock.
+]
+
 { #category : 'accessing' }
 Game >> winner [
-
-	^ winner.
+    ^ state whenFinishedDo: [ :w | w ] whenInProgressDo: [ nil ].
 ]
