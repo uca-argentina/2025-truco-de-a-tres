@@ -201,6 +201,52 @@ self assert: pos1 position equals: finalPositionShip1.
 self assert: pos2 position equals: finalPositionShip2.
 ]
 
+{ #category : 'tests' }
+GameTest >> testHandlePenaltyOrPassIfNeededReturnsFalseWhenNoPenaltyAndNoPass [
+	| ship dice board game result |
+
+	ship := Spaceship withName: 'Neutral'.
+	dice := DiceCup with: { Die withSides: 6 }.
+	board := Board of: 5 andWormholeAt: #().
+	game := Game startWithShips: { ship. (Spaceship withName: 'Other') } board: board dice: dice laps: 1.
+
+	result := game handlePenaltyOrPassIfNeeded.
+
+	self assert: result equals: false.
+]
+
+{ #category : 'tests' }
+GameTest >> testHandlePenaltyOrPassIfNeededReturnsTrueWhenPenalized [
+	| ship dice board game result |
+
+	ship := Spaceship withName: 'Penalized'.
+	dice := DiceCup with: { Die withSides: 6 }.
+	board := Board of: 5 andWormholeAt: #().
+	game := Game startWithShips: { ship. (Spaceship withName: 'Other') } board: board dice: dice laps: 1.
+
+	game penalize: ship forTurns: 1.
+
+	result := game handlePenaltyOrPassIfNeeded.
+
+	self assert: result equals: true.
+]
+
+{ #category : 'tests' }
+GameTest >> testHandlePenaltyOrPassIfNeededReturnsTrueWhenShipWantsToPassTurn [
+	| ship dice board game result |
+
+	ship := Spaceship withName: 'Pasante'.
+	dice := DiceCup with: { Die withSides: 6 }.
+	board := Board of: 5 andWormholeAt: #().
+	game := Game startWithShips: { ship. (Spaceship withName: 'Other') } board: board dice: dice laps: 1.
+
+	game markShipAsWantingToPassTurn: ship to: true.
+
+	result := game handlePenaltyOrPassIfNeeded.
+
+	self assert: result equals: true.
+]
+
 { #category : 'accessing' }
 GameTest >> testHasWonByLapsReturnsFalseIfNotEnoughLaps [
 
@@ -538,6 +584,23 @@ GameTest >> testRegisterLapWhenCrossesFinishLine [
     game registerLapFor: ship1 from: 9 after: 2.
 
     self assert: ((game lapTrackerFor: ship1) lapCount) equals: 1.
+]
+
+{ #category : 'tests' }
+GameTest >> testRollAndMoveCurrentShipMovesShipCorrectly [
+	| ship otherShip dice board game originalPosition |
+
+	ship := Spaceship withName: 'Mover'.
+	otherShip := Spaceship withName: 'Otro'.
+	dice := DiceCup with: { Die withSides: 1 }.
+	board := Board of: 10 andWormholeAt: #().
+	game := Game startWithShips: { ship. otherShip } board: board dice: dice laps: 1.
+
+	originalPosition := ship position.
+
+	game rollAndMoveCurrentShip.
+
+	self assert: ship position equals: originalPosition + 1.
 ]
 
 { #category : 'accessing' }
