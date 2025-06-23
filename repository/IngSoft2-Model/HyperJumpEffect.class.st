@@ -3,7 +3,8 @@ Class {
 	#superclass : 'EffectDecorator',
 	#instVars : [
 		'jumpValues',
-		'currentIndex'
+		'currentIndex',
+		'values'
 	],
 	#classVars : [
 		'CurrentIndex',
@@ -65,4 +66,9 @@ HyperJumpEffect >> peekJumpValue [
 HyperJumpEffect >> resetJumpIndex [
 
 	currentIndex := 1.
+]
+
+{ #category : 'operations' }
+HyperJumpEffect >> values [
+	^ jumpValues
 ]

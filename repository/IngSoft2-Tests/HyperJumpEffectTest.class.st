@@ -6,6 +6,16 @@ Class {
 }
 
 { #category : 'tests' }
+HyperJumpEffectTest >> testAllowsEntryWithRollAlwaysTrue [
+	| effect |
+	effect := HyperJumpEffect withValues: #(3 7 12).
+
+	self assert: (effect allowsEntryWithRoll: 1).
+	self assert: (effect allowsEntryWithRoll: 6).
+	self assert: (effect allowsEntryWithRoll: 100).
+]
+
+{ #category : 'tests' }
 HyperJumpEffectTest >> testApplyToMovesShipForwardByCurrentJumpValue [
     | ship effect expected initialPosition board |
 
@@ -40,6 +50,15 @@ HyperJumpEffectTest >> testHyperJumpCyclesThroughAllJumpValues [
     ].
 
     self assert: positions asArray equals: #(3 8 10 14).
+]
+
+{ #category : 'tests' }
+HyperJumpEffectTest >> testHyperJumpEffectWithValuesInitializesCorrectly [
+	| values effect |
+	values := #(1 3 5).
+	effect := HyperJumpEffect withValues: values.
+
+	self assert: (effect perform: #values) equals: values.
 ]
 
 { #category : 'tests' }
