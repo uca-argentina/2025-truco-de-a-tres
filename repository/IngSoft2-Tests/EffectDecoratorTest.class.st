@@ -21,3 +21,12 @@ EffectDecoratorTest >> testApplyToWithoutWrappedEffectDoesNothing [
 
     self assert: ship position equals: originalPosition.
 ]
+
+{ #category : 'tests' }
+EffectDecoratorTest >> testEffectDecoratorDecorateSetsWrappedEffect [
+	| baseEffect decorator |
+	baseEffect := NoEffect new.
+	decorator := EffectDecorator new decorate: baseEffect.
+
+	self assert: decorator wrapped equals: baseEffect.
+]
