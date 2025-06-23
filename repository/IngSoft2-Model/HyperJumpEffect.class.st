@@ -33,13 +33,6 @@ HyperJumpEffect >> applyTo: aSpaceship [
 ]
 
 { #category : 'operations' }
-HyperJumpEffect >> initialize [
-
-	jumpValues := #(3 5 2 4).
-	currentIndex := 1.
-]
-
-{ #category : 'operations' }
 HyperJumpEffect >> initializeWith: aCollection [
     jumpValues := aCollection.
     currentIndex := 1.
