@@ -93,35 +93,34 @@ BoardTest >> testBlackHoleEffectMovesSpaceshipBackwards [
 	board := Board of: 5 andWormholeAt: #().
 
 	ship := Spaceship withName: 'Lucas' and: 4.
-	ship moveTo: 3.
+	ship moveTo: 4.
 
 	board cells at: 4 put: BlackHoleEffect new.
 	board applyEffectTo: ship.
 
 	self assert: ship position equals: 0.
-
 ]
 
 { #category : 'tests - instance' }
 BoardTest >> testBoardCellCountIsCorrect [
-    | board size |
+	| board size |
 
-    size := 7.
-    board := Board of: size andWormholeAt: #().
+	size := 7.
+	board := Board of: size andWormholeAt: #().
 
-    self assert: board cells size equals: size.
+	self assert: board cells size equals: size.
 ]
 
 { #category : 'tests - instance' }
 BoardTest >> testBoardCellsContainRecognizedEffects [
 	| board validClasses |
-	validClasses := { BlackHoleEffect. HyperGravityEffect }.
+
+	validClasses := { BlackHoleEffect. HyperGravityEffect. NoEffect }.
 
 	board := Board of: 20 andWormholeAt: OrderedCollection new.
 
-	self assert: (board cells allSatisfy: [:e |
+	self assert: (board cells values allSatisfy: [:e |
 		validClasses anySatisfy: [:c | e class = c ] ]).
-
 ]
 
 { #category : 'tests - instance' }

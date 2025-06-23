@@ -133,21 +133,17 @@ Board >> determineNewPositionFrom: aPosition after: steps for: aLappedSpaceship 
 
 { #category : 'initialize' }
 Board >> effectAt: aPosition [
-	^ cells at: aPosition + 1
-
-]
-
-{ #category : 'initialize' }
-Board >> initializeCells [
-	cells := (1 to: cellCount) collect: [:i | self randomEffect ].
-
+    ^ cells at: aPosition ifAbsent: [ NoEffect new ]
 ]
 
 { #category : 'initialize' }
 Board >> initializeWithCells: aCount andWormholes: aCollection [
 	cellCount := aCount.
 	wormholes := aCollection.
-	self initializeCells.
+	cells := Dictionary new.
+	
+0 to: aCount - 1 do: [ :i |
+		cells at: i put: NoEffect new ].
 ]
 
 { #category : 'initialize' }
@@ -155,9 +151,12 @@ Board >> initializeWithCells: aCount length: aLengthInParsecs andWormholes: aCol
     cellCount := aCount.
     totalLengthInParsecs := aLengthInParsecs.
     wormholes := aCollection.
+	 cells := Dictionary new.
+	
+	0 to: aCount - 1 do: [ :i |
+		cells at: i put: NoEffect new ].
     
     self assertValidState.
-    self initializeCells.
 ]
 
 { #category : 'initialize' }
@@ -168,14 +167,6 @@ Board >> isGoalReachedAt: aPosition [
 { #category : 'validation' }
 Board >> isValid [
     ^ [ self assertValidState. true ] on: Error do: [ false ].
-]
-
-{ #category : 'initialize' }
-Board >> randomEffect [
-	effects := { BlackHoleEffect. HyperGravityEffect }.
-	
-	^ (effects atRandom) new.
-
 ]
 
 { #category : 'initialize' }
