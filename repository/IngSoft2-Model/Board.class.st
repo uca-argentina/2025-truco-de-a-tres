@@ -76,7 +76,7 @@ Board >> calculateNewPositionFrom: current after: steps moves: aLappedSpaceship 
 
 { #category : 'initialize' }
 Board >> cellCount [
-    ^ cellCount.
+    ^ cells size.
 ]
 
 { #category : 'initialize' }

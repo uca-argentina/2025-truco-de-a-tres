@@ -84,6 +84,26 @@ GameTest >> testCurrentShipReturnsCorrectShip [
 ]
 
 { #category : 'tests' }
+GameTest >> testEnsureGameIsNotOverRaisesErrorIfGameFinished [
+	| ship1 ship2 dice board game |
+
+	ship1 := Spaceship withName: 'Alpha'.
+	ship2 := Spaceship withName: 'Beta'.
+
+	dice := DiceCup with: { Die withSides: 100 }.
+	board := Board of: 5 andWormholeAt: #().
+
+	ship1 moveTo: 4.
+	ship2 moveTo: 0.
+
+	game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+	game playTurn.
+	game checkWinCondition.
+
+	self should: [ game ensureGameIsNotOver ] raise: Error.
+]
+
+{ #category : 'tests' }
 GameTest >> testFindPenaltyForReturnsExistingPenalty [
 
     | ship1 ship2 board dice game |
@@ -125,6 +145,27 @@ GameTest >> testGameEndsWithPlayUntilFinish [
 	game playUntilFinish.
 
 	game whenFinishedDo: [ :w | self assert: true ] whenInProgressDo: [ self fail: 'Expected game to be finished' ].
+]
+
+{ #category : 'tests' }
+GameTest >> testGameReturnsAllStatuses [
+    | ship1 ship2 board dice game statuses |
+    
+    ship1 := Spaceship withName: 'A'.
+    ship2 := Spaceship withName: 'B'.
+    board := Board of: 10 andWormholeAt: #().
+    dice := DiceCup with: { Die withSides: 1 }.
+
+    game := Game
+        startWithShips: { ship1. ship2 }
+        board: board
+        dice: dice
+        laps: 1.
+
+    statuses := game allStatuses.
+
+    self assert: statuses size equals: 2.
+    self assert: (statuses allSatisfy: [ :status | status ship isNotNil ]).
 ]
 
 { #category : 'tests' }

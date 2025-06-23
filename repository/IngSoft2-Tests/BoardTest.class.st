@@ -107,7 +107,7 @@ BoardTest >> testBoardCellCountIsCorrect [
 	size := 7.
 	board := Board of: size andWormholeAt: #().
 
-	self assert: board cells size equals: size.
+	self assert: board cellCount equals: size.
 ]
 
 { #category : 'tests - instance' }
@@ -177,6 +177,32 @@ BoardTest >> testCannotEnterHyperGravityCellWithLowRoll [
 
 	self deny: (effect allowsEntryWithRoll: 2).
 
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testEffectAtHandlesAllCases [
+    | board customEffect |
+
+    board := Board of: 10 andWormholeAt: {}.
+    customEffect := BlackHoleEffect new.
+    board cells at: 5 put: customEffect.
+
+    self assert: (board effectAt: 5) equals: customEffect.
+    self assert: (board effectAt: 8) class equals: NoEffect.
+    self assert: (board effectAt: -1) class equals: NoEffect.
+    self assert: (board effectAt: 100) class equals: NoEffect.
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testEffectAtReturnsCorrectEffect [
+    | board customEffect |
+
+    board := Board of: 10 andWormholeAt: {}.
+    customEffect := BlackHoleEffect new.
+    board cells at: 5 put: customEffect.
+
+    self assert: (board effectAt: 5) equals: customEffect.
+    self assert: (board effectAt: 8) class equals: NoEffect.
 ]
 
 { #category : 'tests - instance' }
