@@ -11,7 +11,7 @@ MoonWalkEffectTest >> testApplyToDoesNothing [
     | effect ship originalPosition |
 
     effect := MoonWalkEffect new.
-    ship := Spaceship withName: 'TestShip'.
+    ship := Spaceship withName: 'TestShip' and: 4.
 
     originalPosition := ship position.
     effect applyTo: ship.
@@ -26,9 +26,9 @@ MoonWalkEffectTest >> testApplyToInContextMovesOthersBack [
 
     effect := MoonWalkEffect new.
 
-    ship1 := Spaceship withName: 'TargetShip'.
-    ship2 := Spaceship withName: 'Ship2'.
-    ship3 := Spaceship withName: 'Ship3'.
+    ship1 := Spaceship withName: 'TargetShip' and: 4.
+    ship2 := Spaceship withName: 'Ship2' and: 4.
+    ship3 := Spaceship withName: 'Ship3' and: 4.
 
     ship1 moveTo: 5.
     ship2 moveTo: 5.

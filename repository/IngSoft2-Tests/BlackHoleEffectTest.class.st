@@ -10,7 +10,7 @@ BlackHoleEffectTest >> testApplyToDoesNotGoBelowZero [
 
     | ship effect |
 
-    ship := Spaceship withName: 'Boundary'.
+    ship := Spaceship withName: 'Boundary' and: 4.
     ship moveTo: 3.
 
     effect := BlackHoleEffect new.
@@ -24,7 +24,7 @@ BlackHoleEffectTest >> testApplyToMovesShipBackBy4 [
 
     | ship effect |
 
-    ship := Spaceship withName: 'Voyager'.
+    ship := Spaceship withName: 'Voyager' and: 4.
     ship moveTo: 6.
 
     effect := BlackHoleEffect new.

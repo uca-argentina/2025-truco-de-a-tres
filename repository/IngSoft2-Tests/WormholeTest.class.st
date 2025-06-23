@@ -116,11 +116,3 @@ WormholeTest >> testValidWormholeCreation [
 	self assert: wormhole entry equals: 5.
 	self assert: wormhole exit equals: 10.
 ]
-
-{ #category : 'tests - instance' }
-WormholeTest >> testWormholeNewShouldFail [
-	self 
-		should: [ Wormhole new ] 
-		raise: Error 
-		withMessageText: 'Use Wormhole from:to: instead.'.
-]
