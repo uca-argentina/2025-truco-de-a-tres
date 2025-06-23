@@ -27,9 +27,15 @@ HyperJumpEffect >> allowsEntryWithRoll: aRoll [
 
 { #category : 'operations' }
 HyperJumpEffect >> applyTo: aSpaceship [
-    | jump |
-    jump := self nextJumpValue.
-    aSpaceship moveForward: jump.
+    self error: 'Use applyTo:inBoard: instead.'
+]
+
+{ #category : 'operations' }
+HyperJumpEffect >> applyTo: aSpaceship inBoard: aBoard [
+    | parsecs steps |
+    parsecs := self nextJumpValue.
+    steps := aBoard stepsFromParsecs: parsecs.
+    aSpaceship moveForward: steps.
 ]
 
 { #category : 'operations' }

@@ -7,8 +7,9 @@ Class {
 
 { #category : 'tests' }
 HyperJumpEffectTest >> testApplyToMovesShipForwardByCurrentJumpValue [
-    | ship effect expected initialPosition |
+    | ship effect expected initialPosition board |
 
+    board := Board of: 10 length: 10 andWormholeAt: #().
     effect := HyperJumpEffect withValues: #(3 5 2 4).
     expected := effect peekJumpValue.
 
@@ -16,15 +17,16 @@ HyperJumpEffectTest >> testApplyToMovesShipForwardByCurrentJumpValue [
     initialPosition := 2.
     ship moveTo: initialPosition.
 
-    effect applyTo: ship.
+    effect applyTo: ship inBoard: board.
 
-    self assert: ship position equals: (initialPosition + expected).
+    self assert: ship position equals: (initialPosition + (board stepsFromParsecs: expected)).
 ]
 
 { #category : 'tests' }
 HyperJumpEffectTest >> testHyperJumpCyclesThroughAllJumpValues [
-    | ship effect positions initialPosition |
+    | ship effect positions initialPosition board |
 
+    board := Board of: 10 length: 10 andWormholeAt: #().
     effect := HyperJumpEffect withValues: #(3 5 2 4).
 
     ship := Spaceship withName: 'Cycler' and: 10.
@@ -33,7 +35,7 @@ HyperJumpEffectTest >> testHyperJumpCyclesThroughAllJumpValues [
 
     positions := OrderedCollection new.
     4 timesRepeat: [
-        effect applyTo: ship.
+        effect applyTo: ship inBoard: board.
         positions add: ship position.
     ].
 

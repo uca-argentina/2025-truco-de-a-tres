@@ -5,7 +5,8 @@ Class {
 		'cellCount',
 		'wormholes',
 		'cells',
-		'effects'
+		'effects',
+		'totalLengthInParsecs'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -19,6 +20,16 @@ Board class >> of: anAmountOfCells andWormholeAt: positions [
 	^ self new
 		  initializeWithCells: anAmountOfCells
 		  andWormholes: positions
+]
+
+{ #category : 'initialize' }
+Board class >> of: anAmountOfCells length: parsecLength andWormholeAt: positions [
+    self validateCellCount: anAmountOfCells.
+    self validateWormholes: positions.
+    ^ self new
+        initializeWithCells: anAmountOfCells
+        length: parsecLength
+        andWormholes: positions.
 ]
 
 { #category : 'initialize' }
@@ -140,6 +151,16 @@ Board >> initializeWithCells: aCount andWormholes: aCollection [
 ]
 
 { #category : 'initialize' }
+Board >> initializeWithCells: aCount length: aLengthInParsecs andWormholes: aCollection [
+    cellCount := aCount.
+    totalLengthInParsecs := aLengthInParsecs.
+    wormholes := aCollection.
+    
+    self assertValidState.
+    self initializeCells.
+]
+
+{ #category : 'initialize' }
 Board >> isGoalReachedAt: aPosition [
     ^ aPosition >= cellCount.
 ]
@@ -155,4 +176,11 @@ Board >> randomEffect [
 	
 	^ (effects atRandom) new.
 
+]
+
+{ #category : 'initialize' }
+Board >> stepsFromParsecs: someParsecs [
+    | ratio |
+    ratio := someParsecs / totalLengthInParsecs.
+    ^ (ratio * cellCount) rounded.
 ]
