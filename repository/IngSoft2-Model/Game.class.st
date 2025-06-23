@@ -26,14 +26,7 @@ Class {
 Game class >> startWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps [
 
 	self validateMinimumSpaceShips: someShips.
-	self validateBoard: aBoard.
 	^ self new initializeWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps.
-]
-
-{ #category : 'initialize' }
-Game class >> validateBoard: aBoard [
-
-    aBoard isValid ifFalse: [ self error: 'Board is invalid' ].
 ]
 
 { #category : 'initialize' }

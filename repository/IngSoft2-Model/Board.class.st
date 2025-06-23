@@ -64,19 +64,6 @@ Board >> applyWormholeIfPresentAt: aPosition [
 ]
 
 { #category : 'initialize' }
-Board >> assertValidState [
-    (cellCount isInteger and: [ cellCount > 0 ]) ifFalse: [
-        self error: 'Board must have a positive number of cells'.
-    ].
-
-    (wormholes isCollection and: [
-        wormholes allSatisfy: [ :each | each isValid ].
-    ]) ifFalse: [
-        self error: 'All wormholes must be valid objects'.
-    ].
-]
-
-{ #category : 'initialize' }
 Board >> calculateNewPositionFrom: current after: steps moves: aLappedSpaceship [
 	| newPosition |
 	
@@ -156,17 +143,11 @@ Board >> initializeWithCells: aCount length: aLengthInParsecs andWormholes: aCol
 	0 to: aCount - 1 do: [ :i |
 		cells at: i put: NoEffect new ].
     
-    self assertValidState.
 ]
 
 { #category : 'initialize' }
 Board >> isGoalReachedAt: aPosition [
     ^ aPosition >= cellCount.
-]
-
-{ #category : 'validation' }
-Board >> isValid [
-    ^ [ self assertValidState. true ] on: Error do: [ false ].
 ]
 
 { #category : 'initialize' }
