@@ -62,6 +62,17 @@ HyperJumpEffectTest >> testHyperJumpEffectWithValuesInitializesCorrectly [
 ]
 
 { #category : 'tests' }
+HyperJumpEffectTest >> testInitializeWithSetsJumpValuesAndIndex [
+
+	| values effect |
+	values := #(3 5 7).
+	effect := HyperJumpEffect new initializeWith: values.
+
+	self assert: (effect instVarNamed: 'jumpValues') equals: values.
+	self assert: (effect instVarNamed: 'currentIndex') equals: 1.
+]
+
+{ #category : 'tests' }
 HyperJumpEffectTest >> testNextJumpValueCyclesCorrectly [
     | effect |
 
@@ -75,15 +86,57 @@ HyperJumpEffectTest >> testNextJumpValueCyclesCorrectly [
 ]
 
 { #category : 'tests' }
+HyperJumpEffectTest >> testNextJumpValueReturnsValuesCyclically [
+
+	| effect values |
+	values := #(3 5 7).
+	effect := HyperJumpEffect new initializeWith: values.
+
+	self assert: effect nextJumpValue equals: 3.
+	self assert: effect nextJumpValue equals: 5.
+	self assert: effect nextJumpValue equals: 7.
+	self assert: effect nextJumpValue equals: 3.
+	self assert: effect nextJumpValue equals: 5.
+]
+
+{ #category : 'tests' }
+HyperJumpEffectTest >> testPeekJumpValueReturnsCurrentValueWithoutAdvancing [
+
+	| effect values |
+	values := #(10 20 30).
+	effect := HyperJumpEffect new initializeWith: values.
+
+	self assert: effect peekJumpValue equals: 10.
+	self assert: effect peekJumpValue equals: 10.
+	effect nextJumpValue.
+	self assert: effect peekJumpValue equals: 20.
+]
+
+{ #category : 'tests' }
 HyperJumpEffectTest >> testResetJumpIndexRestartsSequence [
     | effect |
 
     effect := HyperJumpEffect withValues: #(3 5 2 4).
 
-    effect nextJumpValue. "3"
-    effect nextJumpValue. "5"
+    effect nextJumpValue.
+    effect nextJumpValue.
 
     effect resetJumpIndex.
 
     self assert: effect nextJumpValue equals: 3.
+]
+
+{ #category : 'tests' }
+HyperJumpEffectTest >> testResetJumpIndexSetsIndexBackToOne [
+
+	| effect values |
+	values := #(3 6 9).
+	effect := HyperJumpEffect new initializeWith: values.
+
+	effect nextJumpValue.
+	effect nextJumpValue.
+
+	effect resetJumpIndex.
+
+	self assert: effect peekJumpValue equals: 3.
 ]
