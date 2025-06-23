@@ -6,17 +6,41 @@ Class {
 }
 
 { #category : 'tests' }
-HyperJumpEffectTest >> testApplyToMovesShipForwardBy3 [
+HyperJumpEffectTest >> testApplyToMovesShipForwardByCurrentJumpValue [
+    | ship effect expected initialPosition |
 
-    | ship effect |
+    HyperJumpEffect resetJumpIndex.
+    expected := HyperJumpEffect peekJumpValue.
 
     ship := Spaceship withName: 'Jumper' and: 4.
-    ship moveTo: 2.
+    initialPosition := 2.
+    ship moveTo: initialPosition.
 
     effect := HyperJumpEffect new.
     effect applyTo: ship.
 
-    self assert: ship position equals: 5.
+    self assert: ship position equals: (initialPosition + expected).
+]
+
+{ #category : 'tests' }
+HyperJumpEffectTest >> testHyperJumpCyclesThroughAllJumpValues [
+    | ship effect positions initialPosition |
+
+    HyperJumpEffect resetJumpIndex.
+
+    ship := Spaceship withName: 'Cycler' and: 10.
+    initialPosition := 0.
+    ship moveTo: initialPosition.
+
+    effect := HyperJumpEffect new.
+
+    positions := OrderedCollection new.
+    4 timesRepeat: [
+        effect applyTo: ship.
+        positions add: ship position.
+    ].
+
+    self assert: positions asArray equals: #(3 8 10 14).
 ]
 
 { #category : 'tests' }

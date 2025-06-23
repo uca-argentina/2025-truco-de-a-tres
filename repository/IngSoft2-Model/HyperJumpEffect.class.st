@@ -29,6 +29,11 @@ HyperJumpEffect class >> nextJumpValue [
 ]
 
 { #category : 'class initialization' }
+HyperJumpEffect class >> peekJumpValue [
+    ^ JumpValues at: CurrentIndex.
+]
+
+{ #category : 'class initialization' }
 HyperJumpEffect class >> resetJumpIndex [
 
 	CurrentIndex := 1.
@@ -41,5 +46,7 @@ HyperJumpEffect >> allowsEntryWithRoll: aRoll [
 
 { #category : 'operations' }
 HyperJumpEffect >> applyTo: aSpaceship [
-	aSpaceship moveForward: 3.
+    | jump |
+    jump := self class nextJumpValue.
+    aSpaceship moveForward: jump.
 ]
