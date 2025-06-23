@@ -138,24 +138,27 @@ Game >> penalize: aShip forTurns: turns [
 Game >> playTurn [
 
 	| ship steps newPosition previousPosition |
+	
 	self isGameOver ifTrue: [ self error: 'Game is already over' ].
 
 	ship := self currentShip.
 
 	(self isPenalized: ship) ifTrue: [
 		self reducePenaltyFor: ship.
-		^ self advanceTurn ].
+		^ self advanceTurn.
+	].
 
 	(self wantsToPassTurn: ship) ifTrue: [
-		self markShipAsWantingToPassTurn: ship to: false.
+		self wantsToPassTurn: ship.
 		ship restoreFuel.
-		^ self advanceTurn ].
+		^ self advanceTurn.
+	].
 
 	steps := dice roll.
 
-
 	previousPosition := ship position.
 	newPosition := board determineNewPositionFrom: ship position after: steps.
+	
 	ship moveTo: newPosition.
 
 	self
@@ -164,9 +167,10 @@ Game >> playTurn [
 		after: steps.
 
 	(ship hasReachedGoalOn: board) ifTrue: [
-		(self hasWonByLaps: ship) ifTrue: [ winner := ship ] ].
+		(self hasWonByLaps: ship) ifTrue: [ winner := ship ] 
+	].
 
-	self advanceTurn
+	self advanceTurn.
 ]
 
 { #category : 'process actions' }
