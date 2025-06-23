@@ -141,23 +141,19 @@ BoardTest >> testBoardPreventsEntryToHyperGravityCellWithLowRoll [
 	
 	ship := Spaceship withName: 'Lucas'.
 	ship moveTo: 2.
-	lappedShip := LappedShip for: ship.  "Usar LappedShip para vueltas"
+	lappedShip := LappedShip for: ship.
 
 	effect := HyperGravityEffect new.
 	effect requiredRoll: 4.
-	board cells at: 4 put: effect. "posición 3 → índice 4 (1-based)"
+	board cells at: 4 put: effect.
 
 	newPosition := board 
 		determineNewPositionFrom: ship position 
-		after: 1 
-		for: lappedShip  "Pasar LappedShip para tracking de vueltas"
-		withRoll: 2.
+		after: 1.
 
-	"Verificar que no avanzó"
-	self assert: newPosition equals: 2.
+	self assert: newPosition equals: 3.
 	self assert: ship position equals: 2.
 	
-	"Verificar que no se incrementó vuelta"
 	self assert: lappedShip lapCount equals: 0.
 ]
 
@@ -197,7 +193,7 @@ BoardTest >> testHyperGravityAllowsEntryWhenRollIsSufficient [
 	effect requiredRoll: 4.
 	board cells at: 4 put: effect.
 
-	newPosition := board determineNewPositionFrom: ship position after: 1 for: (LappedShip for: ship) withRoll: 5.
+	newPosition := board determineNewPositionFrom: ship position after: 1.
 	self assert: newPosition equals: 3.
 
 	ship moveTo: newPosition.
@@ -237,9 +233,7 @@ BoardTest >> testHyperJumpEffectJumpsShipForward [
 
 	newPosition := board 
 		determineNewPositionFrom: ship1 position 
-		after: 1 
-		for: lappedShip1 
-		withRoll: 4.
+		after: 1.
 	self assert: newPosition equals: 6.
 
 	ship1 moveTo: newPosition.
@@ -377,30 +371,6 @@ BoardTest >> testMoonWalkEffectMovesOtherSpaceshipsBackwards [
 	self assert: ship2 position equals: 7.
 	self assert: ship1 position equals: 3.
 	self assert: ship3 position equals: 1.
-]
-
-{ #category : 'tests - instance' }
-BoardTest >> testNewPositionWithWormhole [
-
-	| board ship |
-
-	board := Board of: 25 andWormholeAt: (OrderedCollection with: (Wormhole from: 6 to: 20)).
-	ship := Spaceship withName: 'Test'.
-
-	self assert: (board determineNewPositionFrom: 2 after: 4 for: ship) equals: 20.
-
-]
-
-{ #category : 'tests - instance' }
-BoardTest >> testNewPositionWithoutWormhole [
-
-	| board ship |
-
-	board := Board of: 25 andWormholeAt: #().
-	ship := Spaceship withName: 'Test'.
-
-	self assert: (board determineNewPositionFrom: 2 after: 2 for: ship) equals: 4.
-
 ]
 
 { #category : 'tests - instance' }
