@@ -219,16 +219,16 @@ BoardTest >> testHyperGravityEffectHasCorrectDefaultRoll [
 
 { #category : 'tests - instance' }
 BoardTest >> testHyperJumpEffectJumpsShipForward [
-	| dice1 dicesGame board ship1 ship2 lappedShip1 effect newPosition game |
 
+	| dice1 dicesGame board ship1 ship2 lappedShip1 effect newPosition game |
 
 	dice1 := Die withSides: 6.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
 	board := Board of: 10 andWormholeAt: #().
 
-
-	HyperJumpEffect resetJumpIndex.
-	effect := HyperJumpEffect new.
+	"HyperJumpEffect resetJumpIndex."
+	"effect := HyperJumpEffect new."
+	effect := HyperJumpEffect withValues: #(3 5 2 4).
 	board cells at: 7 put: effect.
 
 	ship1 := Spaceship withName: 'Apollo' and: dicesGame maxRoll.

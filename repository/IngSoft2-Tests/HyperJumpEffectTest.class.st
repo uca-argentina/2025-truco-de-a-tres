@@ -9,14 +9,13 @@ Class {
 HyperJumpEffectTest >> testApplyToMovesShipForwardByCurrentJumpValue [
     | ship effect expected initialPosition |
 
-    HyperJumpEffect resetJumpIndex.
-    expected := HyperJumpEffect peekJumpValue.
+    effect := HyperJumpEffect withValues: #(3 5 2 4).
+    expected := effect peekJumpValue.
 
     ship := Spaceship withName: 'Jumper' and: 4.
     initialPosition := 2.
     ship moveTo: initialPosition.
 
-    effect := HyperJumpEffect new.
     effect applyTo: ship.
 
     self assert: ship position equals: (initialPosition + expected).
@@ -26,13 +25,11 @@ HyperJumpEffectTest >> testApplyToMovesShipForwardByCurrentJumpValue [
 HyperJumpEffectTest >> testHyperJumpCyclesThroughAllJumpValues [
     | ship effect positions initialPosition |
 
-    HyperJumpEffect resetJumpIndex.
+    effect := HyperJumpEffect withValues: #(3 5 2 4).
 
     ship := Spaceship withName: 'Cycler' and: 10.
     initialPosition := 0.
     ship moveTo: initialPosition.
-
-    effect := HyperJumpEffect new.
 
     positions := OrderedCollection new.
     4 timesRepeat: [
@@ -45,23 +42,27 @@ HyperJumpEffectTest >> testHyperJumpCyclesThroughAllJumpValues [
 
 { #category : 'tests' }
 HyperJumpEffectTest >> testNextJumpValueCyclesCorrectly [
+    | effect |
 
-    HyperJumpEffect resetJumpIndex.
+    effect := HyperJumpEffect withValues: #(3 5 2 4).
 
-    self assert: HyperJumpEffect nextJumpValue equals: 3.
-    self assert: HyperJumpEffect nextJumpValue equals: 5.
-    self assert: HyperJumpEffect nextJumpValue equals: 2.
-    self assert: HyperJumpEffect nextJumpValue equals: 4.
-    self assert: HyperJumpEffect nextJumpValue equals: 3.
+    self assert: effect nextJumpValue equals: 3.
+    self assert: effect nextJumpValue equals: 5.
+    self assert: effect nextJumpValue equals: 2.
+    self assert: effect nextJumpValue equals: 4.
+    self assert: effect nextJumpValue equals: 3.
 ]
 
 { #category : 'tests' }
 HyperJumpEffectTest >> testResetJumpIndexRestartsSequence [
+    | effect |
 
-    HyperJumpEffect resetJumpIndex.
-    HyperJumpEffect nextJumpValue.
-    HyperJumpEffect nextJumpValue.
-    HyperJumpEffect resetJumpIndex.
+    effect := HyperJumpEffect withValues: #(3 5 2 4).
 
-    self assert: HyperJumpEffect nextJumpValue equals: 3.
+    effect nextJumpValue. "3"
+    effect nextJumpValue. "5"
+
+    effect resetJumpIndex.
+
+    self assert: effect nextJumpValue equals: 3.
 ]
