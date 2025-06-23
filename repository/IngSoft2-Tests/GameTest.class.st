@@ -130,7 +130,7 @@ GameTest >> testGameEndsWithPlayUntilFinish [
 
 { #category : 'tests' }
 GameTest >> testGameReturnsFinalPositionsOfSpaceships [
-	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game positions finalPositionShip1 finalPositionShip2 |
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game positions finalPositionShip1 finalPositionShip2 pos1 pos2 |
 
 dice1 := Die withSides: 100.
 dicesGame := DiceCup with: (OrderedCollection with: dice1).
@@ -154,8 +154,11 @@ positions := game spaceshipPositions.
 finalPositionShip1 := spaceShip1 position.
 finalPositionShip2 := spaceShip2 position.
 
-self assert: (positions at: spaceShip1) equals: finalPositionShip1.
-self assert: (positions at: spaceShip2) equals: finalPositionShip2.
+pos1 := positions detect: [ :each | each ship = spaceShip1 ].
+pos2 := positions detect: [ :each | each ship = spaceShip2 ].
+
+self assert: pos1 position equals: finalPositionShip1.
+self assert: pos2 position equals: finalPositionShip2.
 ]
 
 { #category : 'accessing' }
@@ -518,6 +521,31 @@ GameTest >> testSetAndQueryWantsToPassTurn [
     self assert: (game wantsToPassTurn: ship1).
 ]
 
+{ #category : 'tests' }
+GameTest >> testShipPositionsReflectCurrentPositionsOfAllShips [
+
+    | ship1 ship2 board dice game positions pos1 pos2 |
+
+ship1 := Spaceship withName: 'Alpha' and: 4.
+ship2 := Spaceship withName: 'Beta' and: 4.
+board := Board of: 10 andWormholeAt: #().
+dice := DiceCup with: { Die withSides: 1 }.
+
+game := Game
+    startWithShips: { ship1. ship2 }
+    board: board
+    dice: dice
+    laps: 1.
+
+positions := game spaceshipPositions.
+
+pos1 := positions detect: [ :each | each ship = ship1 ].
+pos2 := positions detect: [ :each | each ship = ship2 ].
+
+self assert: pos1 position equals: 0.
+self assert: pos2 position equals: 0.
+]
+
 { #category : 'accessing' }
 GameTest >> testShipStatusReturnsCorrectValues [
 
@@ -626,31 +654,9 @@ GameTest >> testShipStatusReturnsCurrentPosition [
 ]
 
 { #category : 'tests' }
-GameTest >> testSpaceshipPositionsReturnsCorrectDict [
-
-    | ship1 ship2 board dice game positions |
-
-    ship1 := Spaceship withName: 'Alpha' and: 4.
-    ship2 := Spaceship withName: 'Beta' and: 4.
-    board := Board of: 10 andWormholeAt: #().
-    dice := DiceCup with: { Die withSides: 1 }.
-
-    game := Game
-        startWithShips: { ship1. ship2 }
-        board: board
-        dice: dice
-        laps: 1.
-
-    positions := game spaceshipPositions.
-
-    self assert: (positions at: ship1) equals: 0.
-    self assert: (positions at: ship2) equals: 0.
-]
-
-{ #category : 'tests' }
 GameTest >> testSpaceshipPositionsReturnsCorrectMapping [
 
-    | ship1 ship2 game board dice positions |
+    | ship1 ship2 game board dice positions pos1 pos2 |
 
     ship1 := Spaceship withName: 'MapOne' and: 4.
     ship2 := Spaceship withName: 'MapTwo' and: 4.
@@ -663,15 +669,17 @@ GameTest >> testSpaceshipPositionsReturnsCorrectMapping [
 
     positions := game spaceshipPositions.
 
-    self assert: (positions at: ship1) equals: 3.
-    self assert: (positions at: ship2) equals: 7.
+    pos1 := positions detect: [ :each | each ship = ship1 ].
+    pos2 := positions detect: [ :each | each ship = ship2 ].
+
+    self assert: pos1 position equals: 3.
+    self assert: pos2 position equals: 7.
 ]
 
 { #category : 'tests' }
 GameTest >> testSpaceshipPositionsReturnsCorrectPositions [
 
-	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game positions |
-
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game positions pos1 pos2 |
 
 	dice1 := Die withSides: 1.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
@@ -680,10 +688,7 @@ GameTest >> testSpaceshipPositionsReturnsCorrectPositions [
 	spaceShip2 := Spaceship withName: 'Ship Num2' and: dicesGame maxRoll.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
-
-	boardGame := Board of: 10 andWormholeAt: #(  ).
-
-
+	boardGame := Board of: 10 andWormholeAt: #().
 
 	game := Game
 		        startWithShips: spaceShipsGame
@@ -695,8 +700,11 @@ GameTest >> testSpaceshipPositionsReturnsCorrectPositions [
 
 	positions := game spaceshipPositions.
 
-	self assert: (positions at: spaceShip1) equals: 1.
-	self assert: (positions at: spaceShip2) equals: 0
+	pos1 := positions detect: [ :each | each ship = spaceShip1 ].
+	pos2 := positions detect: [ :each | each ship = spaceShip2 ].
+
+	self assert: pos1 position equals: 1.
+	self assert: pos2 position equals: 0.
 ]
 
 { #category : 'tests' }

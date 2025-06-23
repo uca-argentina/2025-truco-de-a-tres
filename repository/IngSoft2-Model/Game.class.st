@@ -234,7 +234,7 @@ Game >> spaceShips [
 
 { #category : 'process actions' }
 Game >> spaceshipPositions [
-	^ spaceShips collect: [ :ship | ship -> ship position ] as: Dictionary
+    ^ spaceShips collect: [ :ship | ShipPosition for: ship ]
 ]
 
 { #category : 'process actions' }
