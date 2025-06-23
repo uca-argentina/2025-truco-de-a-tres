@@ -10,7 +10,7 @@ ShipStatusTest >> testInitializationSetsValuesCorrectly [
 
     | ship status |
 
-    ship := Spaceship withName: 'Voyager' and: 4.
+    ship := Spaceship withName: 'Voyager'.
     status := ShipStatus for: ship position: 5 laps: 2 penalized: true.
 
     self assert: status ship equals: ship.
@@ -24,7 +24,7 @@ ShipStatusTest >> testIsPenalizedReturnsFalse [
 
     | ship status |
 
-    ship := Spaceship withName: 'Enterprise' and: 4.
+    ship := Spaceship withName: 'Enterprise'.
     status := ShipStatus for: ship position: 0 laps: 0 penalized: false.
 
     self deny: status isPenalized.

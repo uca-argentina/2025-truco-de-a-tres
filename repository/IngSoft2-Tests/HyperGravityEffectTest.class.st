@@ -33,7 +33,7 @@ HyperGravityEffectTest >> testApplyToDoesNothing [
 
     | ship effect |
 
-    ship := Spaceship withName: 'Heavy' and: 4.
+    ship := Spaceship withName: 'Heavy'.
     ship moveTo: 5.
 
     effect := HyperGravityEffect new.

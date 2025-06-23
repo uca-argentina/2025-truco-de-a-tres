@@ -13,7 +13,7 @@ HyperJumpEffectTest >> testApplyToMovesShipForwardByCurrentJumpValue [
     effect := HyperJumpEffect withValues: #(3 5 2 4).
     expected := effect peekJumpValue.
 
-    ship := Spaceship withName: 'Jumper' and: 4.
+    ship := Spaceship withName: 'Jumper'.
     initialPosition := 2.
     ship moveTo: initialPosition.
 
@@ -29,7 +29,7 @@ HyperJumpEffectTest >> testHyperJumpCyclesThroughAllJumpValues [
     board := Board of: 10 length: 10 andWormholeAt: #().
     effect := HyperJumpEffect withValues: #(3 5 2 4).
 
-    ship := Spaceship withName: 'Cycler' and: 10.
+    ship := Spaceship withName: 'Cycler'.
     initialPosition := 0.
     ship moveTo: initialPosition.
 
