@@ -7,9 +7,10 @@ Class {
 
 { #category : 'tests' }
 LappedShipTest >> testAddLapIncrementsCount [
+
     | ship lapped |
 
-    ship := Spaceship withName: 'TestShip' and: 4.
+    ship := Spaceship withName: 'TestShip'.
     lapped := LappedShip for: ship.
     
     lapped addLap.
@@ -23,7 +24,7 @@ LappedShipTest >> testHasWonReturnsFalseWhenLapsInsufficient [
 
     | ship lapped |
 
-    ship := Spaceship withName: 'TestShip' and: 4.
+    ship := Spaceship withName: 'TestShip'.
     lapped := LappedShip for: ship.
     
     lapped addLap.
@@ -36,7 +37,7 @@ LappedShipTest >> testHasWonReturnsTrueWhenLapsEqualGoal [
 
     | ship lapped |
 
-    ship := Spaceship withName: 'TestShip' and: 4.
+    ship := Spaceship withName: 'TestShip'.
     lapped := LappedShip for: ship.
     
     3 timesRepeat: [ lapped addLap ].
@@ -49,7 +50,7 @@ LappedShipTest >> testInitializationSetsZeroLaps [
 
     | ship lapped |
 
-    ship := Spaceship withName: 'TestShip' and: 4.
+    ship := Spaceship withName: 'TestShip'.
     lapped := LappedShip for: ship.
     
     self assert: lapped lapCount equals: 0.
@@ -60,7 +61,7 @@ LappedShipTest >> testShipReturnsOriginalShip [
 
     | ship lapped |
 
-    ship := Spaceship withName: 'TestShip' and: 4.
+    ship := Spaceship withName: 'TestShip'.
     lapped := LappedShip for: ship.
     
     self assert: lapped ship equals: ship.

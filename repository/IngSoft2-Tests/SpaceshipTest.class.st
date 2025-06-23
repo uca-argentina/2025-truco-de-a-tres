@@ -7,12 +7,12 @@ Class {
 
 { #category : 'tests - instance' }
 SpaceshipTest >> testHasNotReachedGoalWhenBehind [
+
     | board spaceship |
 
     board := Board of: 10 andWormholeAt: #().
 
-    spaceship := Spaceship withName: 'Endeavour' and: 4.
-
+    spaceship := Spaceship withName: 'Endeavour'.
     spaceship moveTo: 9.
 
     self deny: (spaceship hasReachedGoalOn: board).
@@ -25,7 +25,7 @@ SpaceshipTest >> testHasReachedGoalWhenAtGoal [
 
     board := Board of: 10 andWormholeAt: #().
 
-    spaceship := Spaceship withName: 'Orion' and: 4.
+    spaceship := Spaceship withName: 'Orion'.
 
     spaceship moveTo: 10.
 
@@ -36,8 +36,9 @@ SpaceshipTest >> testHasReachedGoalWhenAtGoal [
 { #category : 'tests - instance' }
 SpaceshipTest >> testInitializeInPositionZero [
 
-	|player |
-	player := Spaceship withName: 'JohnDoe' and: 4.
+	| player |
+	
+	player := Spaceship withName: 'JohnDoe'.
 	
 	self assert: player position equals: 0. 
 ]
@@ -53,7 +54,7 @@ SpaceshipTest >> testMoveBackDoesNotGoBelowZero [
 
     | ship |
 
-    ship := Spaceship withName: 'Probe' and: 4.
+    ship := Spaceship withName: 'Probe'.
     ship moveBack: 5.
 
     self assert: ship position equals: 0.
@@ -64,7 +65,7 @@ SpaceshipTest >> testMoveForwardIncreasesPosition [
 
     | ship |
 
-    ship := Spaceship withName: 'Runner' and: 4.
+    ship := Spaceship withName: 'Runner'.
     ship moveForward: 3.
 
     self assert: ship position equals: 3.
@@ -75,7 +76,7 @@ SpaceshipTest >> testMoveToChangesPosition [
 
     | ship |
 
-    ship := Spaceship withName: 'Move' and: 4.
+    ship := Spaceship withName: 'Move'.
     ship moveTo: 5.
 
     self assert: (ship position) equals: 5.
@@ -86,7 +87,7 @@ SpaceshipTest >> testRestoreFuelRestoresToMax [
 
     | ship |
 
-    ship := Spaceship withName: 'Tank' and: 5.
+    ship := Spaceship withName: 'Tank'.
     ship restoreFuel.
 
     self assert: (ship instVarNamed: 'fuel') equals: (ship instVarNamed: 'maxFuel').

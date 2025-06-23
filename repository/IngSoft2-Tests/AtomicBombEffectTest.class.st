@@ -10,7 +10,7 @@ AtomicBombEffectTest >> testApplyToDoesNothing [
 
     | ship effect |
 
-    ship := Spaceship withName: 'Solo' and: 4.
+    ship := Spaceship withName: 'Solo'.
     ship moveTo: 5.
 
     effect := AtomicBombEffect new.
@@ -24,8 +24,8 @@ AtomicBombEffectTest >> testApplyToInContextResetsAllPositions [
 
     | ship1 ship2 effect |
 
-    ship1 := Spaceship withName: 'One' and: 4.
-    ship2 := Spaceship withName: 'Two' and: 4.
+    ship1 := Spaceship withName: 'One'.
+    ship2 := Spaceship withName: 'Two'.
 
     ship1 moveTo: 5.
     ship2 moveTo: 9.

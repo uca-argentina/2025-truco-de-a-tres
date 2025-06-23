@@ -10,7 +10,7 @@ PenalizedShipTest >> testDecreaseTurn [
 
     | ship penalized |
 
-    ship := Spaceship withName: 'Apollo' and: 4.
+    ship := Spaceship withName: 'Apollo'.
 
     penalized := PenalizedShip for: ship withTurns: 2.
     penalized decreaseTurns.
@@ -24,7 +24,7 @@ PenalizedShipTest >> testInitializationWithPenalty [
 
     | ship penalized |
 
-    ship := Spaceship withName: 'Apollo' and: 4.
+    ship := Spaceship withName: 'Apollo'.
     penalized := PenalizedShip for: ship withTurns: 3.
 
     self assert: (penalized isFor: ship).
@@ -36,7 +36,7 @@ PenalizedShipTest >> testInitializationWithoutPenalty [
 
     | ship penalized |
 
-    ship := Spaceship withName: 'Apollo' and: 4.
+    ship := Spaceship withName: 'Apollo'.
     penalized := PenalizedShip noPenaltyFor: ship.
 
     self assert: (penalized isFor: ship).
@@ -48,7 +48,7 @@ PenalizedShipTest >> testShipReference [
 
     | ship penalized |
 
-    ship := Spaceship withName: 'Apollo' and: 4.
+    ship := Spaceship withName: 'Apollo'.
     penalized := PenalizedShip for: ship withTurns: 1.
 
     self assert: penalized ship equals: ship.

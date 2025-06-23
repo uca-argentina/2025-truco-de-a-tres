@@ -20,3 +20,8 @@ EffectDecorator >> decorate: anEffect [
 
     ^ self.
 ]
+
+{ #category : 'instance creation' }
+EffectDecorator >> wrapped [
+	^ wrapped
+]
