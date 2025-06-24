@@ -53,7 +53,7 @@ GameValidatorTest >> testValidateIsCurrentPlayerRaisesError [
 GameValidatorTest >> testValidateMinimumSpaceShipsFailsWithOneShip [
 
 	| dice board |
-	dice := DiceCup new initializeWith: { (Die withSides: 6) }.
+	dice := DiceCup with: { (Die withSides: 6) }.
 	board := Board of: 5 andWormholeAt: {  }.
 
 	self

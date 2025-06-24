@@ -58,11 +58,12 @@ BoardTest >> testApplyWormholeIfPresentReturnsSameWhenAbsent [
 { #category : 'tests - instance' }
 BoardTest >> testAtomicBombEffectResetsPositionsButKeepsLaps [
 
-	| dice1 effect ship1 ship2 ship3 allShips |
-	
-	dice1 := Die withSides: 6.
+        | dice1 effect ship1 ship2 ship3 allShips board |
 
-	effect := AtomicBombEffect new.
+        dice1 := Die withSides: 6.
+
+        effect := AtomicBombEffect new.
+        board := Board of: 5 andWormholeAt: {}.
 
 	ship1 := Spaceship withName: 'Red'.
 	ship2 := Spaceship withName: 'Blue'.
@@ -78,7 +79,7 @@ BoardTest >> testAtomicBombEffectResetsPositionsButKeepsLaps [
 		ship3.
 	}.
 
-	effect applyTo: ship2 inContextOf: allShips.
+        effect applyTo: ship2 inContextOf: allShips inBoard: board.
 
 	self assert: (LappedShip for: ship1) lapCount equals: 0.
 	self assert: (LappedShip for: ship2) lapCount equals: 0.
@@ -392,7 +393,9 @@ BoardTest >> testMoonWalkEffectMovesOtherSpaceshipsBackwards [
 
 	allShips := { ship1. ship2. ship3 }.
 
-	effect applyTo: ship2 inContextOf: allShips.
+        | board |
+        board := Board of: 5 andWormholeAt: {}.
+        effect applyTo: ship2 inContextOf: allShips inBoard: board.
 
 	self assert: ship2 position equals: 7.
 	self assert: ship1 position equals: 3.
