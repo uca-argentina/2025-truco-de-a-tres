@@ -621,7 +621,24 @@ GameTest >> testRollAndMoveCurrentShipMovesShipCorrectly [
 
 	game rollAndMoveCurrentShip.
 
-	self assert: ship position equals: originalPosition + 1.
+        self assert: ship position equals: originalPosition + 1.
+]
+
+{ #category : 'tests' }
+GameTest >> testRewardOnMaxRollChangesFuel [
+    | ship otherShip dice board game initialMax initialFuel |
+    ship := Spaceship withName: 'Reward'.
+    otherShip := Spaceship withName: 'Other'.
+    dice := DiceCup with: { Die withSides: 1 }.
+    board := Board of: 5 andWormholeAt: #().
+    ship instVarNamed: 'maxFuel' put: 5.
+    ship instVarNamed: 'fuel' put: 5.
+    game := Game startWithShips: { ship. otherShip } board: board dice: dice laps: 1.
+    initialMax := ship instVarNamed: 'maxFuel'.
+    initialFuel := ship instVarNamed: 'fuel'.
+    game rollAndMoveCurrentShip.
+    self assert: ((ship instVarNamed: 'maxFuel') = (initialMax + 1)
+        or: [ (ship instVarNamed: 'fuel') = (initialFuel - 1) ]).
 ]
 
 { #category : 'accessing' }

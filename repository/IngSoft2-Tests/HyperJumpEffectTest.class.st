@@ -138,5 +138,16 @@ HyperJumpEffectTest >> testResetJumpIndexSetsIndexBackToOne [
 
 	effect resetJumpIndex.
 
-	self assert: effect peekJumpValue equals: 3.
+        self assert: effect peekJumpValue equals: 3.
+]
+
+{ #category : 'tests' }
+HyperJumpEffectTest >> testWithLightYearValuesConvertsProperly [
+    | effect board ship |
+    board := Board of: 10 length: 10 andWormholeAt: #().
+    effect := HyperJumpEffect withLightYearValues: #(3 6).
+    ship := Spaceship withName: 'LY'.
+    ship moveTo: 0.
+    effect applyTo: ship inBoard: board.
+    self assert: ship position equals: (board stepsFromParsecs: 1).
 ]

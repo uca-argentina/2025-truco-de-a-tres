@@ -434,6 +434,14 @@ BoardTest >> testBoardCreationWithLightYearLength [
 ]
 
 { #category : 'tests - instance' }
+BoardTest >> testBoardCreationWithParsecsAndLightYears [
+    | board |
+    board := Board of: 10 length: 10 lengthLightYears: 30 andWormholeAt: #().
+
+    self assert: (board stepsFromParsecs: 1) equals: (board stepsFromLightYears: 3).
+]
+
+{ #category : 'tests - instance' }
 BoardTest >> testStepsFromLightYearsConvertsCorrectly [
     | board |
     board := Board of: 10 lengthLightYears: 9 andWormholeAt: #().
