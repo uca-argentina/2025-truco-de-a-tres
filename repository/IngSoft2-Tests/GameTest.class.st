@@ -870,15 +870,19 @@ GameTest >> testValidateIsCurrentPlayerRaisesError [
 { #category : 'tests' }
 GameTest >> testValidateMinimumSpaceShipsFailsWithOneShip [
 
-    | dice board |
+	| dice board |
+	dice := DiceCup new initializeWith: { (Die withSides: 6) }.
+	board := Board of: 5 andWormholeAt: {  }.
 
-    dice := DiceCup new initializeWith: { Die withSides: 6 }.
-    board := Board of: 5 andWormholeAt: {}.
-
-    self should: [
-        Game startWithShips: { Spaceship withName: 'Solo' and: 3 } board: board dice: dice laps: 1.
-    ] raise: Error.
-
+	self
+		should: [
+			Game
+				startWithShips: { (Spaceship withName: 'Solo') }
+				board: board
+				dice: dice
+				laps: 1 ]
+		raise: Error
+		withMessageText: 'Need 2 space ships or more to initialize the game'
 ]
 
 { #category : 'tests' }
