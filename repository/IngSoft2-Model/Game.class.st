@@ -236,7 +236,7 @@ Game >> registerLapFor: aShip from: oldPosition after: someSteps [
 { #category : 'process actions' }
 Game >> rollAndMoveCurrentShip [
     | steps newPosition |
-    lastPreviousPosition := board positionOf: self currentShip.
+    lastPreviousPosition := self currentShip position.
     steps := dice roll.
     newPosition := board determineNewPositionFrom: lastPreviousPosition after: steps.
     board moveShip: self currentShip to: newPosition.
@@ -252,7 +252,7 @@ Game >> spaceShips [
 
 { #category : 'process actions' }
 Game >> spaceshipPositions [
-    ^ spaceShips collect: [ :ship | ShipPosition ship: ship position: (board positionOf: ship) ]
+    ^ spaceShips collect: [ :ship | ShipPosition for: ship ]
 ]
 
 { #category : 'process actions' }

@@ -393,7 +393,9 @@ BoardTest >> testMoonWalkEffectMovesOtherSpaceshipsBackwards [
 
 	allShips := { ship1. ship2. ship3 }.
 
-        effect applyTo: ship2 inContextOf: allShips inBoard: Board of: 5 andWormholeAt: {}.
+        | board |
+        board := Board of: 5 andWormholeAt: {}.
+        effect applyTo: ship2 inContextOf: allShips inBoard: board.
 
 	self assert: ship2 position equals: 7.
 	self assert: ship1 position equals: 3.
