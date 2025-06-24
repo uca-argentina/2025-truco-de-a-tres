@@ -104,6 +104,14 @@ Spaceship >> name [
     ^ playerName.
 ]
 
+{ #category : 'cards' }
+Spaceship >> playCard: aCard inGame: aGame [
+	(cards includes: aCard) ifFalse: [ self error: 'Card not in hand' ].
+    aCard playOn: self inGame: aGame.
+    cards remove: aCard ifAbsent: [ ].
+    aGame lastCardPlayed: aCard.
+]
+
 { #category : 'initialize' }
 Spaceship >> position [
 

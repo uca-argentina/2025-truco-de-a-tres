@@ -14,7 +14,8 @@ Class {
 		'state',
 		'lastSteps',
 		'lastPreviousPosition',
-		'shipStatuses'
+		'shipStatuses',
+		'lastCardPlayed'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -25,6 +26,14 @@ Game class >> startWithShips: someShips board: aBoard dice: someDices laps: aNum
 
 	GameValidator validateMinimumSpaceShips: someShips.
 	^ self new initializeWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps.
+]
+
+{ #category : 'process actions' }
+Game >> activeCards [
+	| collection |
+    collection := OrderedCollection new.
+    spaceShips do: [ :ship | collection addAll: ship activeCards ].
+    ^ collection
 ]
 
 { #category : 'process actions' }
@@ -82,6 +91,11 @@ Game >> ensureGameIsNotOver [
         whenInProgressDo: [ ].
 ]
 
+{ #category : 'process actions' }
+Game >> epeatLastEffectOn: aShip [
+	"Placeholder for board effects".
+]
+
 { #category : 'testing' }
 Game >> findPenaltyFor: aShip [
     ^ penalizedShips detect: [ :penalty | penalty isFor: aShip ] ifNone: [ PenalizedShip noPenaltyFor: aShip ]
@@ -135,7 +149,8 @@ Game >> initializeWithShips: someShips board: aBoard dice: someDices laps: aNumb
         state := GameInProgress new.
 	
 	lastSteps := 0.
-	lastPreviousPosition := 0.
+       lastPreviousPosition := 0.
+        lastCardPlayed := nil.
 ]
 
 { #category : 'testing' }
@@ -152,10 +167,28 @@ Game >> lapTrackerFor: aShip [
 	^ shipStatuses at: aShip
 ]
 
+{ #category : 'accessing' }
+Game >> lastCardPlayed [
+	^ lastCardPlayed
+]
+
+{ #category : 'accessing' }
+Game >> lastCardPlayed: aCard [
+	lastCardPlayed := aCard
+]
+
 { #category : 'testing' }
 Game >> markShipAsWantingToPassTurn: aShip to: aBoolean [
 
 	wantsToPassTurn at: aShip put: aBoolean.
+]
+
+{ #category : 'process actions' }
+Game >> modifyRoll: aNumber forShip: aShip [
+	| value |
+    value := aNumber.
+    self activeCards do: [ :card | value := card modifyRoll: value forShip: aShip inGame: self ].
+    ^ value
 ]
 
 { #category : 'process actions' }
@@ -234,6 +267,11 @@ Game >> ranking [
 
 ]
 
+{ #category : 'process actions' }
+Game >> redoLastCardOn: aShip [
+	lastCardPlayed ifNotNil: [ lastCardPlayed playOn: aShip inGame: self ]
+]
+
 { #category : 'testing' }
 Game >> reducePenaltyFor: aShip [
 
@@ -261,6 +299,11 @@ Game >> registerLapFor: aShip from: oldPosition after: someSteps [
 ]
 
 { #category : 'process actions' }
+Game >> removeActiveCard: aCard [
+	spaceShips do: [ :ship | ship activeCards remove: aCard ifAbsent: [ ] ]
+]
+
+{ #category : 'process actions' }
 Game >> rewardForMaxRollTo: aShip [
     (Random new next <= 0.8)
         ifTrue: [ aShip increaseMaxFuelBy: 1 ]
@@ -269,13 +312,18 @@ Game >> rewardForMaxRollTo: aShip [
 
 { #category : 'process actions' }
 Game >> rollAndMoveCurrentShip [
-    | steps newPosition |
+    | steps newPosition modified |
     lastPreviousPosition := self currentShip position.
     steps := dice roll.
     steps = dice maxRoll ifTrue: [ self rewardForMaxRollTo: self currentShip ].
-    newPosition := board determineNewPositionFrom: lastPreviousPosition after: steps.
-    board moveShip: self currentShip to: newPosition.
-    lastSteps := steps.
+    modified := self modifyRoll: steps forShip: self currentShip.
+    modified >= 0 ifTrue: [
+        newPosition := board determineNewPositionFrom: lastPreviousPosition after: modified.
+        board moveShip: self currentShip to: newPosition.
+    ] ifFalse: [
+        board moveShip: self currentShip backward: modified abs.
+    ].
+    lastSteps := modified.
 ]
 
 { #category : 'accessing' }
