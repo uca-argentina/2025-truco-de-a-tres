@@ -15,16 +15,16 @@ Class {
 }
 
 { #category : 'initialization' }
-HyperJumpEffect class >> withValues: aCollection [
+HyperJumpEffect class >> withLightYearValues: aCollection [
     ^ self new
-        initializeWith: aCollection;
+        initializeWith: (aCollection collect: [ :each | Distance lightYears: each ]);
         yourself.
 ]
 
 { #category : 'initialization' }
-HyperJumpEffect class >> withLightYearValues: aCollection [
+HyperJumpEffect class >> withValues: aCollection [
     ^ self new
-        initializeWith: (aCollection collect: [ :each | Distance lightYears: each ]);
+        initializeWith: aCollection;
         yourself.
 ]
 

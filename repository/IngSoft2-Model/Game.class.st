@@ -38,6 +38,11 @@ Game >> allStatuses [
 	^ self spaceShips collect: [ :ship | self statusFor: ship ]
 ]
 
+{ #category : 'accessing' }
+Game >> board [
+	^ board
+]
+
 { #category : 'validation' }
 Game >> checkWinCondition [
     (self currentShip hasReachedGoalOn: board) ifTrue: [
@@ -124,8 +129,9 @@ Game >> initializeWithShips: someShips board: aBoard dice: someDices laps: aNumb
         wantsToPassTurn := Dictionary new.
 
         shipStatuses := Dictionary new.
-        spaceShips do: [ :ship |
-                shipStatuses at: ship put: (ShipStatus for: ship position: 0 laps: 0 penalized: false) ].
+       spaceShips do: [ :ship |
+                shipStatuses at: ship put: (ShipStatus for: ship position: 0 laps: 0 penalized: false).
+                2 timesRepeat: [ ship addCard: CardDeck randomCard ] ].
         state := GameInProgress new.
 	
 	lastSteps := 0.
@@ -255,6 +261,13 @@ Game >> registerLapFor: aShip from: oldPosition after: someSteps [
 ]
 
 { #category : 'process actions' }
+Game >> rewardForMaxRollTo: aShip [
+    (Random new next <= 0.8)
+        ifTrue: [ aShip increaseMaxFuelBy: 1 ]
+        ifFalse: [ aShip decreaseFuelBy: 1 ].
+]
+
+{ #category : 'process actions' }
 Game >> rollAndMoveCurrentShip [
     | steps newPosition |
     lastPreviousPosition := self currentShip position.
@@ -263,13 +276,6 @@ Game >> rollAndMoveCurrentShip [
     newPosition := board determineNewPositionFrom: lastPreviousPosition after: steps.
     board moveShip: self currentShip to: newPosition.
     lastSteps := steps.
-]
-
-{ #category : 'process actions' }
-Game >> rewardForMaxRollTo: aShip [
-    (Random new next <= 0.8)
-        ifTrue: [ aShip increaseMaxFuelBy: 1 ]
-        ifFalse: [ aShip decreaseFuelBy: 1 ].
 ]
 
 { #category : 'accessing' }

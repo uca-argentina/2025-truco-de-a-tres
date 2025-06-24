@@ -608,23 +608,6 @@ GameTest >> testRegisterLapWhenCrossesFinishLine [
 ]
 
 { #category : 'tests' }
-GameTest >> testRollAndMoveCurrentShipMovesShipCorrectly [
-	| ship otherShip dice board game originalPosition |
-
-	ship := Spaceship withName: 'Mover'.
-	otherShip := Spaceship withName: 'Otro'.
-	dice := DiceCup with: { Die withSides: 1 }.
-	board := Board of: 10 andWormholeAt: #().
-	game := Game startWithShips: { ship. otherShip } board: board dice: dice laps: 1.
-
-	originalPosition := ship position.
-
-	game rollAndMoveCurrentShip.
-
-        self assert: ship position equals: originalPosition + 1.
-]
-
-{ #category : 'tests' }
 GameTest >> testRewardOnMaxRollChangesFuel [
     | ship otherShip dice board game initialMax initialFuel |
     ship := Spaceship withName: 'Reward'.
@@ -639,6 +622,23 @@ GameTest >> testRewardOnMaxRollChangesFuel [
     game rollAndMoveCurrentShip.
     self assert: ((ship instVarNamed: 'maxFuel') = (initialMax + 1)
         or: [ (ship instVarNamed: 'fuel') = (initialFuel - 1) ]).
+]
+
+{ #category : 'tests' }
+GameTest >> testRollAndMoveCurrentShipMovesShipCorrectly [
+	| ship otherShip dice board game originalPosition |
+
+	ship := Spaceship withName: 'Mover'.
+	otherShip := Spaceship withName: 'Otro'.
+	dice := DiceCup with: { Die withSides: 1 }.
+	board := Board of: 10 andWormholeAt: #().
+	game := Game startWithShips: { ship. otherShip } board: board dice: dice laps: 1.
+
+	originalPosition := ship position.
+
+	game rollAndMoveCurrentShip.
+
+        self assert: ship position equals: originalPosition + 1.
 ]
 
 { #category : 'accessing' }
@@ -777,6 +777,18 @@ GameTest >> testShipStatusReturnsCurrentPosition [
 	self assert: status1 position equals: 2.
 	self assert: status2 position equals: 1.
 
+]
+
+{ #category : 'tests' }
+GameTest >> testShipsStartWithTwoCards [
+	| ship1 ship2 board dice game |
+    ship1 := Spaceship withName: 'One'.
+    ship2 := Spaceship withName: 'Two'.
+    board := Board of: 5 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+    self assert: ship1 cards size equals: 2.
+    self assert: ship2 cards size equals: 2.
 ]
 
 { #category : 'tests' }

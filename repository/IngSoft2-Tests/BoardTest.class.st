@@ -115,12 +115,28 @@ BoardTest >> testBoardCellCountIsCorrect [
 BoardTest >> testBoardCellsContainRecognizedEffects [
 	| board validClasses |
 
-	validClasses := { BlackHoleEffect. HyperGravityEffect. NoEffect }.
+	validClasses := { BlackHoleEffect. HyperGravityEffect. NoEffect. CardEffect }.
 
 	board := Board of: 20 andWormholeAt: OrderedCollection new.
 
 	self assert: (board cells values allSatisfy: [:e |
 		validClasses anySatisfy: [:c | e class = c ] ]).
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testBoardCreationWithLightYearLength [
+    | board |
+    board := Board of: 10 lengthLightYears: 30 andWormholeAt: #().
+
+    self assert: (board stepsFromLightYears: 6) equals: (board stepsFromParsecs: 2).
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testBoardCreationWithParsecsAndLightYears [
+    | board |
+    board := Board of: 10 length: 10 lengthLightYears: 30 andWormholeAt: #().
+
+    self assert: (board stepsFromParsecs: 1) equals: (board stepsFromLightYears: 3).
 ]
 
 { #category : 'tests - instance' }
@@ -178,6 +194,18 @@ BoardTest >> testCannotEnterHyperGravityCellWithLowRoll [
 
 	self deny: (effect allowsEntryWithRoll: 2).
 
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testCardEffectAddsCardToShip [
+	| board ship effect |
+    board := Board of: 5 andWormholeAt: {}.
+    effect := CardEffect new.
+    board cells at: 3 put: effect.
+    ship := Spaceship withName: 'Player'.
+    ship moveTo: 3.
+    board applyEffectTo: ship.
+    self assert: ship cards size equals: 1.
 ]
 
 { #category : 'tests - instance' }
@@ -413,6 +441,14 @@ BoardTest >> testPositionWithoutWormholeReturnsSame [
 ]
 
 { #category : 'tests - instance' }
+BoardTest >> testStepsFromLightYearsConvertsCorrectly [
+    | board |
+    board := Board of: 10 lengthLightYears: 9 andWormholeAt: #().
+
+    self assert: (board stepsFromLightYears: 3) equals: (board stepsFromParsecs: 1).
+]
+
+{ #category : 'tests - instance' }
 BoardTest >> testWormholeTransportsCorrectly [
     | board |
     board := Board of: 20 andWormholeAt: (OrderedCollection withAll: {
@@ -423,28 +459,4 @@ BoardTest >> testWormholeTransportsCorrectly [
     self assert: (board applyWormholeIfPresentAt: 2) equals: 10.
     self assert: (board applyWormholeIfPresentAt: 10) equals: 2.
 
-]
-
-{ #category : 'tests - instance' }
-BoardTest >> testBoardCreationWithLightYearLength [
-    | board |
-    board := Board of: 10 lengthLightYears: 30 andWormholeAt: #().
-
-    self assert: (board stepsFromLightYears: 6) equals: (board stepsFromParsecs: 2).
-]
-
-{ #category : 'tests - instance' }
-BoardTest >> testBoardCreationWithParsecsAndLightYears [
-    | board |
-    board := Board of: 10 length: 10 lengthLightYears: 30 andWormholeAt: #().
-
-    self assert: (board stepsFromParsecs: 1) equals: (board stepsFromLightYears: 3).
-]
-
-{ #category : 'tests - instance' }
-BoardTest >> testStepsFromLightYearsConvertsCorrectly [
-    | board |
-    board := Board of: 10 lengthLightYears: 9 andWormholeAt: #().
-
-    self assert: (board stepsFromLightYears: 3) equals: (board stepsFromParsecs: 1).
 ]
