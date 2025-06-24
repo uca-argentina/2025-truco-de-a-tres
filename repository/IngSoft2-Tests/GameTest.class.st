@@ -359,6 +359,31 @@ GameTest >> testPenalizeAddsPenalizedShip [
 ]
 
 { #category : 'tests' }
+GameTest >> testPenaltyTurnsRemainingFor [
+
+    | ship1 ship2 board dice game |
+
+    ship1 := Spaceship withName: 'Penalized'.
+    ship2 := Spaceship withName: 'Other'.
+    board := Board of: 10 andWormholeAt: #().
+    dice := DiceCup with: { Die withSides: 1 }.
+
+    game := Game
+        startWithShips: { ship1. ship2 }
+        board: board
+        dice: dice
+        laps: 1.
+
+    game penalize: ship1 forTurns: 2.
+
+    self assert: (game penaltyTurnsRemainingFor: ship1) equals: 2.
+
+    game reducePenaltyFor: ship1.
+
+    self assert: (game penaltyTurnsRemainingFor: ship1) equals: 1.
+]
+
+{ #category : 'tests' }
 GameTest >> testPlayTurnHandlesPassTurnCorrectly [
 
     | ship1 ship2 board dice game |
@@ -614,31 +639,6 @@ GameTest >> testSetAndQueryWantsToPassTurn [
 
     game markShipAsWantingToPassTurn: ship1 to: true.
     self assert: (game wantsToPassTurn: ship1).
-]
-
-{ #category : 'tests' }
-GameTest >> testPenaltyTurnsRemainingFor [
-
-    | ship1 ship2 board dice game |
-
-    ship1 := Spaceship withName: 'Penalized'.
-    ship2 := Spaceship withName: 'Other'.
-    board := Board of: 10 andWormholeAt: #().
-    dice := DiceCup with: { Die withSides: 1 }.
-
-    game := Game
-        startWithShips: { ship1. ship2 }
-        board: board
-        dice: dice
-        laps: 1.
-
-    game penalize: ship1 forTurns: 2.
-
-    self assert: (game penaltyTurnsRemainingFor: ship1) equals: 2.
-
-    game reducePenaltyFor: ship1.
-
-    self assert: (game penaltyTurnsRemainingFor: ship1) equals: 1.
 ]
 
 { #category : 'tests' }

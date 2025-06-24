@@ -65,15 +65,15 @@ Spaceship >> moveTo: aPosition [
 
 ]
 
+{ #category : 'accessing' }
+Spaceship >> name [
+    ^ playerName.
+]
+
 { #category : 'initialize' }
 Spaceship >> position [
 
     ^ position.
-]
-
-{ #category : 'accessing' }
-Spaceship >> name [
-    ^ playerName.
 ]
 
 { #category : 'methods' }

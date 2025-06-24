@@ -1,11 +1,11 @@
 Class {
-    #name : 'PositionManager',
-    #superclass : 'Object',
-    #instVars : [
-        'positions'
-    ],
-    #category : 'IngSoft2-Model',
-    #package : 'IngSoft2-Model'
+	#name : 'PositionManager',
+	#superclass : 'Object',
+	#instVars : [
+		'positions'
+	],
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
 { #category : 'initialization' }
@@ -20,15 +20,12 @@ PositionManager >> initializeForShips: someShips [
     ^ self
 ]
 
-{ #category : 'accessing' }
-PositionManager >> positionOf: aShip [
-    ^ positions at: aShip
-]
-
 { #category : 'updating' }
-PositionManager >> moveShip: aShip to: aPosition [
-    positions at: aShip put: aPosition.
-    aShip moveTo: aPosition.
+PositionManager >> moveShip: aShip backward: steps [
+    | newPos |
+    newPos := (self positionOf: aShip) - steps.
+    newPos < 0 ifTrue: [ newPos := 0 ].
+    self moveShip: aShip to: newPos
 ]
 
 { #category : 'updating' }
@@ -37,9 +34,12 @@ PositionManager >> moveShip: aShip forward: steps [
 ]
 
 { #category : 'updating' }
-PositionManager >> moveShip: aShip backward: steps [
-    | newPos |
-    newPos := (self positionOf: aShip) - steps.
-    newPos < 0 ifTrue: [ newPos := 0 ].
-    self moveShip: aShip to: newPos
+PositionManager >> moveShip: aShip to: aPosition [
+    positions at: aShip put: aPosition.
+    aShip moveTo: aPosition.
+]
+
+{ #category : 'accessing' }
+PositionManager >> positionOf: aShip [
+    ^ positions at: aShip
 ]

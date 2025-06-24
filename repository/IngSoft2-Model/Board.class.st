@@ -1,14 +1,14 @@
 Class {
 	#name : 'Board',
 	#superclass : 'Object',
-        #instVars : [
-                'cellCount',
-                'wormholes',
-                'cells',
-                'effects',
-                'totalLengthInParsecs',
-                'positionManager'
-        ],
+	#instVars : [
+		'cellCount',
+		'wormholes',
+		'cells',
+		'effects',
+		'totalLengthInParsecs',
+		'positionManager'
+	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
@@ -67,12 +67,13 @@ Board >> applyWormholeIfPresentAt: aPosition [
 ]
 
 { #category : 'initialize' }
-Board >> calculateNewPositionFrom: current after: steps moves: aLappedSpaceship [
+Board >> calculateNewPositionFrom: current after: steps moves: aShipStatus [
+
 	| newPosition |
 	
 	newPosition := (current + steps) \\ cellCount.
 
-	(newPosition <= current) ifTrue: [ aLappedSpaceship addLap ].
+	(newPosition <= current) ifTrue: [ aShipStatus addLap ].
 
 	^ newPosition.
 ]
@@ -125,29 +126,11 @@ Board >> isGoalReachedAt: aPosition [
     ^ aPosition >= cellCount.
 ]
 
-{ #category : 'initialize' }
-Board >> stepsFromParsecs: someParsecs [
-    | ratio |
-    ratio := someParsecs / totalLengthInParsecs.
-    ^ (ratio * cellCount) rounded.
-]
-
 { #category : 'spaceships' }
-Board >> registerShips: someShips [
-    positionManager := PositionManager forShips: someShips.
-]
-
-{ #category : 'spaceships' }
-Board >> positionOf: aShip [
-    positionManager ifNil: [ ^ aShip position ].
-    ^ positionManager positionOf: aShip
-]
-
-{ #category : 'spaceships' }
-Board >> moveShip: aShip to: aPosition [
+Board >> moveShip: aShip backward: steps [
     positionManager
-        ifNil: [ aShip moveTo: aPosition ]
-        ifNotNil: [ positionManager moveShip: aShip to: aPosition ].
+        ifNil: [ aShip moveBack: steps ]
+        ifNotNil: [ positionManager moveShip: aShip backward: steps ].
 ]
 
 { #category : 'spaceships' }
@@ -158,8 +141,26 @@ Board >> moveShip: aShip forward: steps [
 ]
 
 { #category : 'spaceships' }
-Board >> moveShip: aShip backward: steps [
+Board >> moveShip: aShip to: aPosition [
     positionManager
-        ifNil: [ aShip moveBack: steps ]
-        ifNotNil: [ positionManager moveShip: aShip backward: steps ].
+        ifNil: [ aShip moveTo: aPosition ]
+        ifNotNil: [ positionManager moveShip: aShip to: aPosition ].
+]
+
+{ #category : 'spaceships' }
+Board >> positionOf: aShip [
+    positionManager ifNil: [ ^ aShip position ].
+    ^ positionManager positionOf: aShip
+]
+
+{ #category : 'spaceships' }
+Board >> registerShips: someShips [
+    positionManager := PositionManager forShips: someShips.
+]
+
+{ #category : 'initialize' }
+Board >> stepsFromParsecs: someParsecs [
+    | ratio |
+    ratio := someParsecs / totalLengthInParsecs.
+    ^ (ratio * cellCount) rounded.
 ]

@@ -81,9 +81,9 @@ BoardTest >> testAtomicBombEffectResetsPositionsButKeepsLaps [
 
         effect applyTo: ship2 inContextOf: allShips inBoard: board.
 
-	self assert: (LappedShip for: ship1) lapCount equals: 0.
-	self assert: (LappedShip for: ship2) lapCount equals: 0.
-	self assert: (LappedShip for: ship3) lapCount equals: 0.
+	self assert: (ShipStatus for: ship1 position: 0 laps: 0 penalized: false) lapCount equals: 0.
+        self assert: (ShipStatus for: ship2 position: 0 laps: 0 penalized: false) lapCount equals: 0.
+        self assert: (ShipStatus for: ship3 position: 0 laps: 0 penalized: false) lapCount equals: 0.
 ]
 
 { #category : 'tests - instance' }
@@ -142,7 +142,7 @@ BoardTest >> testBoardPreventsEntryToHyperGravityCellWithLowRoll [
 	
 	ship := Spaceship withName: 'Lucas'.
 	ship moveTo: 2.
-	lappedShip := LappedShip for: ship.
+	lappedShip := ShipStatus for: ship position: 2 laps: 0 penalized: false.
 
 	effect := HyperGravityEffect new.
 	effect requiredRoll: 4.
@@ -253,7 +253,7 @@ BoardTest >> testHyperJumpEffectJumpsShipForward [
 	ship2 := Spaceship withName: 'Gemini'.
 	ship2 restoreFuel.
 
-	lappedShip1 := LappedShip for: ship1.
+	lappedShip1 := ShipStatus for: ship1 position: 5 laps: 0 penalized: false.
 
 	ship1 moveTo: 5.
 	self assert: ship1 position equals: 5.
@@ -367,10 +367,10 @@ BoardTest >> testLapIncrementsWhenPassingLastCell [
 	ship := Spaceship withName: 'Lucas'.
 	ship moveTo: 8.
 
-	newPosition := board calculateNewPositionFrom: ship position after: 3 moves: (LappedShip for: ship) .
+	newPosition := board calculateNewPositionFrom: ship position after: 3 moves: (ShipStatus for: ship position: 8 laps: 0 penalized: false) .
 
 	self assert: newPosition equals: 1.
-	self assert: (LappedShip for: ship) lapCount equals: 0.
+	self assert: (ShipStatus for: ship position: 8 laps: 0 penalized: false) lapCount equals: 0.
 
 ]
 
