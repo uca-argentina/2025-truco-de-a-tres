@@ -12,10 +12,11 @@ Class {
 		'lappedShips',
 		'totalLaps',
 		'state',
-		'lastSteps',
-		'lastPreviousPosition',
-		'shipStatuses'
-	],
+                'lastSteps',
+                'lastPreviousPosition',
+                'lastCardPlayed',
+                'shipStatuses'
+        ],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
@@ -71,6 +72,11 @@ Game >> die [
     ^ dice
 ]
 
+{ #category : 'accessing' }
+Game >> board [
+    ^ board
+]
+
 { #category : 'process actions' }
 Game >> ensureGameIsNotOver [
     self whenFinishedDo: [ :aWinner | self error: 'Game is already over' ]
@@ -112,24 +118,26 @@ Game >> hasWonByLaps: aShip [
 { #category : 'initialization' }
 Game >> initializeWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps [
 
-        spaceShips := someShips.
-        board := aBoard.
-        board registerShips: someShips.
-        dice := someDices.
-        totalLaps := aNumberLaps.
+       spaceShips := someShips.
+       board := aBoard.
+       board registerShips: someShips.
+       dice := someDices.
+       totalLaps := aNumberLaps.
 	
         turnManager := TurnManager withShips: someShips.
 	
 	penalizedShips := OrderedCollection new.
         wantsToPassTurn := Dictionary new.
 
-        shipStatuses := Dictionary new.
-        spaceShips do: [ :ship |
-                shipStatuses at: ship put: (ShipStatus for: ship position: 0 laps: 0 penalized: false) ].
+       shipStatuses := Dictionary new.
+       spaceShips do: [ :ship |
+                shipStatuses at: ship put: (ShipStatus for: ship position: 0 laps: 0 penalized: false).
+                2 timesRepeat: [ ship addCard: CardDeck randomCard ] ].
         state := GameInProgress new.
-	
-	lastSteps := 0.
-	lastPreviousPosition := 0.
+
+        lastSteps := 0.
+        lastPreviousPosition := 0.
+        lastCardPlayed := nil.
 ]
 
 { #category : 'testing' }
@@ -256,12 +264,25 @@ Game >> registerLapFor: aShip from: oldPosition after: someSteps [
 
 { #category : 'process actions' }
 Game >> rollAndMoveCurrentShip [
-    | steps newPosition |
+    | steps newPosition modified |
     lastPreviousPosition := self currentShip position.
     steps := dice roll.
-    newPosition := board determineNewPositionFrom: lastPreviousPosition after: steps.
-    board moveShip: self currentShip to: newPosition.
-    lastSteps := steps.
+    steps = dice maxRoll ifTrue: [ self rewardForMaxRollTo: self currentShip ].
+    modified := self modifyRoll: steps forShip: self currentShip.
+    modified >= 0 ifTrue: [
+        newPosition := board determineNewPositionFrom: lastPreviousPosition after: modified.
+        board moveShip: self currentShip to: newPosition.
+    ] ifFalse: [
+        board moveShip: self currentShip backward: modified abs.
+    ].
+    lastSteps := modified.
+]
+
+{ #category : 'process actions' }
+Game >> rewardForMaxRollTo: aShip [
+    (Random new next <= 0.8)
+        ifTrue: [ aShip increaseMaxFuelBy: 1 ]
+        ifFalse: [ aShip decreaseFuelBy: 1 ].
 ]
 
 { #category : 'accessing' }
@@ -300,4 +321,45 @@ Game >> whenFinishedDo: finishedBlock whenInProgressDo: inProgressBlock [
 { #category : 'accessing' }
 Game >> winner [
     ^ state whenFinishedDo: [ :w | w ] whenInProgressDo: [ nil ].
+]
+
+{ #category : 'accessing' }
+Game >> lastCardPlayed [
+    ^ lastCardPlayed
+]
+
+{ #category : 'accessing' }
+Game >> lastCardPlayed: aCard [
+    lastCardPlayed := aCard
+]
+
+{ #category : 'process actions' }
+Game >> activeCards [
+    | collection |
+    collection := OrderedCollection new.
+    spaceShips do: [ :ship | collection addAll: ship activeCards ].
+    ^ collection
+]
+
+{ #category : 'process actions' }
+Game >> modifyRoll: aNumber forShip: aShip [
+    | value |
+    value := aNumber.
+    self activeCards do: [ :card | value := card modifyRoll: value forShip: aShip inGame: self ].
+    ^ value
+]
+
+{ #category : 'process actions' }
+Game >> removeActiveCard: aCard [
+    spaceShips do: [ :ship | ship activeCards remove: aCard ifAbsent: [ ] ]
+]
+
+{ #category : 'process actions' }
+Game >> redoLastCardOn: aShip [
+    lastCardPlayed ifNotNil: [ lastCardPlayed playOn: aShip inGame: self ]
+]
+
+{ #category : 'process actions' }
+Game >> repeatLastEffectOn: aShip [
+    "Placeholder for board effects".
 ]
