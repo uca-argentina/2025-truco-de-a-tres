@@ -115,7 +115,7 @@ BoardTest >> testBoardCellCountIsCorrect [
 BoardTest >> testBoardCellsContainRecognizedEffects [
 	| board validClasses |
 
-	validClasses := { BlackHoleEffect. HyperGravityEffect. NoEffect }.
+        validClasses := { BlackHoleEffect. HyperGravityEffect. NoEffect. CardEffect }.
 
 	board := Board of: 20 andWormholeAt: OrderedCollection new.
 
@@ -426,6 +426,16 @@ BoardTest >> testWormholeTransportsCorrectly [
 ]
 
 { #category : 'tests - instance' }
+
+BoardTest >> testCardEffectAddsCardToShip [
+    | board ship effect |
+    board := Board of: 5 andWormholeAt: {}.
+    effect := CardEffect new.
+    board cells at: 3 put: effect.
+    ship := Spaceship withName: 'Player'.
+    ship moveTo: 3.
+    board applyEffectTo: ship.
+    self assert: ship cards size equals: 1.
 BoardTest >> testBoardCreationWithLightYearLength [
     | board |
     board := Board of: 10 lengthLightYears: 30 andWormholeAt: #().
@@ -447,4 +457,5 @@ BoardTest >> testStepsFromLightYearsConvertsCorrectly [
     board := Board of: 10 lengthLightYears: 9 andWormholeAt: #().
 
     self assert: (board stepsFromLightYears: 3) equals: (board stepsFromParsecs: 1).
+
 ]

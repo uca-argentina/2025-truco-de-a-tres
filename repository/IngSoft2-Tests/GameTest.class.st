@@ -1161,3 +1161,15 @@ GameTest >> testWhenWinnerSpaceShipIsCorrectWhenGameEnds [
 
 	self assert: game winner equals: spaceShip1
 ]
+
+{ #category : 'tests' }
+GameTest >> testShipsStartWithTwoCards [
+    | ship1 ship2 board dice game |
+    ship1 := Spaceship withName: 'One'.
+    ship2 := Spaceship withName: 'Two'.
+    board := Board of: 5 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+    self assert: ship1 cards size equals: 2.
+    self assert: ship2 cards size equals: 2.
+]
