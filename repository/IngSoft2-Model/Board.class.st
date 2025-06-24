@@ -129,7 +129,7 @@ Board >> initializeWithCells: aCount andWormholes: aCollection [
 	cells := Dictionary new.
 	
 0 to: aCount - 1 do: [ :i |
-		cells at: i put: NoEffect new ].
+                cells at: i put: self randomEffect ].
 ]
 
 { #category : 'initialize' }
@@ -139,8 +139,8 @@ Board >> initializeWithCells: aCount length: aLengthInParsecs andWormholes: aCol
     wormholes := aCollection.
 	 cells := Dictionary new.
 	
-	0 to: aCount - 1 do: [ :i |
-		cells at: i put: NoEffect new ].
+        0 to: aCount - 1 do: [ :i |
+                cells at: i put: self randomEffect ].
     
 ]
 
@@ -190,6 +190,14 @@ Board >> stepsFromParsecs: someParsecs [
 ]
 
 { #category : 'initialize' }
+
+Board >> randomEffect [
+    | r |
+    r := (1 to: 100) atRandom.
+    r <= 10 ifTrue: [ ^ CardEffect new ].
+    r <= 48 ifTrue: [ ^ NoEffect new ].
+    r <= 74 ifTrue: [ ^ BlackHoleEffect new ].
+    ^ HyperGravityEffect new.
 Board >> stepsFromLightYears: someLightYears [
     "Convert a distance expressed in light years to board steps"
 
@@ -200,4 +208,5 @@ Board >> stepsFromLightYears: someLightYears [
 Board >> stepsFromDistance: aDistance [
 
     ^ self stepsFromParsecs: aDistance asParsecs
+
 ]
