@@ -21,7 +21,7 @@ Spaceship class >> withName: aName [
 { #category : 'initialize' }
 Spaceship >> hasReachedGoalOn: aBoard [
 
-    ^ aBoard isGoalReachedAt: position.
+    ^ aBoard isPositionReachedAt: position.
 
 ]
 

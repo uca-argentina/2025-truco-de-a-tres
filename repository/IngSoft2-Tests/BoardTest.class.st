@@ -300,12 +300,15 @@ BoardTest >> testInvalidBoardWithInvalidWormholeRaisesError [
 
 { #category : 'tests - instance' }
 BoardTest >> testIsGoalReached [
-    | board |
-    board := Board of: 10 andWormholeAt: #().
 
-    self assert: (board isGoalReachedAt: 10).
-    self assert: (board isGoalReachedAt: 11).
-    self deny: (board isGoalReachedAt: 9).
+    | board |
+
+    board := Board of: 10 andWormholeAt: #(). 
+
+    self assert: (board isPositionReachedAt: 10).
+    self assert: (board isPositionReachedAt: 11).
+
+    self deny: (board isPositionReachedAt: 9).
 
 ]
 
@@ -314,9 +317,9 @@ BoardTest >> testIsGoalReachedAtReturnsFalseIfPositionLower [
 
     | board |
 
-    board := Board of: 5 andWormholeAt: {}.
+    board := Board of: 5 andWormholeAt: {}. 
 
-    self deny: (board isGoalReachedAt: 4).
+    self deny: (board isPositionReachedAt: 4).
 ]
 
 { #category : 'tests - instance' }
@@ -324,9 +327,9 @@ BoardTest >> testIsGoalReachedAtReturnsTrueIfPositionEqual [
 
     | board |
 
-    board := Board of: 5 andWormholeAt: {}.
+    board := Board of: 5 andWormholeAt: {}. 
 
-    self assert: (board isGoalReachedAt: 5).
+    self assert: (board isPositionReachedAt: 5).
 ]
 
 { #category : 'tests - instance' }
@@ -336,7 +339,7 @@ BoardTest >> testIsGoalReachedAtReturnsTrueIfPositionGreater [
 
     board := Board of: 5 andWormholeAt: {}.
 
-    self assert: (board isGoalReachedAt: 7).
+    self assert: (board isPositionReachedAt: 7).
 ]
 
 { #category : 'tests - instance' }

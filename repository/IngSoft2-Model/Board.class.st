@@ -122,7 +122,8 @@ Board >> initializeWithCells: aCount length: aLengthInParsecs andWormholes: aCol
 ]
 
 { #category : 'initialize' }
-Board >> isGoalReachedAt: aPosition [
+Board >> isPositionReachedAt: aPosition [
+
     ^ aPosition >= cellCount.
 ]
 
