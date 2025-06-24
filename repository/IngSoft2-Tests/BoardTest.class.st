@@ -377,7 +377,7 @@ BoardTest >> testLapIncrementsWhenPassingLastCell [
 { #category : 'tests - instance' }
 BoardTest >> testMoonWalkEffectMovesOtherSpaceshipsBackwards [
 
-	| dice1 effect ship1 ship2 ship3 allShips board |
+	| dice1 effect ship1 ship2 ship3 allShips |
 
 	dice1 := Die withSides: 6.
 	
@@ -393,8 +393,7 @@ BoardTest >> testMoonWalkEffectMovesOtherSpaceshipsBackwards [
 
 	allShips := { ship1. ship2. ship3 }.
 
-        board := Board of: 5 andWormholeAt: {}.
-        effect applyTo: ship2 inContextOf: allShips inBoard: board.
+        effect applyTo: ship2 inContextOf: allShips inBoard: (Board of: 5 andWormholeAt: {}).
 
 	self assert: ship2 position equals: 7.
 	self assert: ship1 position equals: 3.
