@@ -34,6 +34,16 @@ Board class >> of: anAmountOfCells length: parsecLength andWormholeAt: positions
 ]
 
 { #category : 'initialize' }
+Board class >> of: anAmountOfCells lengthLightYears: lightYears andWormholeAt: positions [
+    "Create a board specifying its length in light years"
+
+    ^ self
+        of: anAmountOfCells
+        length: (lightYears / 3)
+        andWormholeAt: positions.
+]
+
+{ #category : 'initialize' }
 Board class >> validateCellCount: aCount [
 
 	(aCount isInteger and: [ aCount > 0 ]) ifFalse: [
@@ -164,4 +174,11 @@ Board >> stepsFromParsecs: someParsecs [
     | ratio |
     ratio := someParsecs / totalLengthInParsecs.
     ^ (ratio * cellCount) rounded.
+]
+
+{ #category : 'initialize' }
+Board >> stepsFromLightYears: someLightYears [
+    "Convert a distance expressed in light years to board steps"
+
+    ^ self stepsFromParsecs: (someLightYears / 3)
 ]
