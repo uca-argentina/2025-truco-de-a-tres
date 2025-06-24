@@ -32,11 +32,16 @@ HyperJumpEffect >> applyTo: aSpaceship [
 ]
 
 { #category : 'operations' }
-HyperJumpEffect >> applyTo: aSpaceship inBoard: aBoard [
+HyperJumpEffect >> applyEffectTo: aSpaceship inBoard: aBoard [
     | parsecs steps |
     parsecs := self nextJumpValue.
     steps := aBoard stepsFromParsecs: parsecs.
-    aSpaceship moveForward: steps.
+    aBoard moveShip: aSpaceship forward: steps.
+]
+
+{ #category : 'operations' }
+HyperJumpEffect >> applyTo: aSpaceship inBoard: aBoard [
+    self applyEffectTo: aSpaceship inBoard: aBoard.
 ]
 
 { #category : 'operations' }
