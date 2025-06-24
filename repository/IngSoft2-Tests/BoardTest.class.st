@@ -465,3 +465,97 @@ BoardTest >> testWormholeTransportsCorrectly [
     self assert: (board applyWormholeIfPresentAt: 10) equals: 2.
 
 ]
+
+{ #category : 'tests - instance' }
+BoardTest >> testMoveShipForwardWithoutManager [
+    | board ship |
+    board := Board of: 5 andWormholeAt: #().
+    ship := Spaceship withName: 'Falcon'.
+    ship moveTo: 1.
+
+    board moveShip: ship forward: 2.
+
+    self assert: ship position equals: 3.
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testMoveShipBackwardWithoutManager [
+    | board ship |
+    board := Board of: 5 andWormholeAt: #().
+    ship := Spaceship withName: 'Falcon'.
+    ship moveTo: 4.
+
+    board moveShip: ship backward: 2.
+
+    self assert: ship position equals: 2.
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testMoveShipToWithoutManager [
+    | board ship |
+    board := Board of: 5 andWormholeAt: #().
+    ship := Spaceship withName: 'Falcon'.
+    ship moveTo: 0.
+
+    board moveShip: ship to: 3.
+
+    self assert: ship position equals: 3.
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testRegisterShipsAndMovesWithManager [
+    | board ship1 ship2 |
+    board := Board of: 10 andWormholeAt: #().
+    ship1 := Spaceship withName: 'One'.
+    ship2 := Spaceship withName: 'Two'.
+    ship1 moveTo: 2.
+    ship2 moveTo: 5.
+
+    board registerShips: { ship1. ship2 }.
+    self assert: (board positionOf: ship1) equals: 2.
+
+    board moveShip: ship1 forward: 3.
+    board moveShip: ship2 backward: 2.
+    board moveShip: ship1 to: 7.
+
+    self assert: (board positionOf: ship1) equals: 7.
+    self assert: (board positionOf: ship2) equals: 3.
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testPositionOfWithoutManager [
+    | board ship |
+    board := Board of: 8 andWormholeAt: #().
+    ship := Spaceship withName: 'Solo'.
+    ship moveTo: 1.
+
+    self assert: (board positionOf: ship) equals: 1.
+
+    board registerShips: { ship }.
+    self assert: (board positionOf: ship) equals: 1.
+
+    board moveShip: ship to: 4.
+    self assert: (board positionOf: ship) equals: 4.
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testRandomEffectProducesRecognizedClass [
+    | board effect valid |
+    board := Board of: 5 andWormholeAt: #().
+    effect := board randomEffect.
+    valid := { CardEffect. NoEffect. BlackHoleEffect. HyperGravityEffect }.
+
+    self assert: (valid anySatisfy: [ :cls | effect class = cls ]).
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testStepsFromDistanceConvertsToParsecs [
+    | board distParsecs distLightYears |
+    board := Board of: 10 length: 9 andWormholeAt: #().
+    distParsecs := Distance parsecs: 3.
+    distLightYears := Distance lightYears: 9.
+
+    self assert: (board stepsFromDistance: distParsecs) equals: (board stepsFromParsecs: 3).
+    self assert: (board stepsFromDistance: distLightYears) equals: (board stepsFromParsecs: 3).
+]
+
