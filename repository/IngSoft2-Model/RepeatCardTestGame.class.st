@@ -4,8 +4,8 @@ Class {
 	#instVars : [
 		'receivedShip'
 	],
-	#category : 'IngSoft2-Tests',
-	#package : 'IngSoft2-Tests'
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
 { #category : 'accessing' }

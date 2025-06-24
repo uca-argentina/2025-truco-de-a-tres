@@ -199,16 +199,16 @@ Game >> penalize: aShip forTurns: turns [
 
 ]
 
+{ #category : 'testing' }
+Game >> penalizedTurnsRemainingFor: aShip [
+
+        ^ (self findPenaltyFor: aShip) turnsRemaining.
+]
+
 { #category : 'accessing' }
 Game >> penaltyShip [
 
     ^ penalizedShips asOrderedCollection
-]
-
-{ #category : 'testing' }
-Game >> penaltyTurnsRemainingFor: aShip [
-
-        ^ (self findPenaltyFor: aShip) turnsRemaining.
 ]
 
 { #category : 'process actions' }

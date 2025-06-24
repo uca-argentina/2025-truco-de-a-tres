@@ -462,11 +462,11 @@ GameTest >> testPenaltyTurnsRemainingFor [
 
     game penalize: ship1 forTurns: 2.
 
-    self assert: (game penaltyTurnsRemainingFor: ship1) equals: 2.
+    self assert: (game penalizedTurnsRemainingFor: ship1) equals: 2.
 
     game reducePenaltyFor: ship1.
 
-    self assert: (game penaltyTurnsRemainingFor: ship1) equals: 1.
+    self assert: (game penalizedTurnsRemainingFor: ship1) equals: 1.
 ]
 
 { #category : 'tests' }
