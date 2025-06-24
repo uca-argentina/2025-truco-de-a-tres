@@ -424,3 +424,19 @@ BoardTest >> testWormholeTransportsCorrectly [
     self assert: (board applyWormholeIfPresentAt: 10) equals: 2.
 
 ]
+
+{ #category : 'tests - instance' }
+BoardTest >> testBoardCreationWithLightYearLength [
+    | board |
+    board := Board of: 10 lengthLightYears: 30 andWormholeAt: #().
+
+    self assert: (board stepsFromLightYears: 6) equals: (board stepsFromParsecs: 2).
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testStepsFromLightYearsConvertsCorrectly [
+    | board |
+    board := Board of: 10 lengthLightYears: 9 andWormholeAt: #().
+
+    self assert: (board stepsFromLightYears: 3) equals: (board stepsFromParsecs: 1).
+]
