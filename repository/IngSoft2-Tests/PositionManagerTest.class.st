@@ -1,8 +1,8 @@
 Class {
-    #name : 'PositionManagerTest',
-    #superclass : 'TestCase',
-    #category : 'IngSoft2-Tests',
-    #package : 'IngSoft2-Tests'
+	#name : 'PositionManagerTest',
+	#superclass : 'TestCase',
+	#category : 'IngSoft2-Tests',
+	#package : 'IngSoft2-Tests'
 }
 
 { #category : 'tests - class' }
@@ -32,13 +32,14 @@ PositionManagerTest >> testInitializeForShipsReturnsSelf [
 ]
 
 { #category : 'tests - instance' }
-PositionManagerTest >> testMoveShipToUpdatesPosition [
+PositionManagerTest >> testMoveShipBackwardDoesNotGoBelowZero [
     | ship manager |
-    ship := Spaceship withName: 'Mover'.
+    ship := Spaceship withName: 'Back'.
+    ship moveTo: 2.
     manager := PositionManager forShips: { ship }.
-    manager moveShip: ship to: 4.
-    self assert: ship position equals: 4.
-    self assert: (manager positionOf: ship) equals: 4.
+    manager moveShip: ship backward: 5.
+    self assert: ship position equals: 0.
+    self assert: (manager positionOf: ship) equals: 0.
 ]
 
 { #category : 'tests - instance' }
@@ -52,14 +53,13 @@ PositionManagerTest >> testMoveShipForwardUpdatesPosition [
 ]
 
 { #category : 'tests - instance' }
-PositionManagerTest >> testMoveShipBackwardDoesNotGoBelowZero [
+PositionManagerTest >> testMoveShipToUpdatesPosition [
     | ship manager |
-    ship := Spaceship withName: 'Back'.
-    ship moveTo: 2.
+    ship := Spaceship withName: 'Mover'.
     manager := PositionManager forShips: { ship }.
-    manager moveShip: ship backward: 5.
-    self assert: ship position equals: 0.
-    self assert: (manager positionOf: ship) equals: 0.
+    manager moveShip: ship to: 4.
+    self assert: ship position equals: 4.
+    self assert: (manager positionOf: ship) equals: 4.
 ]
 
 { #category : 'tests - instance' }

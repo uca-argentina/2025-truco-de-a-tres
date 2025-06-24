@@ -1,8 +1,8 @@
 Class {
-    #name : 'AccelerationCardTest',
-    #superclass : 'TestCase',
-    #category : 'IngSoft2-Tests',
-    #package : 'IngSoft2-Tests'
+	#name : 'AccelerationCardTest',
+	#superclass : 'TestCase',
+	#category : 'IngSoft2-Tests',
+	#package : 'IngSoft2-Tests'
 }
 
 { #category : 'tests' }

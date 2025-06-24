@@ -12,7 +12,7 @@ InstantCard >> applyEffectTo: aShip inGame: aGame [
 
 { #category : 'playing' }
 InstantCard >> playOn: aShip inGame: aGame [
-	aGame whenFinishedDo: [ self error: 'Game is already over' ] whenInProgressDo: [
+	aGame whenFinishedDo: [ :winner | self error: 'Game is already over' ] whenInProgressDo: [
         self applyEffectTo: aShip inGame: aGame
     ].
 ]

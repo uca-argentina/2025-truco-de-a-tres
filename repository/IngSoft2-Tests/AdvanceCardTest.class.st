@@ -1,8 +1,8 @@
 Class {
-    #name : 'AdvanceCardTest',
-    #superclass : 'TestCase',
-    #category : 'IngSoft2-Tests',
-    #package : 'IngSoft2-Tests'
+	#name : 'AdvanceCardTest',
+	#superclass : 'TestCase',
+	#category : 'IngSoft2-Tests',
+	#package : 'IngSoft2-Tests'
 }
 
 { #category : 'asserting' }
@@ -27,7 +27,7 @@ AdvanceCardTest >> testApplyEffectMovesShipForward [
         board: board
         dice: dice
         laps: 1.
-    ship moveTo: 2.
+    board moveShip: ship to: 2.
     card applyEffectTo: ship inGame: game.
     self assert: ship position equals: 3.
 ]
@@ -44,7 +44,7 @@ AdvanceCardTest >> testPlayOnMovesShipForwardWhenInProgress [
         board: board
         dice: dice
         laps: 1.
-    ship moveTo: 1.
+    board moveShip: ship to: 1.
     card playOn: ship inGame: game.
     self assert: ship position equals: 2.
 ]

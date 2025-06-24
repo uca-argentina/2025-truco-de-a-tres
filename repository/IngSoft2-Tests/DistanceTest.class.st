@@ -1,8 +1,8 @@
 Class {
-    #name : 'DistanceTest',
-    #superclass : 'TestCase',
-    #category : 'IngSoft2-Tests',
-    #package : 'IngSoft2-Tests'
+	#name : 'DistanceTest',
+	#superclass : 'TestCase',
+	#category : 'IngSoft2-Tests',
+	#package : 'IngSoft2-Tests'
 }
 
 { #category : 'tests - instance' }
@@ -56,4 +56,3 @@ DistanceTest >> testParsecsClassMethodCreatesParsecsDistance [
     self assert: distance value equals: 8.
     self assert: distance unit equals: #parsecs.
 ]
-

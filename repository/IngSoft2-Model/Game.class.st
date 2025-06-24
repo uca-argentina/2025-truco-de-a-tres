@@ -91,11 +91,6 @@ Game >> ensureGameIsNotOver [
         whenInProgressDo: [ ].
 ]
 
-{ #category : 'process actions' }
-Game >> epeatLastEffectOn: aShip [
-	"Placeholder for board effects".
-]
-
 { #category : 'testing' }
 Game >> findPenaltyFor: aShip [
     ^ penalizedShips detect: [ :penalty | penalty isFor: aShip ] ifNone: [ PenalizedShip noPenaltyFor: aShip ]
@@ -207,7 +202,7 @@ Game >> penalize: aShip forTurns: turns [
 { #category : 'accessing' }
 Game >> penaltyShip [
 
-    ^ penalizedShips
+    ^ penalizedShips asOrderedCollection
 ]
 
 { #category : 'testing' }
@@ -304,6 +299,11 @@ Game >> removeActiveCard: aCard [
 ]
 
 { #category : 'process actions' }
+Game >> repeatLastEffectOn: aShip [
+	"Placeholder for board effects".
+]
+
+{ #category : 'process actions' }
 Game >> rewardForMaxRollTo: aShip [
     (Random new next <= 0.8)
         ifTrue: [ aShip increaseMaxFuelBy: 1 ]
@@ -329,7 +329,7 @@ Game >> rollAndMoveCurrentShip [
 { #category : 'accessing' }
 Game >> spaceShips [
 
-    ^ spaceShips.
+    ^ spaceShips asOrderedCollection.
 
 ]
 

@@ -12,7 +12,7 @@ PermanentCard >> activateFor: aShip inGame: aGame [
 
 { #category : 'playing' }
 PermanentCard >> playOn: aShip inGame: aGame [
-	aGame whenFinishedDo: [ self error: 'Game is already over' ] whenInProgressDo: [
+	aGame whenFinishedDo: [ :winner | self error: 'Game is already over' ] whenInProgressDo: [
         (aGame currentShip = aShip)
             ifTrue: [ self activateFor: aShip inGame: aGame ]
             ifFalse: [ self error: 'Not your turn' ].

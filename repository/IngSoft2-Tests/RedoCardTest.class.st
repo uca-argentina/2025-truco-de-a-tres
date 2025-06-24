@@ -1,8 +1,8 @@
 Class {
-        #name : 'RedoCardTest',
-        #superclass : 'TestCase',
-        #category : 'IngSoft2-Tests',
-        #package : 'IngSoft2-Tests'
+	#name : 'RedoCardTest',
+	#superclass : 'TestCase',
+	#category : 'IngSoft2-Tests',
+	#package : 'IngSoft2-Tests'
 }
 
 { #category : 'tests' }
