@@ -259,9 +259,17 @@ Game >> rollAndMoveCurrentShip [
     | steps newPosition |
     lastPreviousPosition := self currentShip position.
     steps := dice roll.
+    steps = dice maxRoll ifTrue: [ self rewardForMaxRollTo: self currentShip ].
     newPosition := board determineNewPositionFrom: lastPreviousPosition after: steps.
     board moveShip: self currentShip to: newPosition.
     lastSteps := steps.
+]
+
+{ #category : 'process actions' }
+Game >> rewardForMaxRollTo: aShip [
+    (Random new next <= 0.8)
+        ifTrue: [ aShip increaseMaxFuelBy: 1 ]
+        ifFalse: [ aShip decreaseFuelBy: 1 ].
 ]
 
 { #category : 'accessing' }

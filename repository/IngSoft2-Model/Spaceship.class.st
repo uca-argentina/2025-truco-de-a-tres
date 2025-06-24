@@ -78,6 +78,16 @@ Spaceship >> position [
 
 { #category : 'methods' }
 Spaceship >> restoreFuel [
-	
-	fuel := maxFuel.
+
+        fuel := maxFuel.
+]
+
+{ #category : 'fuel' }
+Spaceship >> increaseMaxFuelBy: anAmount [
+    maxFuel := maxFuel + anAmount.
+]
+
+{ #category : 'fuel' }
+Spaceship >> decreaseFuelBy: anAmount [
+    fuel := (fuel - anAmount) max: 0.
 ]
