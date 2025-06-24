@@ -846,16 +846,25 @@ GameTest >> testStatusForReturnsCorrectShipStatus [
 { #category : 'tests' }
 GameTest >> testValidateIsCurrentPlayerRaisesError [
 
-    | ship1 ship2 board dice game |
+	| ship1 ship2 board dice game validator |
+	ship1 := Spaceship withName: 'First'.
+	ship2 := Spaceship withName: 'Second'.
+	board := Board of: 5 andWormholeAt: {  }.
+	dice := DiceCup with: { (Die withSides: 6) }.
 
-    ship1 := Spaceship withName: 'First'.
-    ship2 := Spaceship withName: 'Second'.
-    board := Board of: 5 andWormholeAt: {}.
-    dice := DiceCup with: { Die withSides: 6 }.
+	game := Game
+		        startWithShips: {
+				        ship1.
+				        ship2 }
+		        board: board
+		        dice: dice
+		        laps: 1.
+	validator := GameValidator new.
 
-    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
-
-    self should: [ game validateIsCurrentPlayer: ship2 ] raise: Error.
+	self
+		should: [ validator validateIsCurrentPlayer: ship2 forGame: game ]
+		raise: Error
+		withMessageText: 'It is not the turn of this spaceship'
 ]
 
 { #category : 'tests' }
@@ -875,11 +884,10 @@ GameTest >> testValidateMinimumSpaceShipsFailsWithOneShip [
 { #category : 'tests' }
 GameTest >> testWhenAShipTriesToPlayOutOfTurnThenError [
 
-	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game |
-
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game validator |
 	dice1 := Die withSides: 6.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
-	
+
 	spaceShip1 := Spaceship withName: 'Ship Num1'.
 	spaceShip2 := Spaceship withName: 'Ship Num2'.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
@@ -893,9 +901,10 @@ GameTest >> testWhenAShipTriesToPlayOutOfTurnThenError [
 		        laps: 1.
 
 	game playTurn.
+	validator := GameValidator new.
 
 	self
-		should: [ game validateIsCurrentPlayer: spaceShip1 ]
+		should: [ validator validateIsCurrentPlayer: spaceShip1 forGame: game ]
 		raise: Error
 		withMessageText: 'It is not the turn of this spaceship'
 ]
