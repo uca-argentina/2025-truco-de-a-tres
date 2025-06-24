@@ -71,6 +71,11 @@ Spaceship >> position [
     ^ position.
 ]
 
+{ #category : 'accessing' }
+Spaceship >> name [
+    ^ playerName.
+]
+
 { #category : 'methods' }
 Spaceship >> restoreFuel [
 	

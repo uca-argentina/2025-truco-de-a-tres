@@ -90,7 +90,7 @@ HyperJumpEffectTest >> testNextJumpValueReturnsValuesCyclically [
 
 	| effect values |
 	values := #(3 5 7).
-	effect := HyperJumpEffect new initializeWith: values.
+	effect := HyperJumpEffect withValues: values.
 
 	self assert: effect nextJumpValue equals: 3.
 	self assert: effect nextJumpValue equals: 5.
@@ -104,7 +104,7 @@ HyperJumpEffectTest >> testPeekJumpValueReturnsCurrentValueWithoutAdvancing [
 
 	| effect values |
 	values := #(10 20 30).
-	effect := HyperJumpEffect new initializeWith: values.
+	effect := HyperJumpEffect withValues: values.
 
 	self assert: effect peekJumpValue equals: 10.
 	self assert: effect peekJumpValue equals: 10.
@@ -131,7 +131,7 @@ HyperJumpEffectTest >> testResetJumpIndexSetsIndexBackToOne [
 
 	| effect values |
 	values := #(3 6 9).
-	effect := HyperJumpEffect new initializeWith: values.
+	effect := HyperJumpEffect withValues: values.
 
 	effect nextJumpValue.
 	effect nextJumpValue.

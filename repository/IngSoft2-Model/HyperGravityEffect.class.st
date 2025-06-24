@@ -14,10 +14,8 @@ HyperGravityEffect >> allowsEntryWithRoll: aNumber [
 ]
 
 { #category : 'operations' }
-HyperGravityEffect >> applyTo: aSpaceship [
-	
-	^ self.
-
+HyperGravityEffect >> applyEffectTo: aSpaceship inBoard: aBoard [
+        ^ self.
 ]
 
 { #category : 'initialization' }

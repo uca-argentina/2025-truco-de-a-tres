@@ -66,3 +66,15 @@ LappedShipTest >> testShipReturnsOriginalShip [
     
     self assert: lapped ship equals: ship.
 ]
+
+{ #category : 'tests' }
+LappedShipTest >> testPositionMatchesShipPosition [
+
+    | ship lapped |
+
+    ship := Spaceship withName: 'TestShip'.
+    ship moveTo: 3.
+    lapped := LappedShip for: ship.
+
+    self assert: lapped position equals: ship position.
+]

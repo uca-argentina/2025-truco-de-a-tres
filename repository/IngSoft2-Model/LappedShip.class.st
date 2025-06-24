@@ -1,10 +1,11 @@
 Class {
 	#name : 'LappedShip',
 	#superclass : 'Object',
-	#instVars : [
-		'ship',
-		'laps'
-	],
+        #instVars : [
+                'ship',
+                'laps',
+                'position'
+        ],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
@@ -12,7 +13,13 @@ Class {
 { #category : 'instance creation' }
 LappedShip class >> for: aShip [
 
-	^ self new initializeWith: aShip.
+        ^ self new initializeWith: aShip.
+]
+
+{ #category : 'instance creation' }
+LappedShip class >> for: aShip at: aPosition [
+
+        ^ self new initializeWith: aShip position: aPosition.
 ]
 
 { #category : 'adding' }
@@ -30,10 +37,22 @@ LappedShip >> hasWonWithTotalLaps: aNumber [
 { #category : 'initialize' }
 LappedShip >> initializeWith: aShip [
 
-	ship := aShip.
-	laps := 0.
-	
-	^ self.
+        ^ self initializeCommonWith: aShip position: aShip position.
+]
+
+{ #category : 'initialize' }
+LappedShip >> initializeWith: aShip position: aPosition [
+
+        ^ self initializeCommonWith: aShip position: aPosition.
+]
+
+{ #category : 'initialize' }
+LappedShip >> initializeCommonWith: aShip position: aPosition [
+        ship := aShip.
+        laps := 0.
+        position := aPosition.
+
+        ^ self.
 ]
 
 { #category : 'testing' }
@@ -45,5 +64,18 @@ LappedShip >> lapCount [
 { #category : 'adding' }
 LappedShip >> ship [
 
-	^ ship.
+        ^ ship.
+]
+
+{ #category : 'accessing' }
+LappedShip >> position [
+
+        ^ position.
+]
+
+{ #category : 'accessing' }
+LappedShip >> moveTo: aPosition [
+
+        position := aPosition.
+        ship moveTo: aPosition.
 ]
