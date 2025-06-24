@@ -53,7 +53,7 @@ GameTest >> testAdvanceTurnRotatesToNextShip [
 
     ship1 := Spaceship withName: 'One'.
     ship2 := Spaceship withName: 'Two'.
-    dice := DiceCup new initializeWith: 1.
+    dice := DiceCup with: { Die withSides: 1 }.
     game := Game
         startWithShips: { ship1. ship2 }
         board: (Board of: 5 andWormholeAt: {})
@@ -307,7 +307,7 @@ GameTest >> testIsPenalizedDetectsPenalizedShip [
 
     ship1 := Spaceship withName: 'P1'.
     ship2 := Spaceship withName: 'P2'.
-    dice := DiceCup new initializeWith: 1.
+    dice := DiceCup with: { Die withSides: 1 }.
     game := Game
         startWithShips: { ship1. ship2 }
         board: (Board of: 5 andWormholeAt: {})
@@ -356,6 +356,31 @@ GameTest >> testPenalizeAddsPenalizedShip [
     game penalize: ship1 forTurns: 2.
 
     self assert: (game isPenalized: ship1).
+]
+
+{ #category : 'tests' }
+GameTest >> testPenaltyTurnsRemainingFor [
+
+    | ship1 ship2 board dice game |
+
+    ship1 := Spaceship withName: 'Penalized'.
+    ship2 := Spaceship withName: 'Other'.
+    board := Board of: 10 andWormholeAt: #().
+    dice := DiceCup with: { Die withSides: 1 }.
+
+    game := Game
+        startWithShips: { ship1. ship2 }
+        board: board
+        dice: dice
+        laps: 1.
+
+    game penalize: ship1 forTurns: 2.
+
+    self assert: (game penaltyTurnsRemainingFor: ship1) equals: 2.
+
+    game reducePenaltyFor: ship1.
+
+    self assert: (game penaltyTurnsRemainingFor: ship1) equals: 1.
 ]
 
 { #category : 'tests' }
@@ -476,7 +501,7 @@ GameTest >> testPlayUntilFinishEndsWhenWinnerIsFound [
 
 ship1 := Spaceship withName: 'Rápida'.
 ship2 := Spaceship withName: 'Lenta'.
-dice := DiceCup new initializeWith: { Die withSides: 6 }.
+dice := DiceCup with: { Die withSides: 6 }.
 
 game := Game
 	startWithShips: { ship1. ship2 }
@@ -493,7 +518,7 @@ game whenFinishedDo: [ :w | self assert: true ]
 { #category : 'tests' }
 GameTest >> testRankingReturnsShipsOrderedByLapsAndPosition [
 
-	| spaceShip1 spaceShip2 spaceShip3 spaceShipsGame  dice1  dicesGame boardGame game ranking realShip1 realShip2 realShip3 |
+        | spaceShip1 spaceShip2 spaceShip3 spaceShipsGame  dice1  dicesGame boardGame game ranking |
   
   	dice1 := Die withSides: 1.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
@@ -513,17 +538,13 @@ GameTest >> testRankingReturnsShipsOrderedByLapsAndPosition [
 
 	game playUntilFinish.
 
-	ranking := game ranking.
+        ranking := game ranking.
 
-	realShip1 := game spaceShips first.
-	realShip2 := game spaceShips second.
-	realShip3 := game spaceShips third.
+        self assert: ranking size equals: 3.
 
-	self assert: ranking size equals: 3.
-
-	self assert: ranking first ship equals: realShip1.
-	self assert: ranking second ship equals: realShip2.
-	self assert: ranking third ship equals: realShip3
+        self assert: ranking first ship equals: spaceShip1.
+        self assert: ranking second ship equals: spaceShip2.
+        self assert: ranking third ship equals: spaceShip3
 ]
 
 { #category : 'accessing' }
@@ -550,7 +571,7 @@ GameTest >> testReducePenaltyRemovesPenaltyEventually [
     | ship game dice penalty |
 
     ship := Spaceship withName: 'Penalized'.
-    dice := DiceCup new initializeWith: 1.
+    dice := DiceCup with: { Die withSides: 1 }.
     game := Game
         startWithShips: { ship. Spaceship withName: 'Other' }
         board: (Board of: 5 andWormholeAt: {})
@@ -679,7 +700,7 @@ GameTest >> testShipStatusReturnsCorrectValues [
 { #category : 'tests' }
 GameTest >> testShipStatusReturnsCurrentLap [
 
-	| spaceShip1 spaceShip2  spaceShipsGame die dicesGame boardGame game status1 status2 realShip1 realShip2 |
+        | spaceShip1 spaceShip2  spaceShipsGame die dicesGame boardGame game status1 status2 |
 	
 	die := Die withSides: 1.
 	dicesGame := DiceCup with: (OrderedCollection with: die).
@@ -692,21 +713,18 @@ GameTest >> testShipStatusReturnsCurrentLap [
 
 	boardGame := Board of: 2 andWormholeAt: #(  ).
 
-	game := Game
-		        startWithShips: spaceShipsGame
-		        board: boardGame
-		        dice: dicesGame
-		        laps: 2.
+        game := Game
+                        startWithShips: spaceShipsGame
+                        board: boardGame
+                        dice: dicesGame
+                        laps: 2.
+	
+        game playTurn.
+        game playTurn.
+        game playTurn.
 
-	realShip1 := game spaceShips first.
-	realShip2 := game spaceShips second.
-	
-	game playTurn.
-	game playTurn.
-	game playTurn.
-	
-	status1 := game statusFor: realShip1.
-	status2 := game statusFor: realShip2.
+        status1 := game statusFor: spaceShip1.
+        status2 := game statusFor: spaceShip2.
 
 	self assert: status1 lapCount equals: 1.
 	self assert: status2 lapCount equals: 0.
@@ -715,7 +733,7 @@ GameTest >> testShipStatusReturnsCurrentLap [
 { #category : 'tests' }
 GameTest >> testShipStatusReturnsCurrentPosition [
 
-	| spaceShip1 spaceShip2  spaceShipsGame die dicesGame boardGame game status1 status2 realShip1 realShip2 |
+        | spaceShip1 spaceShip2  spaceShipsGame die dicesGame boardGame game status1 status2 |
 	
 	die := Die withSides: 1.
 	dicesGame := DiceCup with: (OrderedCollection with: die).
@@ -734,13 +752,10 @@ GameTest >> testShipStatusReturnsCurrentPosition [
 		        dice: dicesGame
 		        laps: 1.
 
-	realShip1 := game spaceShips first.
-	realShip2 := game spaceShips second.
-	
-	game playUntilFinish.
-	
-	status1 := game statusFor: realShip1.
-	status2 := game statusFor: realShip2.
+        game playUntilFinish.
+
+        status1 := game statusFor: spaceShip1.
+        status2 := game statusFor: spaceShip2.
 
 	self assert: status1 position equals: 2.
 	self assert: status2 position equals: 1.
@@ -950,7 +965,7 @@ GameTest >> testWhenPlayTurnThenAdvancesShip [
 { #category : 'tests' }
 GameTest >> testWhenShipDecidesToPassTurnThenSkipTurn [
 
-	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game realShip1 |
+        | spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game |
 
 	dice1 := Die withSides: 6.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
@@ -961,20 +976,18 @@ GameTest >> testWhenShipDecidesToPassTurnThenSkipTurn [
 
 	boardGame := Board of: 25 andWormholeAt: #(  ).
 
-	game := Game
-		        startWithShips: spaceShipsGame
-		        board: boardGame
-		        dice: dicesGame
-		        laps: 1.
+        game := Game
+                        startWithShips: spaceShipsGame
+                        board: boardGame
+                        dice: dicesGame
+                        laps: 1.
+	
+        game playTurn.
+        game playTurn.
+        game markShipAsWantingToPassTurn: spaceShip1 to: true.
+        game playTurn.
 
-	realShip1 := game spaceShips first.
-	
-	game playTurn.
-	game playTurn.
-	game markShipAsWantingToPassTurn: realShip1 to: true.
-	game playTurn.
-	
-	self assert: game currentShip equals: game spaceShips second.
+        self assert: game currentShip equals: spaceShip2.
 
 	game playUntilFinish.
 ]
@@ -982,7 +995,7 @@ GameTest >> testWhenShipDecidesToPassTurnThenSkipTurn [
 { #category : 'tests' }
 GameTest >> testWhenShipIsPenalizedThenSkipsTurnAndReducesPenalty [
 
-	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game realShip1 realShip2 |
+        | spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame game |
 	
 	dice1 := Die withSides: 6.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
@@ -993,26 +1006,23 @@ GameTest >> testWhenShipIsPenalizedThenSkipsTurnAndReducesPenalty [
 
 	boardGame := Board of: 25 andWormholeAt: #(  ).
 
-	game := Game
-		        startWithShips: spaceShipsGame
-		        board: boardGame
-		        dice: dicesGame
-		        laps: 1.
+        game := Game
+                        startWithShips: spaceShipsGame
+                        board: boardGame
+                        dice: dicesGame
+                        laps: 1.
 
-	realShip1 := game spaceShips first.
-	realShip2 := game spaceShips second.
+        game penalize: spaceShip1 forTurns: 2.
+        game playTurn.
 
-	game penalize: realShip1 forTurns: 2.
-	game playTurn.
-
-	self assert: game currentShip equals: realShip2.
+        self assert: game currentShip equals: spaceShip2.
 
 	game playTurn.
 	game playTurn.
 	game playTurn.
 
-	self assert: (game isPenalized: realShip1) not.
-	self assert: game currentShip equals: realShip1.
+        self assert: (game isPenalized: spaceShip1) not.
+        self assert: game currentShip equals: spaceShip1.
 
 	game playTurn.
 	game playUntilFinish
@@ -1047,7 +1057,7 @@ game whenFinishedDo: [ :w | self assert: true ]
 GameTest >> testWhenShipWinsByCompletingRequiredLapsThenEndsGame [
 
 
-	| spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame totalLaps game realShip1 |
+        | spaceShip1 spaceShip2 spaceShipsGame dice1 dicesGame boardGame totalLaps game |
 	dice1 := Die withSides: 1.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1).
 
@@ -1057,20 +1067,18 @@ GameTest >> testWhenShipWinsByCompletingRequiredLapsThenEndsGame [
 
 	boardGame := Board of: 3 andWormholeAt: #(  ).
 
-	totalLaps := 3.
+        totalLaps := 3.
 
 
-	game := Game
-		        startWithShips: spaceShipsGame
-		        board: boardGame
-		        dice: dicesGame
-		        laps: totalLaps.
+        game := Game
+                        startWithShips: spaceShipsGame
+                        board: boardGame
+                        dice: dicesGame
+                        laps: totalLaps.
 
-	realShip1 := game spaceShips first.
-
-	game playUntilFinish.
-	self assert: (game lapTrackerFor: realShip1) lapCount equals: 3.
-	self assert: (game hasWonByLaps: realShip1)
+        game playUntilFinish.
+        self assert: (game lapTrackerFor: spaceShip1) lapCount equals: 3.
+        self assert: (game hasWonByLaps: spaceShip1)
 ]
 
 { #category : 'tests' }

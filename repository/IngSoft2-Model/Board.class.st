@@ -6,7 +6,8 @@ Class {
 		'wormholes',
 		'cells',
 		'effects',
-		'totalLengthInParsecs'
+		'totalLengthInParsecs',
+		'positionManager'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -49,10 +50,12 @@ Board class >> validateWormholes: aCollection [
 
 { #category : 'initialize' }
 Board >> applyEffectTo: aSpaceship [
-	| effect |
-	
-	effect := self effectAt: aSpaceship position.
-	effect ifNotNil: [ effect applyTo: aSpaceship ].
+    | effect |
+    
+    effect := self effectAt: (self positionOf: aSpaceship).
+    effect ifNotNil: [ effect applyTo: aSpaceship inBoard: self ].
+    positionManager ifNotNil: [
+        positionManager moveShip: aSpaceship to: aSpaceship position ].
 
 ]
 
@@ -64,12 +67,13 @@ Board >> applyWormholeIfPresentAt: aPosition [
 ]
 
 { #category : 'initialize' }
-Board >> calculateNewPositionFrom: current after: steps moves: aLappedSpaceship [
+Board >> calculateNewPositionFrom: current after: steps moves: aShipStatus [
+
 	| newPosition |
 	
 	newPosition := (current + steps) \\ cellCount.
 
-	(newPosition <= current) ifTrue: [ aLappedSpaceship addLap ].
+	(newPosition <= current) ifTrue: [ aShipStatus addLap ].
 
 	^ newPosition.
 ]
@@ -118,8 +122,41 @@ Board >> initializeWithCells: aCount length: aLengthInParsecs andWormholes: aCol
 ]
 
 { #category : 'initialize' }
-Board >> isGoalReachedAt: aPosition [
+Board >> isPositionReachedAt: aPosition [
+
     ^ aPosition >= cellCount.
+]
+
+{ #category : 'spaceships' }
+Board >> moveShip: aShip backward: steps [
+    positionManager
+        ifNil: [ aShip moveBack: steps ]
+        ifNotNil: [ positionManager moveShip: aShip backward: steps ].
+]
+
+{ #category : 'spaceships' }
+Board >> moveShip: aShip forward: steps [
+    positionManager
+        ifNil: [ aShip moveForward: steps ]
+        ifNotNil: [ positionManager moveShip: aShip forward: steps ].
+]
+
+{ #category : 'spaceships' }
+Board >> moveShip: aShip to: aPosition [
+    positionManager
+        ifNil: [ aShip moveTo: aPosition ]
+        ifNotNil: [ positionManager moveShip: aShip to: aPosition ].
+]
+
+{ #category : 'spaceships' }
+Board >> positionOf: aShip [
+    positionManager ifNil: [ ^ aShip position ].
+    ^ positionManager positionOf: aShip
+]
+
+{ #category : 'spaceships' }
+Board >> registerShips: someShips [
+    positionManager := PositionManager forShips: someShips.
 ]
 
 { #category : 'initialize' }

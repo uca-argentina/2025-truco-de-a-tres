@@ -50,5 +50,11 @@ PenalizedShip >> isFor: aShip [
 { #category : 'accessing' }
 PenalizedShip >> ship [
 
-	^ ship.
+        ^ ship.
+]
+
+{ #category : 'accessing' }
+PenalizedShip >> turnsRemaining [
+
+        ^ turnsRemaining.
 ]

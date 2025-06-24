@@ -21,7 +21,7 @@ Spaceship class >> withName: aName [
 { #category : 'initialize' }
 Spaceship >> hasReachedGoalOn: aBoard [
 
-    ^ aBoard isGoalReachedAt: position.
+    ^ aBoard isPositionReachedAt: position.
 
 ]
 
@@ -63,6 +63,11 @@ Spaceship >> moveTo: aPosition [
 
     position := aPosition.
 
+]
+
+{ #category : 'accessing' }
+Spaceship >> name [
+    ^ playerName.
 ]
 
 { #category : 'initialize' }

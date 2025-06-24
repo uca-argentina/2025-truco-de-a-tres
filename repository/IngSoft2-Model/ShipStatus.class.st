@@ -21,6 +21,16 @@ ShipStatus class >> for: aShip position: aPosition laps: aLapCount penalized: is
 		penalized: isPenalized.
 ]
 
+{ #category : 'accessing' }
+ShipStatus >> addLap [
+	lapCount := lapCount + 1.
+]
+
+{ #category : 'accessing' }
+ShipStatus >> hasWonWithTotalLaps: aNumber [
+	^ lapCount >= aNumber.
+]
+
 { #category : 'initialization' }
 ShipStatus >> initializeWith: aShip position: aPosition laps: aLapCount penalized: isPenalized [
 
@@ -43,9 +53,19 @@ ShipStatus >> lapCount [
 ]
 
 { #category : 'accessing' }
+ShipStatus >> penalized: aBoolean [
+	penalized := aBoolean.
+]
+
+{ #category : 'accessing' }
 ShipStatus >> position [
 
 	^ position.
+]
+
+{ #category : 'accessing' }
+ShipStatus >> position: aPosition [
+	position := aPosition.
 ]
 
 { #category : 'accessing' }

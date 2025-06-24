@@ -46,7 +46,7 @@ SpaceshipTest >> testInitializeInPositionZero [
 { #category : 'tests - instance' }
 SpaceshipTest >> testInitializeWithEmptyNameRaisesError [
 
-    self should: [ Spaceship withName: '' and: 4 ] raise: Error.
+    self should: [ Spaceship withName: '' ] raise: Error.
 ]
 
 { #category : 'tests - instance' }

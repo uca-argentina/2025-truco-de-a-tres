@@ -6,14 +6,15 @@ Class {
 }
 
 { #category : 'operations' }
-AtomicBombEffect >> applyTo: aSpaceship [
-	^ self
-
+AtomicBombEffect >> applyEffectTo: aSpaceship inBoard: aBoard [
+    ^ self
 ]
 
 { #category : 'operations' }
-AtomicBombEffect >> applyTo: aSpaceship inContextOf: allSpaceships [
-
-	allSpaceships do: [:ship | ship moveTo: 0 ].
-
+AtomicBombEffect >> applyTo: aSpaceship inContextOf: allSpaceships inBoard: aBoard [
+    allSpaceships do: [:ship |
+        aBoard
+            ifNil: [ ship moveTo: 0 ]
+            ifNotNil: [ aBoard moveShip: ship to: 0 ]
+    ].
 ]

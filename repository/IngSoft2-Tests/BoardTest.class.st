@@ -58,11 +58,12 @@ BoardTest >> testApplyWormholeIfPresentReturnsSameWhenAbsent [
 { #category : 'tests - instance' }
 BoardTest >> testAtomicBombEffectResetsPositionsButKeepsLaps [
 
-	| dice1 effect ship1 ship2 ship3 allShips |
-	
-	dice1 := Die withSides: 6.
+        | dice1 effect ship1 ship2 ship3 allShips board |
 
-	effect := AtomicBombEffect new.
+        dice1 := Die withSides: 6.
+
+        effect := AtomicBombEffect new.
+        board := Board of: 5 andWormholeAt: {}.
 
 	ship1 := Spaceship withName: 'Red'.
 	ship2 := Spaceship withName: 'Blue'.
@@ -78,11 +79,11 @@ BoardTest >> testAtomicBombEffectResetsPositionsButKeepsLaps [
 		ship3.
 	}.
 
-	effect applyTo: ship2 inContextOf: allShips.
+        effect applyTo: ship2 inContextOf: allShips inBoard: board.
 
-	self assert: (LappedShip for: ship1) lapCount equals: 0.
-	self assert: (LappedShip for: ship2) lapCount equals: 0.
-	self assert: (LappedShip for: ship3) lapCount equals: 0.
+	self assert: (ShipStatus for: ship1 position: 0 laps: 0 penalized: false) lapCount equals: 0.
+        self assert: (ShipStatus for: ship2 position: 0 laps: 0 penalized: false) lapCount equals: 0.
+        self assert: (ShipStatus for: ship3 position: 0 laps: 0 penalized: false) lapCount equals: 0.
 ]
 
 { #category : 'tests - instance' }
@@ -141,7 +142,7 @@ BoardTest >> testBoardPreventsEntryToHyperGravityCellWithLowRoll [
 	
 	ship := Spaceship withName: 'Lucas'.
 	ship moveTo: 2.
-	lappedShip := LappedShip for: ship.
+	lappedShip := ShipStatus for: ship position: 2 laps: 0 penalized: false.
 
 	effect := HyperGravityEffect new.
 	effect requiredRoll: 4.
@@ -252,7 +253,7 @@ BoardTest >> testHyperJumpEffectJumpsShipForward [
 	ship2 := Spaceship withName: 'Gemini'.
 	ship2 restoreFuel.
 
-	lappedShip1 := LappedShip for: ship1.
+	lappedShip1 := ShipStatus for: ship1 position: 5 laps: 0 penalized: false.
 
 	ship1 moveTo: 5.
 	self assert: ship1 position equals: 5.
@@ -299,12 +300,15 @@ BoardTest >> testInvalidBoardWithInvalidWormholeRaisesError [
 
 { #category : 'tests - instance' }
 BoardTest >> testIsGoalReached [
-    | board |
-    board := Board of: 10 andWormholeAt: #().
 
-    self assert: (board isGoalReachedAt: 10).
-    self assert: (board isGoalReachedAt: 11).
-    self deny: (board isGoalReachedAt: 9).
+    | board |
+
+    board := Board of: 10 andWormholeAt: #(). 
+
+    self assert: (board isPositionReachedAt: 10).
+    self assert: (board isPositionReachedAt: 11).
+
+    self deny: (board isPositionReachedAt: 9).
 
 ]
 
@@ -313,9 +317,9 @@ BoardTest >> testIsGoalReachedAtReturnsFalseIfPositionLower [
 
     | board |
 
-    board := Board of: 5 andWormholeAt: {}.
+    board := Board of: 5 andWormholeAt: {}. 
 
-    self deny: (board isGoalReachedAt: 4).
+    self deny: (board isPositionReachedAt: 4).
 ]
 
 { #category : 'tests - instance' }
@@ -323,9 +327,9 @@ BoardTest >> testIsGoalReachedAtReturnsTrueIfPositionEqual [
 
     | board |
 
-    board := Board of: 5 andWormholeAt: {}.
+    board := Board of: 5 andWormholeAt: {}. 
 
-    self assert: (board isGoalReachedAt: 5).
+    self assert: (board isPositionReachedAt: 5).
 ]
 
 { #category : 'tests - instance' }
@@ -335,7 +339,7 @@ BoardTest >> testIsGoalReachedAtReturnsTrueIfPositionGreater [
 
     board := Board of: 5 andWormholeAt: {}.
 
-    self assert: (board isGoalReachedAt: 7).
+    self assert: (board isPositionReachedAt: 7).
 ]
 
 { #category : 'tests - instance' }
@@ -366,10 +370,10 @@ BoardTest >> testLapIncrementsWhenPassingLastCell [
 	ship := Spaceship withName: 'Lucas'.
 	ship moveTo: 8.
 
-	newPosition := board calculateNewPositionFrom: ship position after: 3 moves: (LappedShip for: ship) .
+	newPosition := board calculateNewPositionFrom: ship position after: 3 moves: (ShipStatus for: ship position: 8 laps: 0 penalized: false) .
 
 	self assert: newPosition equals: 1.
-	self assert: (LappedShip for: ship) lapCount equals: 0.
+	self assert: (ShipStatus for: ship position: 8 laps: 0 penalized: false) lapCount equals: 0.
 
 ]
 
@@ -392,7 +396,7 @@ BoardTest >> testMoonWalkEffectMovesOtherSpaceshipsBackwards [
 
 	allShips := { ship1. ship2. ship3 }.
 
-	effect applyTo: ship2 inContextOf: allShips.
+        effect applyTo: ship2 inContextOf: allShips inBoard: (Board of: 5 andWormholeAt: {}).
 
 	self assert: ship2 position equals: 7.
 	self assert: ship1 position equals: 3.
