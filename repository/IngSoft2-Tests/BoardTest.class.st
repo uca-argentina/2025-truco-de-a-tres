@@ -214,7 +214,9 @@ BoardTest >> testEffectAtHandlesAllCases [
 
     board := Board of: 10 andWormholeAt: {}.
     customEffect := BlackHoleEffect new.
+    board instVarNamed: 'cells' put: (Dictionary new).
     board cells at: 5 put: customEffect.
+    board cells at: 8 put: NoEffect new.
 
     self assert: (board effectAt: 5) equals: customEffect.
     self assert: (board effectAt: 8) class equals: NoEffect.
@@ -228,7 +230,9 @@ BoardTest >> testEffectAtReturnsCorrectEffect [
 
     board := Board of: 10 andWormholeAt: {}.
     customEffect := BlackHoleEffect new.
+    board instVarNamed: 'cells' put: (Dictionary new).
     board cells at: 5 put: customEffect.
+    board cells at: 8 put: NoEffect new.
 
     self assert: (board effectAt: 5) equals: customEffect.
     self assert: (board effectAt: 8) class equals: NoEffect.
@@ -247,6 +251,7 @@ BoardTest >> testHyperGravityAllowsEntryWhenRollIsSufficient [
 	effect := HyperGravityEffect new.
 	effect requiredRoll: 4.
 	board cells at: 4 put: effect.
+	board cells at: 3 put: NoEffect new.
 
 	newPosition := board determineNewPositionFrom: ship position after: 1.
 	self assert: newPosition equals: 3.
