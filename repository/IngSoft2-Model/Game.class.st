@@ -8,16 +8,11 @@ Class {
 		'turn',
 		'winner',
 		'currentTurnIndex',
-		'spaceships',
-		'currentPlayerIndex',
-		'die',
 		'wantsToPassTurn',
-		'penaltyShips',
 		'penalizedShips',
 		'lappedShips',
 		'totalLaps',
 		'state',
-		'previousPosition',
 		'lastSteps',
 		'lastPreviousPosition'
 	],
@@ -28,16 +23,8 @@ Class {
 { #category : 'initialize' }
 Game class >> startWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps [
 
-	self validateMinimumSpaceShips: someShips.
+	GameValidator validateMinimumSpaceShips: someShips.
 	^ self new initializeWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps.
-]
-
-{ #category : 'initialize' }
-Game class >> validateMinimumSpaceShips: someShips [
-
-	someShips size < 2 ifTrue: [
-		self error: 'Need 2 space ships or more to initialize the game' 
-	].
 ]
 
 { #category : 'process actions' }
@@ -168,19 +155,24 @@ Game >> penalize: aShip forTurns: turns [
 
 { #category : 'process actions' }
 Game >> playTurn [
-    self ensureGameIsNotOver.
 
-    self handlePenaltyOrPassIfNeeded ifTrue: [ ^ self ].
+	GameValidator new
+		validateIsCurrentPlayer: self currentShip
+		forGame: self.
+	self ensureGameIsNotOver.
 
-    self rollAndMoveCurrentShip.
+	self handlePenaltyOrPassIfNeeded ifTrue: [ ^ self ].
 
-    self registerLapFor: self currentShip
-        from: lastPreviousPosition
-        after: lastSteps.
+	self rollAndMoveCurrentShip.
 
-    self checkWinCondition.
+	self
+		registerLapFor: self currentShip
+		from: lastPreviousPosition
+		after: lastSteps.
 
-    self advanceTurn.
+	self checkWinCondition.
+
+	self advanceTurn
 ]
 
 { #category : 'process actions' }
@@ -272,14 +264,6 @@ Game >> statusFor: aShip [
 		position: aShip position
 		laps: (self lapTrackerFor: aShip) lapCount
 		penalized: (self isPenalized: aShip).
-]
-
-{ #category : 'validation' }
-Game >> validateIsCurrentPlayer: aSpaceship [
-
-	self currentShip = aSpaceship ifFalse: [
-		self error: 'It is not the turn of this spaceship'
-	].
 ]
 
 { #category : 'process actions' }
