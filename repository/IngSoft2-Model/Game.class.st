@@ -194,7 +194,14 @@ Game >> passTurn [
 
 { #category : 'process actions' }
 Game >> penalize: aShip forTurns: turns [
-    penalizedShips add: (PenalizedShip for: aShip withTurns: turns).
+    | existing |
+    existing := penalizedShips
+        detect: [ :penalty | penalty isFor: aShip ]
+        ifNone: [ nil ].
+    existing
+        ifNil: [ penalizedShips add: (PenalizedShip for: aShip withTurns: turns) ]
+        ifNotNil: [ existing turnsRemaining: turns ].
+    (self lapTrackerFor: aShip) penalized: true.
 
 
 ]
@@ -208,7 +215,7 @@ Game >> penalizedTurnsRemainingFor: aShip [
 { #category : 'accessing' }
 Game >> penaltyShip [
 
-    ^ penalizedShips asOrderedCollection
+    ^ penalizedShips
 ]
 
 { #category : 'process actions' }
@@ -271,10 +278,11 @@ Game >> redoLastCardOn: aShip [
 Game >> reducePenaltyFor: aShip [
 
 	| penalty |
-	
-	penalty := self findPenaltyFor: aShip.
-	penalty decreaseTurns.
-	penalty hasPenalty ifFalse: [ penalizedShips remove: penalty ].
+
+        penalty := self findPenaltyFor: aShip.
+        penalty decreaseTurns.
+        penalty hasPenalty ifFalse: [ penalizedShips remove: penalty ].
+        (self lapTrackerFor: aShip) penalized: penalty hasPenalty.
 
 	aShip restoreFuel.
 
