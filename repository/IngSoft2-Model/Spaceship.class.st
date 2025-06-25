@@ -2,81 +2,129 @@ Class {
 	#name : 'Spaceship',
 	#superclass : 'Object',
 	#instVars : [
-		'name',
 		'position',
 		'playerName',
-		'penaltyTurns',
 		'maxFuel',
 		'fuel',
-		'lap'
+		'lap',
+		'cards',
+		'activeCards'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
 { #category : 'initialize' }
-Spaceship class >> new [
-    self error: 'Use Spaceship withName: instead.'
+Spaceship class >> withName: aName [
+
+	^ self new initializeWith: aName.
 ]
 
-{ #category : 'initialize' }
-Spaceship class >> withName: aName and: aMaxRoll [
+{ #category : 'methods' }
+Spaceship >> activeCards [
+	^ activeCards
+]
 
-	^ super new initializeWith: aName and: aMaxRoll 
+{ #category : 'methods' }
+Spaceship >> addActiveCard: aCard [
+	activeCards add: aCard.
+]
+
+{ #category : 'methods' }
+Spaceship >> addCard: aCard [
+	cards add: aCard.
+]
+
+{ #category : 'methods' }
+Spaceship >> cards [
+	^ cards
+]
+
+{ #category : 'fuel' }
+Spaceship >> decreaseFuelBy: anAmount [
+    fuel := (fuel - anAmount) max: 0.
 ]
 
 { #category : 'initialize' }
 Spaceship >> hasReachedGoalOn: aBoard [
-    ^ aBoard isGoalReachedAt: position
+
+    ^ aBoard isPositionReachedAt: position.
 
 ]
 
+{ #category : 'fuel' }
+Spaceship >> increaseMaxFuelBy: anAmount [
+    maxFuel := maxFuel + anAmount.
+]
+
 { #category : 'initialize' }
-Spaceship >> initializeWith: aName and: aMaxRoll [
+Spaceship >> initializeWith: aName [
 
 	aName isEmpty ifTrue: [ self error: 'Name cannot be empty' ].
 
 	playerName := aName.
 	position := 0.
-  maxFuel := aMaxRoll * 2.
-	fuel := maxFuel.
+	fuel := 0.
+  	maxFuel := 0.
 	lap := 0.
+	cards := OrderedCollection new.
+   activeCards := OrderedCollection new.
 ]
 
 { #category : 'initialize' }
 Spaceship >> lap [
-	^ lap
+
+	^ lap.
 
 ]
 
-{ #category : 'initialize' }
+{ #category : 'methods' }
 Spaceship >> moveBack: steps [
+
     position := (position - steps) max: 0.
 
 ]
 
-{ #category : 'initialize' }
+{ #category : 'methods' }
 Spaceship >> moveForward: steps [
+
 	position := position + steps.
 
 ]
 
-{ #category : 'initialize' }
+{ #category : 'methods' }
 Spaceship >> moveTo: aPosition [
-    position := aPosition
+
+    position := aPosition.
 
 ]
 
-{ #category : 'initialize' }
-Spaceship >> playerName [
-    ^ playerName
+{ #category : 'accessing' }
+Spaceship >> name [
+    ^ playerName.
+]
+
+{ #category : 'cards' }
+Spaceship >> playCard: aCard inGame: aGame [
+	(cards includes: aCard) ifFalse: [ self error: 'Card not in hand' ].
+    aCard playOn: self inGame: aGame.
+    cards remove: aCard ifAbsent: [ ].
+    aGame lastCardPlayed: aCard.
 ]
 
 { #category : 'initialize' }
 Spaceship >> position [
-    ^ position
+
+    ^ position.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'methods' }
+Spaceship >> removeCard: aCard [
+	cards remove: aCard ifAbsent: [ ].
+]
+
+{ #category : 'methods' }
 Spaceship >> restoreFuel [
+
+        fuel := maxFuel.
 ]

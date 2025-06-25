@@ -6,7 +6,8 @@ Class {
 }
 
 { #category : 'operations' }
-BlackHoleEffect >> applyTo: aSpaceship [
-    aSpaceship moveBack: 4.
-
+BlackHoleEffect >> applyEffectTo: aSpaceship inBoard: aBoard [
+    aBoard
+        ifNil: [ aSpaceship moveBack: 4 ]
+        ifNotNil: [ aBoard moveShip: aSpaceship backward: 4 ].
 ]

@@ -1,6 +1,11 @@
 Class {
 	#name : 'HyperJumpEffect',
 	#superclass : 'EffectDecorator',
+	#instVars : [
+		'jumpValues',
+		'currentIndex',
+		'values'
+	],
 	#classVars : [
 		'CurrentIndex',
 		'JumpValues'
@@ -9,23 +14,18 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'class initialization' }
-HyperJumpEffect class >> initialize [
-	JumpValues := #(3 5 2 4).
-	CurrentIndex := 1.
+{ #category : 'initialization' }
+HyperJumpEffect class >> withLightYearValues: aCollection [
+    ^ self new
+        initializeWith: (aCollection collect: [ :each | Distance lightYears: each ]);
+        yourself.
 ]
 
-{ #category : 'class initialization' }
-HyperJumpEffect class >> nextJumpValue [
-	| value |
-	value := JumpValues at: CurrentIndex.
-	CurrentIndex := (CurrentIndex \\ JumpValues size) + 1.
-	^ value
-]
-
-{ #category : 'class initialization' }
-HyperJumpEffect class >> resetJumpIndex [
-	CurrentIndex := 1.
+{ #category : 'initialization' }
+HyperJumpEffect class >> withValues: aCollection [
+    ^ self new
+        initializeWith: aCollection;
+        yourself.
 ]
 
 { #category : 'operations' }
@@ -34,6 +34,57 @@ HyperJumpEffect >> allowsEntryWithRoll: aRoll [
 ]
 
 { #category : 'operations' }
+HyperJumpEffect >> applyEffectTo: aSpaceship inBoard: aBoard [
+    | parsecs steps |
+    parsecs := self nextJumpValue.
+    steps := aBoard stepsFromParsecs: parsecs.
+    aBoard moveShip: aSpaceship forward: steps.
+]
+
+{ #category : 'operations' }
 HyperJumpEffect >> applyTo: aSpaceship [
-	aSpaceship moveForward: 3.
+    self error: 'Use applyTo:inBoard: instead.'
+]
+
+{ #category : 'operations' }
+HyperJumpEffect >> applyTo: aSpaceship inBoard: aBoard [
+    self applyEffectTo: aSpaceship inBoard: aBoard.
+]
+
+{ #category : 'operations' }
+HyperJumpEffect >> initializeWith: aCollection [
+    jumpValues := aCollection collect: [ :each |
+        (each respondsTo: #asParsecs)
+            ifTrue: [ each asParsecs ]
+            ifFalse: [ each ]
+    ].
+    currentIndex := 1.
+]
+
+{ #category : 'operations' }
+HyperJumpEffect >> nextJumpValue [
+
+	| value |
+	
+	value := jumpValues at: currentIndex.
+	
+	currentIndex := (currentIndex \\ jumpValues size) + 1.
+	
+	^ value.
+]
+
+{ #category : 'operations' }
+HyperJumpEffect >> peekJumpValue [
+    ^ jumpValues at: currentIndex.
+]
+
+{ #category : 'operations' }
+HyperJumpEffect >> resetJumpIndex [
+
+	currentIndex := 1.
+]
+
+{ #category : 'operations' }
+HyperJumpEffect >> values [
+	^ jumpValues
 ]
