@@ -15,6 +15,13 @@ Class {
 }
 
 { #category : 'initialization' }
+HyperJumpEffect class >> withLightYearValues: aCollection [
+    ^ self new
+        initializeWith: (aCollection collect: [ :each | Distance lightYears: each ]);
+        yourself.
+]
+
+{ #category : 'initialization' }
 HyperJumpEffect class >> withValues: aCollection [
     ^ self new
         initializeWith: aCollection;
@@ -46,7 +53,11 @@ HyperJumpEffect >> applyTo: aSpaceship inBoard: aBoard [
 
 { #category : 'operations' }
 HyperJumpEffect >> initializeWith: aCollection [
-    jumpValues := aCollection.
+    jumpValues := aCollection collect: [ :each |
+        (each respondsTo: #asParsecs)
+            ifTrue: [ each asParsecs ]
+            ifFalse: [ each ]
+    ].
     currentIndex := 1.
 ]
 

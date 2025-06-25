@@ -58,3 +58,8 @@ PenalizedShip >> turnsRemaining [
 
         ^ turnsRemaining.
 ]
+
+{ #category : 'accessing' }
+PenalizedShip >> turnsRemaining: aNumber [
+	turnsRemaining := aNumber.
+]

@@ -6,7 +6,9 @@ Class {
 		'playerName',
 		'maxFuel',
 		'fuel',
-		'lap'
+		'lap',
+		'cards',
+		'activeCards'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -18,11 +20,41 @@ Spaceship class >> withName: aName [
 	^ self new initializeWith: aName.
 ]
 
+{ #category : 'methods' }
+Spaceship >> activeCards [
+	^ activeCards
+]
+
+{ #category : 'methods' }
+Spaceship >> addActiveCard: aCard [
+	activeCards add: aCard.
+]
+
+{ #category : 'methods' }
+Spaceship >> addCard: aCard [
+	cards add: aCard.
+]
+
+{ #category : 'methods' }
+Spaceship >> cards [
+	^ cards
+]
+
+{ #category : 'fuel' }
+Spaceship >> decreaseFuelBy: anAmount [
+    fuel := (fuel - anAmount) max: 0.
+]
+
 { #category : 'initialize' }
 Spaceship >> hasReachedGoalOn: aBoard [
 
     ^ aBoard isPositionReachedAt: position.
 
+]
+
+{ #category : 'fuel' }
+Spaceship >> increaseMaxFuelBy: anAmount [
+    maxFuel := maxFuel + anAmount.
 ]
 
 { #category : 'initialize' }
@@ -35,6 +67,8 @@ Spaceship >> initializeWith: aName [
 	fuel := 0.
   	maxFuel := 0.
 	lap := 0.
+	cards := OrderedCollection new.
+   activeCards := OrderedCollection new.
 ]
 
 { #category : 'initialize' }
@@ -70,6 +104,14 @@ Spaceship >> name [
     ^ playerName.
 ]
 
+{ #category : 'cards' }
+Spaceship >> playCard: aCard inGame: aGame [
+	(cards includes: aCard) ifFalse: [ self error: 'Card not in hand' ].
+    aCard playOn: self inGame: aGame.
+    cards remove: aCard ifAbsent: [ ].
+    aGame lastCardPlayed: aCard.
+]
+
 { #category : 'initialize' }
 Spaceship >> position [
 
@@ -77,7 +119,12 @@ Spaceship >> position [
 ]
 
 { #category : 'methods' }
+Spaceship >> removeCard: aCard [
+	cards remove: aCard ifAbsent: [ ].
+]
+
+{ #category : 'methods' }
 Spaceship >> restoreFuel [
-	
-	fuel := maxFuel.
+
+        fuel := maxFuel.
 ]

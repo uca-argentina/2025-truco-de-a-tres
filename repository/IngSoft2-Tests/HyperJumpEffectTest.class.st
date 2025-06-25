@@ -5,6 +5,16 @@ Class {
 	#package : 'IngSoft2-Tests'
 }
 
+{ #category : 'asserting' }
+HyperJumpEffectTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessage [
+
+        self
+                should: anErrorBlock
+                raise: anErrorClass
+                withExceptionDo: [ :error |
+                self assert: error messageText equals: errorMessage ]
+]
+
 { #category : 'tests' }
 HyperJumpEffectTest >> testAllowsEntryWithRollAlwaysTrue [
 	| effect |
@@ -13,6 +23,21 @@ HyperJumpEffectTest >> testAllowsEntryWithRollAlwaysTrue [
 	self assert: (effect allowsEntryWithRoll: 1).
 	self assert: (effect allowsEntryWithRoll: 6).
 	self assert: (effect allowsEntryWithRoll: 100).
+]
+
+{ #category : 'tests' }
+HyperJumpEffectTest >> testApplyEffectToMovesShipForward [
+    | effect ship board expected initial |
+    board := Board of: 10 length: 10 andWormholeAt: #().
+    effect := HyperJumpEffect withValues: #(2 4).
+    expected := effect peekJumpValue.
+    ship := Spaceship withName: 'Direct'.
+    initial := 1.
+    ship moveTo: initial.
+
+    effect applyEffectTo: ship inBoard: board.
+
+    self assert: ship position equals: (initial + (board stepsFromParsecs: expected)).
 ]
 
 { #category : 'tests' }
@@ -30,6 +55,18 @@ HyperJumpEffectTest >> testApplyToMovesShipForwardByCurrentJumpValue [
     effect applyTo: ship inBoard: board.
 
     self assert: ship position equals: (initialPosition + (board stepsFromParsecs: expected)).
+]
+
+{ #category : 'tests' }
+HyperJumpEffectTest >> testApplyToWithoutBoardRaisesError [
+    | effect ship |
+    ship := Spaceship withName: 'Error'.
+    effect := HyperJumpEffect withValues: #(1 2).
+
+    self
+        should: [ effect applyTo: ship ]
+        raise: Error
+        withMessageText: 'Use applyTo:inBoard: instead.'
 ]
 
 { #category : 'tests' }
@@ -138,5 +175,16 @@ HyperJumpEffectTest >> testResetJumpIndexSetsIndexBackToOne [
 
 	effect resetJumpIndex.
 
-	self assert: effect peekJumpValue equals: 3.
+        self assert: effect peekJumpValue equals: 3.
+]
+
+{ #category : 'tests' }
+HyperJumpEffectTest >> testWithLightYearValuesConvertsProperly [
+    | effect board ship |
+    board := Board of: 10 length: 10 andWormholeAt: #().
+    effect := HyperJumpEffect withLightYearValues: #(3 6).
+    ship := Spaceship withName: 'LY'.
+    ship moveTo: 0.
+    effect applyTo: ship inBoard: board.
+    self assert: ship position equals: (board stepsFromParsecs: 1).
 ]

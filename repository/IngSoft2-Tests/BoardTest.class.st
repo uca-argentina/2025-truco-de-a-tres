@@ -115,12 +115,28 @@ BoardTest >> testBoardCellCountIsCorrect [
 BoardTest >> testBoardCellsContainRecognizedEffects [
 	| board validClasses |
 
-	validClasses := { BlackHoleEffect. HyperGravityEffect. NoEffect }.
+	validClasses := { BlackHoleEffect. HyperGravityEffect. NoEffect. CardEffect }.
 
 	board := Board of: 20 andWormholeAt: OrderedCollection new.
 
 	self assert: (board cells values allSatisfy: [:e |
 		validClasses anySatisfy: [:c | e class = c ] ]).
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testBoardCreationWithLightYearLength [
+    | board |
+    board := Board of: 10 lengthLightYears: 30 andWormholeAt: #().
+
+    self assert: (board stepsFromLightYears: 6) equals: (board stepsFromParsecs: 2).
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testBoardCreationWithParsecsAndLightYears [
+    | board |
+    board := Board of: 10 length: 10 lengthLightYears: 30 andWormholeAt: #().
+
+    self assert: (board stepsFromParsecs: 1) equals: (board stepsFromLightYears: 3).
 ]
 
 { #category : 'tests - instance' }
@@ -181,12 +197,26 @@ BoardTest >> testCannotEnterHyperGravityCellWithLowRoll [
 ]
 
 { #category : 'tests - instance' }
+BoardTest >> testCardEffectAddsCardToShip [
+	| board ship effect |
+    board := Board of: 5 andWormholeAt: {}.
+    effect := CardEffect new.
+    board cells at: 3 put: effect.
+    ship := Spaceship withName: 'Player'.
+    ship moveTo: 3.
+    board applyEffectTo: ship.
+    self assert: ship cards size equals: 1.
+]
+
+{ #category : 'tests - instance' }
 BoardTest >> testEffectAtHandlesAllCases [
     | board customEffect |
 
     board := Board of: 10 andWormholeAt: {}.
     customEffect := BlackHoleEffect new.
+    board instVarNamed: 'cells' put: (Dictionary new).
     board cells at: 5 put: customEffect.
+    board cells at: 8 put: NoEffect new.
 
     self assert: (board effectAt: 5) equals: customEffect.
     self assert: (board effectAt: 8) class equals: NoEffect.
@@ -200,7 +230,9 @@ BoardTest >> testEffectAtReturnsCorrectEffect [
 
     board := Board of: 10 andWormholeAt: {}.
     customEffect := BlackHoleEffect new.
+    board instVarNamed: 'cells' put: (Dictionary new).
     board cells at: 5 put: customEffect.
+    board cells at: 8 put: NoEffect new.
 
     self assert: (board effectAt: 5) equals: customEffect.
     self assert: (board effectAt: 8) class equals: NoEffect.
@@ -219,6 +251,7 @@ BoardTest >> testHyperGravityAllowsEntryWhenRollIsSufficient [
 	effect := HyperGravityEffect new.
 	effect requiredRoll: 4.
 	board cells at: 4 put: effect.
+	board cells at: 3 put: NoEffect new.
 
 	newPosition := board determineNewPositionFrom: ship position after: 1.
 	self assert: newPosition equals: 3.
@@ -404,12 +437,113 @@ BoardTest >> testMoonWalkEffectMovesOtherSpaceshipsBackwards [
 ]
 
 { #category : 'tests - instance' }
+BoardTest >> testMoveShipBackwardWithoutManager [
+    | board ship |
+    board := Board of: 5 andWormholeAt: #().
+    ship := Spaceship withName: 'Falcon'.
+    ship moveTo: 4.
+
+    board moveShip: ship backward: 2.
+
+    self assert: ship position equals: 2.
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testMoveShipForwardWithoutManager [
+    | board ship |
+    board := Board of: 5 andWormholeAt: #().
+    ship := Spaceship withName: 'Falcon'.
+    ship moveTo: 1.
+
+    board moveShip: ship forward: 2.
+
+    self assert: ship position equals: 3.
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testMoveShipToWithoutManager [
+    | board ship |
+    board := Board of: 5 andWormholeAt: #().
+    ship := Spaceship withName: 'Falcon'.
+    ship moveTo: 0.
+
+    board moveShip: ship to: 3.
+
+    self assert: ship position equals: 3.
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testPositionOfWithoutManager [
+    | board ship |
+    board := Board of: 8 andWormholeAt: #().
+    ship := Spaceship withName: 'Solo'.
+    ship moveTo: 1.
+
+    self assert: (board positionOf: ship) equals: 1.
+
+    board registerShips: { ship }.
+    self assert: (board positionOf: ship) equals: 1.
+
+    board moveShip: ship to: 4.
+    self assert: (board positionOf: ship) equals: 4.
+]
+
+{ #category : 'tests - instance' }
 BoardTest >> testPositionWithoutWormholeReturnsSame [
     | board |
     board := Board of: 10 andWormholeAt: #().
 
     self assert: (board applyWormholeIfPresentAt: 5) equals: 5.
 
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testRandomEffectProducesRecognizedClass [
+    | board effect valid |
+    board := Board of: 5 andWormholeAt: #().
+    effect := board randomEffect.
+    valid := { CardEffect. NoEffect. BlackHoleEffect. HyperGravityEffect }.
+
+    self assert: (valid anySatisfy: [ :cls | effect class = cls ]).
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testRegisterShipsAndMovesWithManager [
+    | board ship1 ship2 |
+    board := Board of: 10 andWormholeAt: #().
+    ship1 := Spaceship withName: 'One'.
+    ship2 := Spaceship withName: 'Two'.
+    ship1 moveTo: 2.
+    ship2 moveTo: 5.
+
+    board registerShips: { ship1. ship2 }.
+    self assert: (board positionOf: ship1) equals: 2.
+
+    board moveShip: ship1 forward: 3.
+    board moveShip: ship2 backward: 2.
+    board moveShip: ship1 to: 7.
+
+    self assert: (board positionOf: ship1) equals: 7.
+    self assert: (board positionOf: ship2) equals: 3.
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testStepsFromDistanceConvertsToParsecs [
+    | board distParsecs distLightYears |
+    board := Board of: 10 length: 9 andWormholeAt: #().
+    distParsecs := Distance parsecs: 3.
+    distLightYears := Distance lightYears: 9.
+
+    self assert: (board stepsFromDistance: distParsecs) equals: (board stepsFromParsecs: 3).
+    self assert: (board stepsFromDistance: distLightYears) equals: (board stepsFromParsecs: 3).
+]
+
+{ #category : 'tests - instance' }
+BoardTest >> testStepsFromLightYearsConvertsCorrectly [
+    | board |
+    board := Board of: 10 lengthLightYears: 9 andWormholeAt: #().
+
+    self assert: (board stepsFromLightYears: 3) equals: (board stepsFromParsecs: 1).
 ]
 
 { #category : 'tests - instance' }

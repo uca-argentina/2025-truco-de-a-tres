@@ -44,6 +44,18 @@ PenalizedShipTest >> testInitializationWithoutPenalty [
 ]
 
 { #category : 'tests' }
+PenalizedShipTest >> testIsForReturnsFalseForDifferentShip [
+
+	| penalized ship1 ship2 |
+
+    ship1 := Spaceship withName: 'Apollo'.
+    ship2 := Spaceship withName: 'Challenger'.
+    penalized := PenalizedShip for: ship1 withTurns: 1.
+
+    self deny: (penalized isFor: ship2).
+]
+
+{ #category : 'tests' }
 PenalizedShipTest >> testShipReference [
 
     | ship penalized |
@@ -52,4 +64,26 @@ PenalizedShipTest >> testShipReference [
     penalized := PenalizedShip for: ship withTurns: 1.
 
     self assert: penalized ship equals: ship.
+]
+
+{ #category : 'tests' }
+PenalizedShipTest >> testTurnsRemainingAccessor [
+
+	| penalized ship |
+
+    ship := Spaceship withName: 'Apollo'.
+    penalized := PenalizedShip for: ship withTurns: 3.
+
+    self assert: penalized turnsRemaining equals: 3.
+]
+
+{ #category : 'tests' }
+PenalizedShipTest >> testTurnsRemainingSetter [
+	| penalized ship |
+
+    ship := Spaceship withName: 'Apollo'.
+    penalized := PenalizedShip for: ship withTurns: 1.
+    penalized turnsRemaining: 5.
+
+    self assert: penalized turnsRemaining equals: 5.
 ]

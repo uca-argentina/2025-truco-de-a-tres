@@ -34,6 +34,29 @@ Board class >> of: anAmountOfCells length: parsecLength andWormholeAt: positions
 ]
 
 { #category : 'initialize' }
+Board class >> of: anAmountOfCells length: parsecLength lengthLightYears: lightYears andWormholeAt: positions [
+    (parsecLength notNil and: [ lightYears notNil ]) ifTrue: [
+        (parsecLength = (lightYears / 3)) ifFalse: [
+            self error: 'Length mismatch between parsecs and light years'.
+        ].
+    ].
+    parsecLength isNil ifTrue: [
+        ^ self of: anAmountOfCells lengthLightYears: lightYears andWormholeAt: positions
+    ].
+    ^ self of: anAmountOfCells length: parsecLength andWormholeAt: positions
+]
+
+{ #category : 'initialize' }
+Board class >> of: anAmountOfCells lengthLightYears: lightYears andWormholeAt: positions [
+    "Create a board specifying its length in light years"
+
+    ^ self
+        of: anAmountOfCells
+        length: (lightYears / 3)
+        andWormholeAt: positions.
+]
+
+{ #category : 'initialize' }
 Board class >> validateCellCount: aCount [
 
 	(aCount isInteger and: [ aCount > 0 ]) ifFalse: [
@@ -105,8 +128,8 @@ Board >> initializeWithCells: aCount andWormholes: aCollection [
 	wormholes := aCollection.
 	cells := Dictionary new.
 	
-0 to: aCount - 1 do: [ :i |
-		cells at: i put: NoEffect new ].
+	0 to: aCount - 1 do: [ :i |
+		cells at: i put: self randomEffect ].
 ]
 
 { #category : 'initialize' }
@@ -117,7 +140,7 @@ Board >> initializeWithCells: aCount length: aLengthInParsecs andWormholes: aCol
 	 cells := Dictionary new.
 	
 	0 to: aCount - 1 do: [ :i |
-		cells at: i put: NoEffect new ].
+		cells at: i put: self randomEffect ].
     
 ]
 
@@ -154,9 +177,33 @@ Board >> positionOf: aShip [
     ^ positionManager positionOf: aShip
 ]
 
+{ #category : 'initialize' }
+Board >> randomEffect [
+	| r |
+    r := (1 to: 100) atRandom.
+    r <= 10 ifTrue: [ ^ CardEffect new ].
+    r <= 48 ifTrue: [ ^ NoEffect new ].
+    r <= 74 ifTrue: [ ^ BlackHoleEffect new ].
+	^ HyperGravityEffect new.
+
+]
+
 { #category : 'spaceships' }
 Board >> registerShips: someShips [
     positionManager := PositionManager forShips: someShips.
+]
+
+{ #category : 'initialize' }
+Board >> stepsFromDistance: aDistance [
+
+    ^ self stepsFromParsecs: aDistance asParsecs
+]
+
+{ #category : 'initialize' }
+Board >> stepsFromLightYears: someLightYears [
+    "Convert a distance expressed in light years to board steps"
+
+    ^ self stepsFromParsecs: (someLightYears / 3)
 ]
 
 { #category : 'initialize' }
