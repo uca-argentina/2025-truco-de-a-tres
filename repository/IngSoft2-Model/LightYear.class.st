@@ -12,5 +12,5 @@ LightYear >> asLightYears: aNumber [
 
 { #category : 'conversions' }
 LightYear >> asParsecs: aNumber [
-    ^ aNumber / 3
+    ^ aNumber / Parsec lightYearsPerParsec
 ]
