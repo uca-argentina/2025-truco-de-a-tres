@@ -6,25 +6,31 @@ Class {
 }
 
 { #category : 'tests' }
-RepeatCardTest >> testApplyEffectDelegatesToGame [
-    | card ship game |
+RepeatCardTest >> testApplyEffectDoesNothing [
+    | card ship other board dice game |
     card := RepeatCard new.
     ship := Spaceship withName: 'Enterprise'.
-    game := RepeatCardTestGame new.
+    other := Spaceship withName: 'Defiant'.
+    board := Board of: 5 andWormholeAt: #().
+    dice := DiceCup with: { Die withSides: 1 }.
+    game := Game startWithShips: { ship. other } board: board dice: dice laps: 1.
 
     card applyEffectTo: ship inGame: game.
 
-    self assert: game receivedShip equals: ship.
+    self assert: ship position equals: 0.
 ]
 
 { #category : 'tests' }
-RepeatCardTest >> testPlayOnDelegatesToApplyEffect [
-    | card ship game |
+RepeatCardTest >> testPlayOnDoesNothing [
+    | card ship other board dice game |
     card := RepeatCard new.
     ship := Spaceship withName: 'Voyager'.
-    game := RepeatCardTestGame new.
+    other := Spaceship withName: 'Enterprise'.
+    board := Board of: 5 andWormholeAt: #().
+    dice := DiceCup with: { Die withSides: 1 }.
+    game := Game startWithShips: { ship. other } board: board dice: dice laps: 1.
 
     card playOn: ship inGame: game.
 
-    self assert: game receivedShip equals: ship.
+    self assert: ship position equals: 0.
 ]

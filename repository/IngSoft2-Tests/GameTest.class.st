@@ -441,7 +441,7 @@ GameTest >> testPenaltyShipReturnsPenalizedShipsCollection [
     game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
     game penalize: ship1 forTurns: 1.
     self assert: (game penaltyShip size) equals: 1.
-    self assert: ((game penaltyShip first ship) == ship1).
+    self assert: (game penaltyShip first == ship1).
 ]
 
 { #category : 'tests' }
@@ -578,7 +578,9 @@ GameTest >> testPlayUntilFinishDeclaresWinner [
 	game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
 	game playUntilFinish.
 
-	self assert: game winner isNotNil.
+        game
+            whenFinishedDo: [ :w | self assert: w isNotNil ]
+            whenInProgressDo: [ self fail: 'Expected game to be finished' ].
 ]
 
 { #category : 'accessing' }
@@ -1537,5 +1539,7 @@ GameTest >> testWhenWinnerSpaceShipIsCorrectWhenGameEnds [
 		
 	game playTurn.
 
-        self assert: game winner equals: spaceShip1
+        game
+            whenFinishedDo: [ :winner | self assert: winner equals: spaceShip1 ]
+            whenInProgressDo: [ self fail: 'Expected game to be finished' ]
 ]

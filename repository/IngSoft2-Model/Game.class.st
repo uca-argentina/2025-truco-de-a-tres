@@ -7,9 +7,8 @@ Class {
 		'dice',
 		'winner',
 		'turnManager',
-		'wantsToPassTurn',
-		'penalizedShips',
-		'lappedShips',
+                'wantsToPassTurn',
+                'lappedShips',
 		'totalLaps',
 		'state',
 		'lastSteps',
@@ -138,7 +137,7 @@ Game >> ensureGameIsNotOver [
 
 { #category : 'testing' }
 Game >> findPenaltyFor: aShip [
-    ^ penalizedShips detect: [ :penalty | penalty isFor: aShip ] ifNone: [ PenalizedShip noPenaltyFor: aShip ]
+    ^ aShip state
 
 
 
@@ -179,13 +178,12 @@ Game >> initializeWithShips: someShips board: aBoard dice: someDices laps: aNumb
 	
         turnManager := TurnManager withShips: someShips.
 	
-	penalizedShips := OrderedCollection new.
         wantsToPassTurn := Dictionary new.
 
         shipStatuses := Dictionary new.
        spaceShips do: [ :ship |
                 shipStatuses at: ship put: (ShipStatus for: ship position: 0 laps: 0 penalized: false).
-                2 timesRepeat: [ ship addCard: CardDeck randomCard ] ].
+                2 timesRepeat: [ ship addCard: (board drawCard) ] ].
         state := GameInProgress new.
 	
 	lastSteps := 0.
@@ -195,10 +193,7 @@ Game >> initializeWithShips: someShips board: aBoard dice: someDices laps: aNumb
 
 { #category : 'testing' }
 Game >> isPenalized: aShip [
-    ^ (self findPenaltyFor: aShip) hasPenalty
-
-
-
+    ^ aShip isPenalized
 ]
 
 { #category : 'testing' }
@@ -239,13 +234,7 @@ Game >> passTurn [
 
 { #category : 'process actions' }
 Game >> penalize: aShip forTurns: turns [
-    | existing |
-    existing := penalizedShips
-        detect: [ :penalty | penalty isFor: aShip ]
-        ifNone: [ nil ].
-    existing
-        ifNil: [ penalizedShips add: (PenalizedShip for: aShip withTurns: turns) ]
-        ifNotNil: [ existing turnsRemaining: turns ].
+    aShip penalizeFor: turns.
     (self lapTrackerFor: aShip) penalized: true.
 
 
@@ -254,13 +243,13 @@ Game >> penalize: aShip forTurns: turns [
 { #category : 'testing' }
 Game >> penalizedTurnsRemainingFor: aShip [
 
-        ^ (self findPenaltyFor: aShip) turnsRemaining.
+        ^ aShip penaltyTurnsRemaining.
 ]
 
 { #category : 'accessing' }
 Game >> penaltyShip [
 
-    ^ penalizedShips
+    ^ spaceShips select: [ :ship | ship isPenalized ]
 ]
 
 { #category : 'process actions' }
@@ -319,14 +308,9 @@ Game >> redoLastCardOn: aShip [
 { #category : 'testing' }
 Game >> reducePenaltyFor: aShip [
 
-	| penalty |
-
-        penalty := self findPenaltyFor: aShip.
-        penalty decreaseTurns.
-        penalty hasPenalty ifFalse: [ penalizedShips remove: penalty ].
-        (self lapTrackerFor: aShip) penalized: penalty hasPenalty.
-
-	aShip restoreFuel.
+        aShip reducePenalty.
+        (self lapTrackerFor: aShip) penalized: aShip isPenalized.
+        aShip restoreFuel.
 
 ]
 

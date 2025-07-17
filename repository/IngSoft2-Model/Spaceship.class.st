@@ -1,15 +1,16 @@
 Class {
 	#name : 'Spaceship',
 	#superclass : 'Object',
-	#instVars : [
-		'position',
-		'playerName',
-		'maxFuel',
-		'fuel',
-		'lap',
-		'cards',
-		'activeCards'
-	],
+        #instVars : [
+                'position',
+                'playerName',
+                'maxFuel',
+                'fuel',
+                'lap',
+                'cards',
+                'activeCards',
+                'state'
+        ],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
@@ -71,9 +72,10 @@ Spaceship >> initializeWith: aName [
 	position := 0.
 	fuel := 0.
 	maxFuel := 0.
-	lap := 0.
-	cards := OrderedCollection new.
-	activeCards := OrderedCollection new
+        lap := 0.
+        cards := OrderedCollection new.
+        activeCards := OrderedCollection new.
+        state := NormalShipState new
 ]
 
 { #category : 'initialize' }
@@ -134,4 +136,34 @@ Spaceship >> removeCard: aCard [
 Spaceship >> restoreFuel [
 
         fuel := maxFuel.
+]
+
+{ #category : 'state' }
+Spaceship >> isPenalized [
+    ^ state isPenalized.
+]
+
+{ #category : 'state' }
+Spaceship >> penalizeFor: aNumber [
+    state := state penalizeFor: aNumber.
+]
+
+{ #category : 'state' }
+Spaceship >> reducePenalty [
+    state := state reducePenalty.
+]
+
+{ #category : 'state' }
+Spaceship >> penaltyTurnsRemaining [
+    ^ state turnsRemaining.
+]
+
+{ #category : 'state' }
+Spaceship >> state [
+    ^ state.
+]
+
+{ #category : 'state' }
+Spaceship >> state: aState [
+    state := aState.
 ]

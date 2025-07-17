@@ -28,7 +28,7 @@ InstantCardTest >> testPlayOnInvokesApplyEffect [
     board := Board of: 5 andWormholeAt: #().
     dice := DiceCup with: { Die withSides: 1 }.
     game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
-    card := MockInstantCard new.
+    card := AdvanceCard new.
     card playOn: ship1 inGame: game.
-    self assert: card applied.
+    self assert: ship1 position equals: 1.
 ]

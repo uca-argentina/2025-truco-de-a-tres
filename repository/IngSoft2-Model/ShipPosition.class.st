@@ -35,3 +35,13 @@ ShipPosition >> position [
 ShipPosition >> ship [
     ^ ship
 ]
+
+{ #category : 'testing' }
+ShipPosition >> isGreaterThan: anotherShipPosition [
+    ^ position > anotherShipPosition position
+]
+
+{ #category : 'testing' }
+ShipPosition >> isLessThan: anotherShipPosition [
+    ^ position < anotherShipPosition position
+]
