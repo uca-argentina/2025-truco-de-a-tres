@@ -441,7 +441,7 @@ GameTest >> testPenaltyShipReturnsPenalizedShipsCollection [
     game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
     game penalize: ship1 forTurns: 1.
     self assert: (game penaltyShip size) equals: 1.
-    self assert: ((game penaltyShip first ship) == ship1).
+    self assert: (game penaltyShip first == ship1).
 ]
 
 { #category : 'tests' }
