@@ -36,7 +36,7 @@ Board class >> of: anAmountOfCells length: parsecLength andWormholeAt: positions
 { #category : 'initialize' }
 Board class >> of: anAmountOfCells length: parsecLength lengthLightYears: lightYears andWormholeAt: positions [
     (parsecLength notNil and: [ lightYears notNil ]) ifTrue: [
-        (parsecLength = (lightYears / 3)) ifFalse: [
+        ((Distance parsecs: parsecLength) asLightYears = lightYears) ifFalse: [
             self error: 'Length mismatch between parsecs and light years'.
         ].
     ].
@@ -52,7 +52,7 @@ Board class >> of: anAmountOfCells lengthLightYears: lightYears andWormholeAt: p
 
     ^ self
         of: anAmountOfCells
-        length: (lightYears / 3)
+        length: (Distance lightYears: lightYears) asParsecs
         andWormholeAt: positions.
 ]
 
@@ -202,8 +202,7 @@ Board >> stepsFromDistance: aDistance [
 { #category : 'initialize' }
 Board >> stepsFromLightYears: someLightYears [
     "Convert a distance expressed in light years to board steps"
-
-    ^ self stepsFromParsecs: (someLightYears / 3)
+    ^ self stepsFromParsecs: (Distance lightYears: someLightYears) asParsecs
 ]
 
 { #category : 'initialize' }
