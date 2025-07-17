@@ -11,12 +11,28 @@ Class {
 
 { #category : 'instance creation' }
 Distance class >> lightYears: aNumber [
-    ^ self new initializeWith: aNumber unit: LightYear new
+
+	self
+		validatePositiveNumber: aNumber
+		errorMessage: 'Light year value must be a positive number.'.
+	^ self new initializeWith: aNumber unit: LightYear new
 ]
 
 { #category : 'instance creation' }
 Distance class >> parsecs: aNumber [
-    ^ self new initializeWith: aNumber unit: Parsec new
+
+	self
+		validatePositiveNumber: aNumber
+		errorMessage: 'Parsec value must be a positive number.'.
+	^ self new initializeWith: aNumber unit: Parsec new
+]
+
+{ #category : 'instance creation' }
+Distance class >> validatePositiveNumber: aNumber errorMessage: aMessage [
+    (aNumber isNumber and: [ aNumber > 0 ]) ifFalse: [
+        self error: aMessage
+    ].
+
 ]
 
 { #category : 'accessing' }
