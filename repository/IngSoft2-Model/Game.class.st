@@ -22,10 +22,21 @@ Class {
 }
 
 { #category : 'initialize' }
+Game class >> minimunShipValidation: someShips [
+
+	someShips size < 2 ifTrue: [
+		self error: 'Need 2 space ships or more to initialize the game' ]
+]
+
+{ #category : 'initialize' }
 Game class >> startWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps [
 
-	GameValidator validateMinimumSpaceShips: someShips.
-	^ self new initializeWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps.
+	self minimunShipValidation: someShips.
+	^ self new
+		  initializeWithShips: someShips
+		  board: aBoard
+		  dice: someDices
+		  laps: aNumberLaps
 ]
 
 { #category : 'process actions' }
@@ -221,9 +232,6 @@ Game >> penaltyShip [
 { #category : 'process actions' }
 Game >> playTurn [
 
-	GameValidator new
-		validateIsCurrentPlayer: self currentShip
-		forGame: self.
 	self ensureGameIsNotOver.
 
 	self handlePenaltyOrPassIfNeeded ifTrue: [ ^ self ].
@@ -354,6 +362,13 @@ Game >> statusFor: aShip [
         status position: (board positionOf: aShip).
         status penalized: (self isPenalized: aShip).
         ^ status
+]
+
+{ #category : 'validation' }
+Game >> validateIsCurrentPlayer: aSpaceship [
+
+	self currentShip = aSpaceship ifFalse: [
+		self error: 'It is not the turn of this spaceship' ]
 ]
 
 { #category : 'process actions' }
