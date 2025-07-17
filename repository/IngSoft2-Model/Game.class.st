@@ -32,11 +32,45 @@ Game class >> minimunShipValidation: someShips [
 Game class >> startWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps [
 
 	self minimunShipValidation: someShips.
+	self validateShips: someShips.
+	self validateBoard: aBoard.
+	self validateDice: someDices.
+	self validateLaps: aNumberLaps.
+
 	^ self new
 		  initializeWithShips: someShips
 		  board: aBoard
 		  dice: someDices
 		  laps: aNumberLaps
+]
+
+{ #category : 'initialize' }
+Game class >> validateBoard: aBoard [
+
+	(aBoard isKindOf: Board) ifFalse: [
+		self error: 'Board must be an instance of Board' ]
+]
+
+{ #category : 'initialize' }
+Game class >> validateDice: someDices [
+
+	(someDices isKindOf: DiceCup) ifFalse: [
+		self error: 'Dice must be an instance of DiceCup' ]
+]
+
+{ #category : 'initialize' }
+Game class >> validateLaps: aNumberLaps [
+
+	(aNumberLaps isInteger and: [ aNumberLaps > 0 ]) ifFalse: [
+		self error: 'Laps must be a positive integer' ]
+]
+
+{ #category : 'initialize' }
+Game class >> validateShips: someShips [
+    
+    (someShips isCollection and: [
+        someShips allSatisfy: [:each | each isKindOf: Spaceship]]) 
+    ifFalse: [self error: 'Ships must be a collection of Spaceship instances'].
 ]
 
 { #category : 'process actions' }

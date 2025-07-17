@@ -1207,7 +1207,56 @@ GameTest >> testWhenGameCorrectlyCreatedThenNotNil [
 { #category : 'tests' }
 GameTest >> testWhenGameCreatedWithInvalidBoardThenIsInvalid [
 
-	| spaceShip1 spaceShip2 spaceShipsGame dice1 dice2 dicesGame |
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dice2 dicesGame invalidBoard |
+	dice1 := Die withSides: 1.
+	dice2 := Die withSides: 6.
+	dicesGame := DiceCup with:
+		             (OrderedCollection with: dice1 with: dice2).
+
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
+	spaceShip2 := Spaceship withName: 'Ship Num2'.
+	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
+
+	invalidBoard := 'NotABoard'. 
+
+	self
+		should: [
+			Game
+				startWithShips: spaceShipsGame
+				board: invalidBoard
+				dice: dicesGame
+				laps: 1 ]
+		raise: Error
+		withMessageText: 'Board must be an instance of Board'
+]
+
+{ #category : 'tests' }
+GameTest >> testWhenGameCreatedWithInvalidDiceThenIsInvalid [
+
+	| spaceShip1 spaceShip2 spaceShipsGame invalidDice boardGame |
+	spaceShip1 := Spaceship withName: 'Ship Num1'.
+	spaceShip2 := Spaceship withName: 'Ship Num2'.
+	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
+
+	boardGame := Board of: 10 andWormholeAt: #(  ).
+	invalidDice := 'NotADiceCup'.
+
+	self
+		should: [
+			Game
+				startWithShips: spaceShipsGame
+				board: boardGame
+				dice: invalidDice
+				laps: 1 ]
+		raise: Error
+		withMessageText: 'Dice must be an instance of DiceCup'
+]
+
+{ #category : 'tests' }
+GameTest >> testWhenGameCreatedWithInvalidLapsThenIsInvalid [
+	
+	| spaceShip1 spaceShip2 spaceShipsGame dice1 dice2 dicesGame boardGame invalidLaps |
+	
 	dice1 := Die withSides: 1.
 	dice2 := Die withSides: 6.
 	dicesGame := DiceCup with: (OrderedCollection with: dice1 with: dice2).
@@ -1216,19 +1265,43 @@ GameTest >> testWhenGameCreatedWithInvalidBoardThenIsInvalid [
 	spaceShip2 := Spaceship withName: 'Ship Num2'.
 	spaceShipsGame := OrderedCollection with: spaceShip1 with: spaceShip2.
 
+	boardGame := Board of: 10 andWormholeAt: #().
+	invalidLaps := -1.
+	
 	self
 		should: [
-			| boardGame |
-
-			boardGame := Board of: 0 andWormholeAt: #(  ).
-
 			Game
 				startWithShips: spaceShipsGame
 				board: boardGame
-				dice: dicesGame 
-				laps: 1]
+				dice: dicesGame
+				laps: invalidLaps ]
 		raise: Error
-		withMessageText: 'Board must have a positive number of cells'.
+		withMessageText: 'Laps must be a positive integer'.
+]
+
+{ #category : 'tests' }
+GameTest >> testWhenGameCreatedWithInvalidShipsThenIsInvalid [
+
+	| invalidShips dice1 dice2 dicesGame boardGame |
+	dice1 := Die withSides: 1.
+	dice2 := Die withSides: 6.
+	dicesGame := DiceCup with:
+		             (OrderedCollection with: dice1 with: dice2).
+
+	invalidShips := OrderedCollection with: 'NotAShip'.
+	invalidShips add: 'ThisOneIsNotAShipEither'.
+
+	boardGame := Board of: 10 andWormholeAt: #(  ).
+
+	self
+		should: [
+			Game
+				startWithShips: invalidShips
+				board: boardGame
+				dice: dicesGame
+				laps: 1 ]
+		raise: Error
+		withMessageText: 'Ships must be a collection of Spaceship instances'
 ]
 
 { #category : 'tests' }
