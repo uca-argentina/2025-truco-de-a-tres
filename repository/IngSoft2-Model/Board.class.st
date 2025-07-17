@@ -113,7 +113,12 @@ Board >> cells [
 
 { #category : 'moves' }
 Board >> determineNewPositionFrom: aPosition after: steps [
-    ^ self applyWormholeIfPresentAt: (aPosition + steps).
+    "Return the new position on the board wrapping around when the end is
+    reached. Wormholes are still applied on the resulting cell"
+
+    ^ self
+        applyWormholeIfPresentAt:
+            ((aPosition + steps) \\ cellCount).
 ]
 
 { #category : 'initialize' }
