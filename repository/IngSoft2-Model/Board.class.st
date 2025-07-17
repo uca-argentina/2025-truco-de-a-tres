@@ -29,7 +29,9 @@ Board class >> of: anAmountOfCells length: parsecLength andWormholeAt: positions
     self validateWormholes: positions.
     ^ self new
         initializeWithCells: anAmountOfCells
-        length: parsecLength
+        length: ((parsecLength isKindOf: Distance)
+            ifTrue: [ parsecLength asParsecs ]
+            ifFalse: [ parsecLength ])
         andWormholes: positions.
 ]
 
