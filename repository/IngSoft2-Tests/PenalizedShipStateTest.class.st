@@ -1,8 +1,8 @@
 Class {
-        #name : 'PenalizedShipStateTest',
-        #superclass : 'TestCase',
-        #category : 'IngSoft2-Tests',
-        #package : 'IngSoft2-Tests'
+	#name : 'PenalizedShipStateTest',
+	#superclass : 'TestCase',
+	#category : 'IngSoft2-Tests',
+	#package : 'IngSoft2-Tests'
 }
 
 { #category : 'tests' }
@@ -40,17 +40,6 @@ PenalizedShipStateTest >> testInitializationWithoutPenalty [
 ]
 
 { #category : 'tests' }
-PenalizedShipStateTest >> testReducePenaltyTransitionsToNormalState [
-
-    | penalized newState |
-
-    penalized := PenalizedShipState forTurns: 1.
-    newState := penalized reducePenalty.
-
-    self assert: newState class equals: NormalShipState.
-]
-
-{ #category : 'tests' }
 PenalizedShipStateTest >> testPenalizeForSetsTurns [
 
     | penalized |
@@ -59,6 +48,17 @@ PenalizedShipStateTest >> testPenalizeForSetsTurns [
     penalized penalizeFor: 5.
 
     self assert: penalized turnsRemaining equals: 5.
+]
+
+{ #category : 'tests' }
+PenalizedShipStateTest >> testReducePenaltyTransitionsToNormalState [
+
+    | penalized newState |
+
+    penalized := PenalizedShipState forTurns: 1.
+    newState := penalized reducePenalty.
+
+    self assert: newState class equals: NormalShipState.
 ]
 
 { #category : 'tests' }

@@ -124,6 +124,13 @@ Board >> determineNewPositionFrom: aPosition after: steps [
     ^ self applyWormholeIfPresentAt: (aPosition + steps).
 ]
 
+{ #category : 'deck' }
+Board >> drawCard [
+    "Return a random card from the deck"
+
+    ^ CardDeck randomCard
+]
+
 { #category : 'initialize' }
 Board >> effectAt: aPosition [
     ^ cells at: aPosition ifAbsent: [ NoEffect new ]
@@ -195,13 +202,6 @@ Board >> randomEffect [
 
 ]
 
-{ #category : 'deck' }
-Board >> drawCard [
-    "Return a random card from the deck"
-
-    ^ CardDeck randomCard
-]
-
 { #category : 'spaceships' }
 Board >> registerShips: someShips [
     positionManager := PositionManager forShips: someShips.
@@ -224,4 +224,9 @@ Board >> stepsFromParsecs: someParsecs [
     | ratio |
     ratio := someParsecs / totalLengthInParsecs.
     ^ (ratio * cellCount) rounded.
+]
+
+{ #category : 'accessing' }
+Board >> totalLengthInParsecs [
+    ^ totalLengthInParsecs
 ]

@@ -1,14 +1,9 @@
 Class {
-    #name : 'NormalShipState',
-    #superclass : 'ShipState',
-    #category : 'IngSoft2-Model',
-    #package : 'IngSoft2-Model'
+	#name : 'NormalShipState',
+	#superclass : 'ShipState',
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
-
-{ #category : 'enumerating' }
-NormalShipState >> whenPenalizedDo: penalizedBlock whenNormalDo: normalBlock [
-    ^ normalBlock value.
-]
 
 { #category : 'penalty' }
 NormalShipState >> isPenalized [
@@ -28,4 +23,9 @@ NormalShipState >> reducePenalty [
 { #category : 'penalty' }
 NormalShipState >> turnsRemaining [
     ^ 0.
+]
+
+{ #category : 'enumerating' }
+NormalShipState >> whenPenalizedDo: penalizedBlock whenNormalDo: normalBlock [
+    ^ normalBlock value.
 ]

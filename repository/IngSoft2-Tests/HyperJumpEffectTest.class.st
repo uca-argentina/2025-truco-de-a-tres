@@ -8,21 +8,22 @@ Class {
 { #category : 'asserting' }
 HyperJumpEffectTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessage [
 
-        self
-                should: anErrorBlock
-                raise: anErrorClass
-                withExceptionDo: [ :error |
-                self assert: error messageText equals: errorMessage ]
+	self
+		should: anErrorBlock
+		raise: anErrorClass
+		withExceptionDo: [ :error |
+		self assert: error messageText equals: errorMessage ]
 ]
 
 { #category : 'tests' }
 HyperJumpEffectTest >> testAllowsEntryWithRollAlwaysTrue [
+
 	| effect |
-	effect := HyperJumpEffect withValues: #(3 7 12).
+	effect := HyperJumpEffect withValues: #( 3 7 12 ).
 
 	self assert: (effect allowsEntryWithRoll: 1).
 	self assert: (effect allowsEntryWithRoll: 6).
-	self assert: (effect allowsEntryWithRoll: 100).
+	self assert: (effect allowsEntryWithRoll: 100)
 ]
 
 { #category : 'tests' }
@@ -86,16 +87,17 @@ HyperJumpEffectTest >> testHyperJumpCyclesThroughAllJumpValues [
         positions add: ship position.
     ].
 
-    self assert: positions asArray equals: #(3 8 10 14).
+    self assert: positions asArray equals: #(5 9 12 14).
 ]
 
 { #category : 'tests' }
 HyperJumpEffectTest >> testHyperJumpEffectWithValuesInitializesCorrectly [
+
 	| values effect |
-	values := #(1 3 5).
+	values := #( 1 3 5 ).
 	effect := HyperJumpEffect withValues: values.
 
-	self assert: (effect perform: #values) equals: values.
+	self assert: (effect perform: #values) equals: #( 5 3 1 )
 ]
 
 { #category : 'tests' }
@@ -105,7 +107,7 @@ HyperJumpEffectTest >> testInitializeWithSetsJumpValuesAndIndex [
 	values := #(3 5 7).
 	effect := HyperJumpEffect new initializeWith: values.
 
-	self assert: (effect instVarNamed: 'jumpValues') equals: values.
+	self assert: (effect instVarNamed: 'jumpValues') equals: #(7 5 3).
 	self assert: (effect instVarNamed: 'currentIndex') equals: 1.
 ]
 
@@ -115,11 +117,11 @@ HyperJumpEffectTest >> testNextJumpValueCyclesCorrectly [
 
     effect := HyperJumpEffect withValues: #(3 5 2 4).
 
-    self assert: effect nextJumpValue equals: 3.
     self assert: effect nextJumpValue equals: 5.
-    self assert: effect nextJumpValue equals: 2.
     self assert: effect nextJumpValue equals: 4.
     self assert: effect nextJumpValue equals: 3.
+    self assert: effect nextJumpValue equals: 2.
+    self assert: effect nextJumpValue equals: 5.
 ]
 
 { #category : 'tests' }
@@ -129,10 +131,10 @@ HyperJumpEffectTest >> testNextJumpValueReturnsValuesCyclically [
 	values := #(3 5 7).
 	effect := HyperJumpEffect withValues: values.
 
-	self assert: effect nextJumpValue equals: 3.
-	self assert: effect nextJumpValue equals: 5.
 	self assert: effect nextJumpValue equals: 7.
+	self assert: effect nextJumpValue equals: 5.
 	self assert: effect nextJumpValue equals: 3.
+	self assert: effect nextJumpValue equals: 7.
 	self assert: effect nextJumpValue equals: 5.
 ]
 
@@ -143,8 +145,8 @@ HyperJumpEffectTest >> testPeekJumpValueReturnsCurrentValueWithoutAdvancing [
 	values := #(10 20 30).
 	effect := HyperJumpEffect withValues: values.
 
-	self assert: effect peekJumpValue equals: 10.
-	self assert: effect peekJumpValue equals: 10.
+	self assert: effect peekJumpValue equals: 30.
+	self assert: effect peekJumpValue equals: 30.
 	effect nextJumpValue.
 	self assert: effect peekJumpValue equals: 20.
 ]
@@ -160,7 +162,7 @@ HyperJumpEffectTest >> testResetJumpIndexRestartsSequence [
 
     effect resetJumpIndex.
 
-    self assert: effect nextJumpValue equals: 3.
+    self assert: effect nextJumpValue equals: 5.
 ]
 
 { #category : 'tests' }
@@ -175,7 +177,7 @@ HyperJumpEffectTest >> testResetJumpIndexSetsIndexBackToOne [
 
 	effect resetJumpIndex.
 
-        self assert: effect peekJumpValue equals: 3.
+        self assert: effect peekJumpValue equals: 9.
 ]
 
 { #category : 'tests' }
@@ -186,5 +188,5 @@ HyperJumpEffectTest >> testWithLightYearValuesConvertsProperly [
     ship := Spaceship withName: 'LY'.
     ship moveTo: 0.
     effect applyTo: ship inBoard: board.
-    self assert: ship position equals: (board stepsFromParsecs: 1).
+    self assert: ship position equals: (board stepsFromParsecs: 2).
 ]

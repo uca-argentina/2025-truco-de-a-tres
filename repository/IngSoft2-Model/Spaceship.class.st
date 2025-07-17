@@ -1,16 +1,16 @@
 Class {
 	#name : 'Spaceship',
 	#superclass : 'Object',
-        #instVars : [
-                'position',
-                'playerName',
-                'maxFuel',
-                'fuel',
-                'lap',
-                'cards',
-                'activeCards',
-                'state'
-        ],
+	#instVars : [
+		'position',
+		'playerName',
+		'maxFuel',
+		'fuel',
+		'lap',
+		'cards',
+		'activeCards',
+		'state'
+	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
@@ -78,6 +78,11 @@ Spaceship >> initializeWith: aName [
         state := NormalShipState new
 ]
 
+{ #category : 'state' }
+Spaceship >> isPenalized [
+    ^ state isPenalized.
+]
+
 { #category : 'initialize' }
 Spaceship >> lap [
 
@@ -111,6 +116,16 @@ Spaceship >> name [
     ^ playerName.
 ]
 
+{ #category : 'state' }
+Spaceship >> penalizeFor: aNumber [
+    state := state penalizeFor: aNumber.
+]
+
+{ #category : 'state' }
+Spaceship >> penaltyTurnsRemaining [
+    ^ state turnsRemaining.
+]
+
 { #category : 'cards' }
 Spaceship >> playCard: aCard inGame: aGame [
 
@@ -127,6 +142,11 @@ Spaceship >> position [
     ^ position.
 ]
 
+{ #category : 'state' }
+Spaceship >> reducePenalty [
+    state := state reducePenalty.
+]
+
 { #category : 'cards' }
 Spaceship >> removeCard: aCard [
 	cards remove: aCard ifAbsent: [ ].
@@ -136,26 +156,6 @@ Spaceship >> removeCard: aCard [
 Spaceship >> restoreFuel [
 
         fuel := maxFuel.
-]
-
-{ #category : 'state' }
-Spaceship >> isPenalized [
-    ^ state isPenalized.
-]
-
-{ #category : 'state' }
-Spaceship >> penalizeFor: aNumber [
-    state := state penalizeFor: aNumber.
-]
-
-{ #category : 'state' }
-Spaceship >> reducePenalty [
-    state := state reducePenalty.
-]
-
-{ #category : 'state' }
-Spaceship >> penaltyTurnsRemaining [
-    ^ state turnsRemaining.
 ]
 
 { #category : 'state' }
