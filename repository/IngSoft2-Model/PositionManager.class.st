@@ -10,7 +10,19 @@ Class {
 
 { #category : 'initialization' }
 PositionManager class >> forShips: someShips [
-    ^ self new initializeForShips: someShips
+
+	self validateShips: someShips.
+
+	^ self new initializeForShips: someShips
+]
+
+{ #category : 'initialization' }
+PositionManager class >> validateShips: someShips [
+
+	(someShips isCollection and: [
+		 someShips allSatisfy: [ :each | each isKindOf: Spaceship ] ])
+		ifFalse: [
+		self error: 'Ships must be a collection of Spaceship instances' ]
 ]
 
 { #category : 'initialization' }

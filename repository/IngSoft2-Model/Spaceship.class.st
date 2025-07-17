@@ -15,10 +15,16 @@ Class {
 }
 
 { #category : 'initialize' }
-Spaceship class >> withName: aName [
+Spaceship class >> validatingName: aName [
 	
 	aName isEmpty ifTrue: [ self error: 'A name cannot be empty' ].
-	^ self new initializeWith: aName.
+]
+
+{ #category : 'initialize' }
+Spaceship class >> withName: aName [
+
+	self validatingName: aName.
+	^ self new initializeWith: aName
 ]
 
 { #category : 'methods' }
