@@ -16,7 +16,8 @@ Class {
 
 { #category : 'initialize' }
 Spaceship class >> withName: aName [
-
+	
+	aName isEmpty ifTrue: [ self error: 'A name cannot be empty' ].
 	^ self new initializeWith: aName.
 ]
 
@@ -60,15 +61,13 @@ Spaceship >> increaseMaxFuelBy: anAmount [
 { #category : 'initialize' }
 Spaceship >> initializeWith: aName [
 
-	aName isEmpty ifTrue: [ self error: 'Name cannot be empty' ].
-
 	playerName := aName.
 	position := 0.
 	fuel := 0.
-  	maxFuel := 0.
+	maxFuel := 0.
 	lap := 0.
 	cards := OrderedCollection new.
-   activeCards := OrderedCollection new.
+	activeCards := OrderedCollection new
 ]
 
 { #category : 'initialize' }
