@@ -185,7 +185,7 @@ Game >> initializeWithShips: someShips board: aBoard dice: someDices laps: aNumb
         shipStatuses := Dictionary new.
        spaceShips do: [ :ship |
                 shipStatuses at: ship put: (ShipStatus for: ship position: 0 laps: 0 penalized: false).
-                2 timesRepeat: [ ship addCard: CardDeck randomCard ] ].
+                2 timesRepeat: [ ship addCard: (board drawCard) ] ].
         state := GameInProgress new.
 	
 	lastSteps := 0.
