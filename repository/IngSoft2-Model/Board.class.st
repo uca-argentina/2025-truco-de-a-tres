@@ -184,13 +184,20 @@ Board >> positionOf: aShip [
 
 { #category : 'initialize' }
 Board >> randomEffect [
-	| r |
+        | r |
     r := (1 to: 100) atRandom.
     r <= 10 ifTrue: [ ^ CardEffect new ].
     r <= 48 ifTrue: [ ^ NoEffect new ].
     r <= 74 ifTrue: [ ^ BlackHoleEffect new ].
-	^ HyperGravityEffect new.
+        ^ HyperGravityEffect new.
 
+]
+
+{ #category : 'deck' }
+Board >> drawCard [
+    "Return a random card from the deck"
+
+    ^ CardDeck randomCard
 ]
 
 { #category : 'spaceships' }
