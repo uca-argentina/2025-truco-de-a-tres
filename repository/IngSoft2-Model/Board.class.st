@@ -35,15 +35,20 @@ Board class >> of: anAmountOfCells length: parsecLength andWormholeAt: positions
 
 { #category : 'initialize' }
 Board class >> of: anAmountOfCells length: parsecLength lengthLightYears: lightYears andWormholeAt: positions [
-    (parsecLength notNil and: [ lightYears notNil ]) ifTrue: [
-        ((Distance parsecs: parsecLength) asLightYears = lightYears) ifFalse: [
-            self error: 'Length mismatch between parsecs and light years'.
-        ].
-    ].
-    parsecLength isNil ifTrue: [
-        ^ self of: anAmountOfCells lengthLightYears: lightYears andWormholeAt: positions
-    ].
-    ^ self of: anAmountOfCells length: parsecLength andWormholeAt: positions
+
+	(parsecLength notNil and: [ lightYears notNil ]) ifTrue: [
+		(Distance parsecs: parsecLength) asLightYears = lightYears ifFalse: [
+			self error: 'Length mismatch between parsecs and light years' ] ].
+	parsecLength ifNil: [
+		^ self
+			  of: anAmountOfCells
+			  lengthLightYears: lightYears
+			  andWormholeAt: positions ].
+
+	^ self
+		  of: anAmountOfCells
+		  length: parsecLength
+		  andWormholeAt: positions
 ]
 
 { #category : 'initialize' }
