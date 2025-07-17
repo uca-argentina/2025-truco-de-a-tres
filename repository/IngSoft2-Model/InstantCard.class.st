@@ -7,6 +7,7 @@ Class {
 
 { #category : 'playing' }
 InstantCard >> applyEffectTo: aShip inGame: aGame [
+
 	self subclassResponsibility
 ]
 
