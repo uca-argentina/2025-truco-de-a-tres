@@ -2,6 +2,8 @@ Class {
 	#name : 'Wormhole',
 	#superclass : 'Object',
 	#instVars : [
+		'positionA',
+		'positionB',
 		'entry',
 		'exit'
 	],

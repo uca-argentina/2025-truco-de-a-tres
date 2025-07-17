@@ -9,6 +9,7 @@ Class {
 		'turnManager',
 		'wantsToPassTurn',
 		'penalizedShips',
+		'lappedShips',
 		'totalLaps',
 		'state',
 		'lastSteps',
@@ -201,6 +202,8 @@ Game >> penalize: aShip forTurns: turns [
         ifNil: [ penalizedShips add: (PenalizedShip for: aShip withTurns: turns) ]
         ifNotNil: [ existing turnsRemaining: turns ].
     (self lapTrackerFor: aShip) penalized: true.
+
+
 ]
 
 { #category : 'testing' }
@@ -210,7 +213,8 @@ Game >> penalizedTurnsRemainingFor: aShip [
 ]
 
 { #category : 'accessing' }
-Game >> penalties [
+Game >> penaltyShip [
+
     ^ penalizedShips
 ]
 
@@ -239,8 +243,10 @@ Game >> playTurn [
 { #category : 'process actions' }
 Game >> playUntilFinish [
 
-    [ self whenFinishedDo: [ false ] whenInProgressDo: [ true ] ]
+	self whenFinishedDo: [ :aWinner | ] whenInProgressDo: [
+    [ self whenFinishedDo: [ :aWinner | false ] whenInProgressDo: [ true ] ]
         whileTrue: [ self playTurn ].
+].
 ]
 
 { #category : 'process actions' }

@@ -5,6 +5,7 @@ Class {
 		'cellCount',
 		'wormholes',
 		'cells',
+		'effects',
 		'totalLengthInParsecs',
 		'positionManager'
 	],

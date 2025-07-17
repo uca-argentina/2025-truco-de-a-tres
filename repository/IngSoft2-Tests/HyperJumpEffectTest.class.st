@@ -95,7 +95,7 @@ HyperJumpEffectTest >> testHyperJumpEffectWithValuesInitializesCorrectly [
 	values := #(1 3 5).
 	effect := HyperJumpEffect withValues: values.
 
-        self assert: effect jumpValues equals: values.
+	self assert: (effect perform: #values) equals: values.
 ]
 
 { #category : 'tests' }

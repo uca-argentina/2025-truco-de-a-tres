@@ -3,7 +3,12 @@ Class {
 	#superclass : 'EffectDecorator',
 	#instVars : [
 		'jumpValues',
-		'currentIndex'
+		'currentIndex',
+		'values'
+	],
+	#classVars : [
+		'CurrentIndex',
+		'JumpValues'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -56,11 +61,6 @@ HyperJumpEffect >> initializeWith: aCollection [
     currentIndex := 1.
 ]
 
-{ #category : 'accessing' }
-HyperJumpEffect >> jumpValues [
-    ^ jumpValues
-]
-
 { #category : 'operations' }
 HyperJumpEffect >> nextJumpValue [
 
@@ -81,5 +81,10 @@ HyperJumpEffect >> peekJumpValue [
 { #category : 'operations' }
 HyperJumpEffect >> resetJumpIndex [
 
-        currentIndex := 1.
+	currentIndex := 1.
+]
+
+{ #category : 'operations' }
+HyperJumpEffect >> values [
+	^ jumpValues
 ]
