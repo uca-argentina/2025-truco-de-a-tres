@@ -9,13 +9,18 @@ Class {
 }
 
 { #category : 'initialize' }
-Die class >> withSides: aNumberOfSides [
+Die class >> validateMinimumSides: aNumberOfSides [
 
 	(aNumberOfSides isInteger and: [ aNumberOfSides >= 1 ]) ifFalse: [
-		self error: 'Die must have at least one side.'.
-	].
+		self error: 'Die must have at least one side.' ]
+]
 
-	^ self new initializeWithSides: aNumberOfSides.
+{ #category : 'initialize' }
+Die class >> withSides: aNumberOfSides [
+
+	self validateMinimumSides: aNumberOfSides.
+
+	^ self new initializeWithSides: aNumberOfSides
 ]
 
 { #category : 'initialize' }

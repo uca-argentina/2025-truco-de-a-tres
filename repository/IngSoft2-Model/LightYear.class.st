@@ -1,8 +1,8 @@
 Class {
-    #name : 'LightYear',
-    #superclass : 'DistanceUnit',
-    #category : 'IngSoft2-Model',
-    #package : 'IngSoft2-Model'
+	#name : 'LightYear',
+	#superclass : 'DistanceUnit',
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
 { #category : 'conversions' }
