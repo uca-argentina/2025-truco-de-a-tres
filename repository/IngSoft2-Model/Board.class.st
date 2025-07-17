@@ -4,9 +4,9 @@ Class {
 	#instVars : [
 		'cellCount',
 		'wormholes',
-                'cells',
-                'totalLengthInParsecs',
-                'positionManager'
+		'cells',
+		'totalLengthInParsecs',
+		'positionManager'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -113,12 +113,7 @@ Board >> cells [
 
 { #category : 'moves' }
 Board >> determineNewPositionFrom: aPosition after: steps [
-    "Return the new position on the board wrapping around when the end is
-    reached. Wormholes are still applied on the resulting cell"
-
-    ^ self
-        applyWormholeIfPresentAt:
-            ((aPosition + steps) \\ cellCount).
+    ^ self applyWormholeIfPresentAt: (aPosition + steps).
 ]
 
 { #category : 'initialize' }

@@ -2,8 +2,8 @@ Class {
 	#name : 'Wormhole',
 	#superclass : 'Object',
 	#instVars : [
-                'entry',
-                'exit'
+		'entry',
+		'exit'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
