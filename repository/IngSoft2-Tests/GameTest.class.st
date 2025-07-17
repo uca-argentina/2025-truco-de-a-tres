@@ -634,6 +634,51 @@ GameTest >> testRankingReturnsShipsOrderedByLapsAndPosition [
 ]
 
 { #category : 'tests' }
+GameTest >> testRedoLastCardOnReplaysAccelerationCard [
+    | ship1 ship2 board dice game card |
+    ship1 := Spaceship withName: 'A'.
+    ship2 := Spaceship withName: 'B'.
+    board := Board of: 5 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+    card := AccelerationCard new.
+    game lastCardPlayed: card.
+    game redoLastCardOn: ship1.
+    self assert: (ship1 activeCards includes: card).
+]
+
+{ #category : 'tests' }
+GameTest >> testRedoLastCardOnReplaysAllyCard [
+    | ship1 ship2 board dice game card |
+    ship1 := Spaceship withName: 'A'.
+    ship2 := Spaceship withName: 'B'.
+    board := Board of: 5 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+    card := AllyCard withAlly: ship2.
+    game lastCardPlayed: card.
+    game redoLastCardOn: ship1.
+    self assert: (ship1 activeCards includes: card).
+    self assert: (ship2 activeCards includes: card).
+]
+
+{ #category : 'tests' }
+GameTest >> testRedoLastCardOnReplaysCancellationCard [
+    | ship1 ship2 board dice game card target |
+    ship1 := Spaceship withName: 'A'.
+    ship2 := Spaceship withName: 'B'.
+    board := Board of: 5 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+    target := ShieldCard new.
+    ship1 addActiveCard: target.
+    card := CancellationCard cancelling: target.
+    game lastCardPlayed: card.
+    game redoLastCardOn: ship1.
+    self deny: (ship1 activeCards includes: target).
+]
+
+{ #category : 'tests' }
 GameTest >> testRedoLastCardOnReplaysCard [
     | ship1 ship2 board dice game card |
     ship1 := Spaceship withName: 'A'.
@@ -645,6 +690,48 @@ GameTest >> testRedoLastCardOnReplaysCard [
     game lastCardPlayed: card.
     game redoLastCardOn: ship1.
     self assert: ship1 position equals: 1.
+]
+
+{ #category : 'tests' }
+GameTest >> testRedoLastCardOnReplaysOverloadCard [
+    | ship1 ship2 board dice game card |
+    ship1 := Spaceship withName: 'A'.
+    ship2 := Spaceship withName: 'B'.
+    board := Board of: 5 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+    card := OverloadCard forShip: ship1.
+    game lastCardPlayed: card.
+    game redoLastCardOn: ship1.
+    self assert: (ship1 activeCards includes: card).
+]
+
+{ #category : 'tests' }
+GameTest >> testRedoLastCardOnReplaysRepeatCard [
+    | ship1 ship2 board dice game card |
+    ship1 := Spaceship withName: 'A'.
+    ship2 := Spaceship withName: 'B'.
+    board := Board of: 5 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+    card := RepeatCard new.
+    game lastCardPlayed: card.
+    game redoLastCardOn: ship1.
+    self assert: ship1 position equals: 0.
+]
+
+{ #category : 'tests' }
+GameTest >> testRedoLastCardOnReplaysShieldCard [
+    | ship1 ship2 board dice game card |
+    ship1 := Spaceship withName: 'A'.
+    ship2 := Spaceship withName: 'B'.
+    board := Board of: 5 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+    card := ShieldCard new.
+    game lastCardPlayed: card.
+    game redoLastCardOn: ship1.
+    self assert: (ship1 activeCards includes: card).
 ]
 
 { #category : 'accessing' }

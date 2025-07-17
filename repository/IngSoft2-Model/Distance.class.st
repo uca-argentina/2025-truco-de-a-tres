@@ -11,30 +11,28 @@ Class {
 
 { #category : 'instance creation' }
 Distance class >> lightYears: aNumber [
-    ^ self new initializeWith: aNumber unit: #lightYears
+    ^ self new initializeWith: aNumber unit: LightYear new
 ]
 
 { #category : 'instance creation' }
 Distance class >> parsecs: aNumber [
-    ^ self new initializeWith: aNumber unit: #parsecs
+    ^ self new initializeWith: aNumber unit: Parsec new
 ]
 
 { #category : 'accessing' }
 Distance >> asLightYears [
-    unit = #lightYears ifTrue: [ ^ value ].
-    ^ value * 3
+    ^ unit asLightYears: value
 ]
 
 { #category : 'accessing' }
 Distance >> asParsecs [
-    unit = #parsecs ifTrue: [ ^ value ].
-    ^ value / 3
+    ^ unit asParsecs: value
 ]
 
 { #category : 'initialization' }
-Distance >> initializeWith: aNumber unit: aSymbol [
+Distance >> initializeWith: aNumber unit: aUnit [
     value := aNumber.
-    unit := aSymbol.
+    unit := aUnit.
     ^ self
 ]
 

@@ -36,9 +36,9 @@ DistanceTest >> testAsParsecsFromParsecsReturnsValue [
 { #category : 'tests - instance' }
 DistanceTest >> testInitializationSetsValueAndUnit [
     | distance |
-    distance := Distance new initializeWith: 7 unit: #parsecs.
+    distance := Distance new initializeWith: 7 unit: Parsec new.
     self assert: distance value equals: 7.
-    self assert: distance unit equals: #parsecs.
+    self assert: distance unit class equals: Parsec.
 ]
 
 { #category : 'tests - instance' }
@@ -46,7 +46,7 @@ DistanceTest >> testLightYearsClassMethodCreatesLightYearsDistance [
     | distance |
     distance := Distance lightYears: 3.
     self assert: distance value equals: 3.
-    self assert: distance unit equals: #lightYears.
+    self assert: distance unit class equals: LightYear.
 ]
 
 { #category : 'tests - instance' }
@@ -54,5 +54,5 @@ DistanceTest >> testParsecsClassMethodCreatesParsecsDistance [
     | distance |
     distance := Distance parsecs: 8.
     self assert: distance value equals: 8.
-    self assert: distance unit equals: #parsecs.
+    self assert: distance unit class equals: Parsec.
 ]
