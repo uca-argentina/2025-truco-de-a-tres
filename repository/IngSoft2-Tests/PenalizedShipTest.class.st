@@ -8,11 +8,9 @@ Class {
 { #category : 'tests' }
 PenalizedShipStateTest >> testDecreaseTurn [
 
-    | ship penalized |
+    | penalized |
 
-    ship := Spaceship withName: 'Apollo'.
-
-    penalized := PenalizedShipState for: ship withTurns: 2.
+    penalized := PenalizedShipState forTurns: 2.
     penalized decreaseTurns.
     penalized decreaseTurns.
 
@@ -22,67 +20,62 @@ PenalizedShipStateTest >> testDecreaseTurn [
 { #category : 'tests' }
 PenalizedShipStateTest >> testInitializationWithPenalty [
 
-    | ship penalized |
+    | penalized |
 
-    ship := Spaceship withName: 'Apollo'.
-    penalized := PenalizedShipState for: ship withTurns: 3.
+    penalized := PenalizedShipState forTurns: 3.
 
-    self assert: (penalized isFor: ship).
     self assert: (penalized hasPenalty).
+    self assert: penalized turnsRemaining equals: 3.
 ]
 
 { #category : 'tests' }
 PenalizedShipStateTest >> testInitializationWithoutPenalty [
 
-    | ship penalized |
+    | penalized |
 
-    ship := Spaceship withName: 'Apollo'.
-    penalized := PenalizedShipState noPenaltyFor: ship.
+    penalized := PenalizedShipState forTurns: 0.
 
-    self assert: (penalized isFor: ship).
     self deny: (penalized hasPenalty).
+    self assert: penalized turnsRemaining equals: 0.
 ]
 
 { #category : 'tests' }
-PenalizedShipStateTest >> testIsForReturnsFalseForDifferentShip [
+PenalizedShipStateTest >> testReducePenaltyTransitionsToNormalState [
 
-	| penalized ship1 ship2 |
+    | penalized newState |
 
-    ship1 := Spaceship withName: 'Apollo'.
-    ship2 := Spaceship withName: 'Challenger'.
-    penalized := PenalizedShipState for: ship1 withTurns: 1.
+    penalized := PenalizedShipState forTurns: 1.
+    newState := penalized reducePenalty.
 
-    self deny: (penalized isFor: ship2).
+    self assert: newState class equals: NormalShipState.
 ]
 
 { #category : 'tests' }
-PenalizedShipStateTest >> testShipReference [
+PenalizedShipStateTest >> testPenalizeForSetsTurns [
 
-    | ship penalized |
+    | penalized |
 
-    ship := Spaceship withName: 'Apollo'.
-    penalized := PenalizedShipState for: ship withTurns: 1.
+    penalized := PenalizedShipState forTurns: 1.
+    penalized penalizeFor: 5.
 
-    self assert: penalized ship equals: ship.
+    self assert: penalized turnsRemaining equals: 5.
 ]
 
 { #category : 'tests' }
 PenalizedShipStateTest >> testTurnsRemainingAccessor [
 
-	| penalized ship |
+    | penalized |
 
-    ship := Spaceship withName: 'Apollo'.
-    penalized := PenalizedShipState for: ship withTurns: 3.
+    penalized := PenalizedShipState forTurns: 3.
 
     self assert: penalized turnsRemaining equals: 3.
 ]
 
 { #category : 'tests' }
 PenalizedShipStateTest >> testTurnsRemainingSetter [
-	| penalized ship |
+    | penalized |
 
-    ship := Spaceship withName: 'Apollo'.
-    penalized := PenalizedShipState for: ship withTurns: 1.
+    penalized := PenalizedShipState forTurns: 1.
     penalized turnsRemaining: 5.
 
     self assert: penalized turnsRemaining equals: 5.
