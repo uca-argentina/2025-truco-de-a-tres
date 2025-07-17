@@ -1,8 +1,8 @@
 Class {
-    #name : 'DistanceUnit',
-    #superclass : 'Object',
-    #category : 'IngSoft2-Model',
-    #package : 'IngSoft2-Model'
+	#name : 'DistanceUnit',
+	#superclass : 'Object',
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
 { #category : 'conversions' }

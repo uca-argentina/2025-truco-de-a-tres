@@ -11,9 +11,9 @@ Class {
 { #category : 'validation' }
 DiceCup class >> validateMinimumDice: someDice [
 
-	(someDice isCollection and: [ someDice notEmpty ]) ifFalse: [
-		self error: 'At least one die is required to initialize the game'.
-	].
+	(someDice isCollection and: [
+		 someDice isString not and: someDice notEmpty ]) ifFalse: [
+		self error: 'At least one die is required to initialize the game' ]
 ]
 
 { #category : 'initalize' }

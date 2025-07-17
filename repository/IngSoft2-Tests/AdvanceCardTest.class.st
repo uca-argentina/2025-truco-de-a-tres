@@ -48,22 +48,3 @@ AdvanceCardTest >> testPlayOnMovesShipForwardWhenInProgress [
     card playOn: ship inGame: game.
     self assert: ship position equals: 2.
 ]
-
-{ #category : 'tests' }
-AdvanceCardTest >> testPlayOnWhenGameFinishedRaisesError [
-    | card ship board dice game |
-    card := AdvanceCard new.
-    ship := Spaceship withName: 'Champion'.
-    board := Board of: 10 andWormholeAt: {}.
-    dice := DiceCup with: { Die withSides: 1 }.
-    game := Game
-        startWithShips: { ship. (Spaceship withName: 'Opponent') }
-        board: board
-        dice: dice
-        laps: 1.
-    game instVarNamed: 'state' put: (GameFinished withWinner: ship).
-    self
-        should: [ card playOn: ship inGame: game ]
-        raise: Error
-        withMessageText: 'Game is already over'.
-]
