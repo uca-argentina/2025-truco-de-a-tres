@@ -15,14 +15,18 @@ EffectDecorator >> applyEffectTo: aShip inBoard: aBoard [
 
 { #category : 'instance creation' }
 EffectDecorator >> applyTo: aShip [
-    self applyEffectTo: aShip inBoard: nil.
-    wrapped ifNotNil: [ wrapped applyTo: aShip ].
+    | board |
+    board := NullBoard new.
+    self applyEffectTo: aShip inBoard: board.
+    wrapped ifNotNil: [ wrapped applyTo: aShip inBoard: board ].
 ]
 
 { #category : 'instance creation' }
 EffectDecorator >> applyTo: aShip inBoard: aBoard [
-    self applyEffectTo: aShip inBoard: aBoard.
-    wrapped ifNotNil: [ wrapped applyTo: aShip inBoard: aBoard ].
+    | board |
+    board := aBoard ifNil: [ NullBoard new ] ifNotNil: [ aBoard ].
+    self applyEffectTo: aShip inBoard: board.
+    wrapped ifNotNil: [ wrapped applyTo: aShip inBoard: board ].
 ]
 
 { #category : 'instance creation' }
