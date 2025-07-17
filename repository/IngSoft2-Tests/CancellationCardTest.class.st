@@ -70,7 +70,7 @@ CancellationCardTest >> testApplyEffectToCancelsCancellationCard [
 
     | target card ship1 ship2 board dice game |
 
-    target := CancellationCard cancelling: (MockInstantCard new).
+    target := CancellationCard cancelling: (AdvanceCard new).
     ship1 := Spaceship withName: 'One'.
     ship2 := Spaceship withName: 'Two'.
     ship1 addActiveCard: target.
