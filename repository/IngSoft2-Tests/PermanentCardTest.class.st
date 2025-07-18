@@ -46,8 +46,9 @@ PermanentCardTest >> testPlayOnRaisesErrorIfGameFinished [
     game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
     game playUntilFinish.
     card := OverloadCard forShip: ship1.
+    ship1 addCard: card.
     self
-        should: [ card playOn: ship1 inGame: game ]
+        should: [ ship1 playCard: card inGame: game ]
         raise: Error
         withMessageText: 'Game is already over'.
 ]
