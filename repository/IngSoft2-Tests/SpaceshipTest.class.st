@@ -235,3 +235,62 @@ SpaceshipTest >> testRestoreFuelRestoresToMax [
 
     self assert: (ship instVarNamed: 'fuel') equals: (ship instVarNamed: 'maxFuel').
 ]
+
+{ #category : 'tests - instance' }
+SpaceshipTest >> testIsPenalizedDelegatesToState [
+
+    | ship |
+
+    ship := Spaceship withName: 'Voyager'.
+    self deny: ship isPenalized.
+    ship penalizeFor: 2.
+
+    self assert: ship isPenalized.
+]
+
+{ #category : 'tests - instance' }
+SpaceshipTest >> testPenalizeForChangesState [
+
+    | ship |
+
+    ship := Spaceship withName: 'Galactica'.
+    ship penalizeFor: 3.
+
+    self assert: ship state class equals: PenalizedShipState.
+    self assert: ship penaltyTurnsRemaining equals: 3.
+]
+
+{ #category : 'tests - instance' }
+SpaceshipTest >> testReducePenaltyRemovesPenaltyWhenTurnsFinish [
+
+    | ship |
+
+    ship := Spaceship withName: 'Apollo'.
+    ship penalizeFor: 1.
+    ship reducePenalty.
+
+    self assert: ship state class equals: NormalShipState.
+]
+
+{ #category : 'tests - instance' }
+SpaceshipTest >> testPenaltyTurnsRemainingDelegatesToState [
+
+    | ship |
+
+    ship := Spaceship withName: 'Odyssey'.
+    ship penalizeFor: 5.
+
+    self assert: ship penaltyTurnsRemaining equals: 5.
+]
+
+{ #category : 'tests - instance' }
+SpaceshipTest >> testStateSetterChangesState [
+
+    | ship newState |
+
+    ship := Spaceship withName: 'Pegasus'.
+    newState := PenalizedShipState forTurns: 1.
+    ship state: newState.
+
+    self assert: ship state equals: newState.
+]
