@@ -1,15 +1,12 @@
 Class {
 	#name : 'HyperJumpEffect',
 	#superclass : 'EffectDecorator',
-	#instVars : [
-		'jumpValues',
-		'currentIndex',
-		'values'
-	],
-	#classVars : [
-		'CurrentIndex',
-		'JumpValues'
-	],
+        #instVars : [
+                'jumpValues',
+                'currentIndex'
+        ],
+        #classVars : [
+        ],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
@@ -53,11 +50,12 @@ HyperJumpEffect >> applyTo: aSpaceship inBoard: aBoard [
 
 { #category : 'operations' }
 HyperJumpEffect >> initializeWith: aCollection [
-    jumpValues := aCollection collect: [ :each |
-        (each respondsTo: #asParsecs)
+    jumpValues := (aCollection
+        collect: [ :each | (each respondsTo: #asParsecs)
             ifTrue: [ each asParsecs ]
-            ifFalse: [ each ]
-    ].
+            ifFalse: [ each ] ])
+        asOrderedCollection;
+        sort: [ :a :b | a > b ].
     currentIndex := 1.
 ]
 

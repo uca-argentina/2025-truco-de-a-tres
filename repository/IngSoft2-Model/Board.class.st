@@ -4,10 +4,9 @@ Class {
 	#instVars : [
 		'cellCount',
 		'wormholes',
-		'cells',
-		'effects',
-		'totalLengthInParsecs',
-		'positionManager'
+                'cells',
+                'totalLengthInParsecs',
+                'positionManager'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -81,12 +80,9 @@ Board class >> validateWormholes: aCollection [
 { #category : 'initialize' }
 Board >> applyEffectTo: aSpaceship [
     | effect |
-    
+
     effect := self effectAt: (self positionOf: aSpaceship).
     effect ifNotNil: [ effect applyTo: aSpaceship inBoard: self ].
-    positionManager ifNotNil: [
-        positionManager moveShip: aSpaceship to: aSpaceship position ].
-
 ]
 
 { #category : 'initialize' }
@@ -131,12 +127,10 @@ Board >> effectAt: aPosition [
 
 { #category : 'initialize' }
 Board >> initializeWithCells: aCount andWormholes: aCollection [
-	cellCount := aCount.
-	wormholes := aCollection.
-	cells := Dictionary new.
-	
-	0 to: aCount - 1 do: [ :i |
-		cells at: i put: self randomEffect ].
+    ^ self
+        initializeWithCells: aCount
+        length: aCount
+        andWormholes: aCollection
 ]
 
 { #category : 'initialize' }
@@ -144,11 +138,12 @@ Board >> initializeWithCells: aCount length: aLengthInParsecs andWormholes: aCol
     cellCount := aCount.
     totalLengthInParsecs := aLengthInParsecs.
     wormholes := aCollection.
-	 cells := Dictionary new.
-	
-	0 to: aCount - 1 do: [ :i |
-		cells at: i put: self randomEffect ].
-    
+         cells := Dictionary new.
+
+        0 to: aCount - 1 do: [ :i |
+                cells at: i put: self randomEffect ].
+
+    ^ self
 ]
 
 { #category : 'initialize' }
@@ -159,28 +154,33 @@ Board >> isPositionReachedAt: aPosition [
 
 { #category : 'spaceships' }
 Board >> moveShip: aShip backward: steps [
-    positionManager
-        ifNil: [ aShip moveBack: steps ]
-        ifNotNil: [ positionManager moveShip: aShip backward: steps ].
+    positionManager ifNil: [
+        self error: 'Board has no registered ships'.
+    ].
+    positionManager moveShip: aShip backward: steps.
 ]
 
 { #category : 'spaceships' }
 Board >> moveShip: aShip forward: steps [
-    positionManager
-        ifNil: [ aShip moveForward: steps ]
-        ifNotNil: [ positionManager moveShip: aShip forward: steps ].
+    positionManager ifNil: [
+        self error: 'Board has no registered ships'.
+    ].
+    positionManager moveShip: aShip forward: steps.
 ]
 
 { #category : 'spaceships' }
 Board >> moveShip: aShip to: aPosition [
-    positionManager
-        ifNil: [ aShip moveTo: aPosition ]
-        ifNotNil: [ positionManager moveShip: aShip to: aPosition ].
+    positionManager ifNil: [
+        self error: 'Board has no registered ships'.
+    ].
+    positionManager moveShip: aShip to: aPosition.
 ]
 
 { #category : 'spaceships' }
 Board >> positionOf: aShip [
-    positionManager ifNil: [ ^ aShip position ].
+    positionManager ifNil: [
+        self error: 'Board has no registered ships'.
+    ].
     ^ positionManager positionOf: aShip
 ]
 

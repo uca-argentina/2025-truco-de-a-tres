@@ -1,9 +1,8 @@
 Class {
 	#name : 'GameInProgress',
 	#superclass : 'GameState',
-	#instVars : [
-		'winner'
-	],
+        #instVars : [
+        ],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }

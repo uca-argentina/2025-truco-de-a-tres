@@ -163,7 +163,7 @@ GameTest >> testFindPenaltyForReturnsExistingPenalty [
     game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
     game penalize: ship1 forTurns: 2.
 
-    self assert: (game findPenaltyFor: ship1) notNil.
+    self assert: (game stateOf: ship1) notNil.
 
 ]
 
@@ -768,7 +768,7 @@ GameTest >> testReducePenaltyRemovesPenaltyEventually [
         laps: 1.
 
     game penalize: ship forTurns: 1.
-    penalty := game findPenaltyFor: ship.
+    penalty := game stateOf: ship.
     
     self assert: (penalty hasPenalty).
     

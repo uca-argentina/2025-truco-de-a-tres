@@ -21,7 +21,7 @@ Class {
 }
 
 { #category : 'initialize' }
-Game class >> minimunShipValidation: someShips [
+Game class >> validateMinimumShips: someShips [
 
 	someShips size < 2 ifTrue: [
 		self error: 'Need 2 space ships or more to initialize the game' ]
@@ -30,7 +30,7 @@ Game class >> minimunShipValidation: someShips [
 { #category : 'initialize' }
 Game class >> startWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps [
 
-	self minimunShipValidation: someShips.
+        self validateMinimumShips: someShips.
 	self validateShips: someShips.
 	self validateBoard: aBoard.
 	self validateDice: someDices.
@@ -136,11 +136,8 @@ Game >> ensureGameIsNotOver [
 ]
 
 { #category : 'testing' }
-Game >> findPenaltyFor: aShip [
+Game >> stateOf: aShip [
     ^ aShip state
-
-
-
 ]
 
 { #category : 'process actions' }
@@ -274,10 +271,11 @@ Game >> playTurn [
 { #category : 'process actions' }
 Game >> playUntilFinish [
 
-	self whenFinishedDo: [ :aWinner | ] whenInProgressDo: [
-    [ self whenFinishedDo: [ :aWinner | false ] whenInProgressDo: [ true ] ]
-        whileTrue: [ self playTurn ].
-].
+    self whenFinishedDo: [ :aWinner | ]
+        whenInProgressDo: [
+            [ self whenFinishedDo: [ :aWinner | false ] whenInProgressDo: [ true ] ]
+                whileTrue: [ self playTurn ].
+        ].
 ]
 
 { #category : 'process actions' }
