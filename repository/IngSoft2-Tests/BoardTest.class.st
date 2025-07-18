@@ -261,13 +261,14 @@ BoardTest >> testHyperGravityAllowsEntryWhenRollIsSufficient [
 
 	| board ship effect newPosition |
 
-	board := Board of: 5 andWormholeAt: #().
+        board := Board of: 5 andWormholeAt: #().
 
-	ship := Spaceship withName: 'Lucas'.
-	ship moveTo: 2.
+        ship := Spaceship withName: 'Lucas'.
+        ship moveTo: 2.
 
-	effect := HyperGravityEffect new.
+        effect := HyperGravityEffect new.
         effect requiredRoll: 4.
+        board instVarNamed: 'cells' put: (Dictionary new).
         board cells at: 4 put: effect.
         board cells at: 3 put: NoEffect new.
         board registerShips: { ship }.
