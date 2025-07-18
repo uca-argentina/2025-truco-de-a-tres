@@ -35,6 +35,8 @@ HyperJumpEffectTest >> testApplyEffectToMovesShipForward [
     initial := 1.
     ship moveTo: initial.
 
+    board registerShips: { ship }.
+
     effect applyEffectTo: ship inBoard: board.
 
     self assert: ship position equals: (initial + (board stepsFromParsecs: expected)).
@@ -51,6 +53,8 @@ HyperJumpEffectTest >> testApplyToMovesShipForwardByCurrentJumpValue [
     ship := Spaceship withName: 'Jumper'.
     initialPosition := 2.
     ship moveTo: initialPosition.
+
+    board registerShips: { ship }.
 
     effect applyTo: ship inBoard: board.
 
@@ -79,6 +83,8 @@ HyperJumpEffectTest >> testHyperJumpCyclesThroughAllJumpValues [
     ship := Spaceship withName: 'Cycler'.
     initialPosition := 0.
     ship moveTo: initialPosition.
+
+    board registerShips: { ship }.
 
     positions := OrderedCollection new.
     4 timesRepeat: [
@@ -185,6 +191,7 @@ HyperJumpEffectTest >> testWithLightYearValuesConvertsProperly [
     effect := HyperJumpEffect withLightYearValues: #(3 6).
     ship := Spaceship withName: 'LY'.
     ship moveTo: 0.
+    board registerShips: { ship }.
     effect applyTo: ship inBoard: board.
     self assert: ship position equals: (board stepsFromParsecs: 2).
 ]

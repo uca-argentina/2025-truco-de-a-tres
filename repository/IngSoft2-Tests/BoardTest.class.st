@@ -27,6 +27,7 @@ BoardTest >> testApplyEffectToDoesNothingIfNoEffect [
 
     cells := (1 to: 5) collect: [:i | nil].
     board instVarNamed: 'cells' put: cells asArray.
+    board registerShips: { ship }.
 
     board applyEffectTo: ship.
 
@@ -95,8 +96,9 @@ BoardTest >> testBlackHoleEffectMovesSpaceshipBackwards [
 	ship := Spaceship withName: 'Lucas'.
 	ship moveTo: 4.
 
-	board cells at: 4 put: BlackHoleEffect new.
-	board applyEffectTo: ship.
+        board cells at: 4 put: BlackHoleEffect new.
+        board registerShips: { ship }.
+        board applyEffectTo: ship.
 
 	self assert: ship position equals: 0.
 ]
@@ -212,6 +214,7 @@ BoardTest >> testCardEffectAddsCardToShip [
     board cells at: 3 put: effect.
     ship := Spaceship withName: 'Player'.
     ship moveTo: 3.
+    board registerShips: { ship }.
     board applyEffectTo: ship.
     self assert: ship cards size equals: 1.
 ]
@@ -257,15 +260,16 @@ BoardTest >> testHyperGravityAllowsEntryWhenRollIsSufficient [
 	ship moveTo: 2.
 
 	effect := HyperGravityEffect new.
-	effect requiredRoll: 4.
-	board cells at: 4 put: effect.
-	board cells at: 3 put: NoEffect new.
+        effect requiredRoll: 4.
+        board cells at: 4 put: effect.
+        board cells at: 3 put: NoEffect new.
+        board registerShips: { ship }.
 
 	newPosition := board determineNewPositionFrom: ship position after: 1.
 	self assert: newPosition equals: 3.
 
-	ship moveTo: newPosition.
-	board applyEffectTo: ship.
+        ship moveTo: newPosition.
+        board applyEffectTo: ship.
 
 	self assert: ship position equals: 3.
 ]
@@ -451,6 +455,7 @@ BoardTest >> testMoveShipBackwardWithoutManager [
     ship := Spaceship withName: 'Falcon'.
     ship moveTo: 4.
 
+    board registerShips: { ship }.
     board moveShip: ship backward: 2.
 
     self assert: ship position equals: 2.
@@ -463,6 +468,7 @@ BoardTest >> testMoveShipForwardWithoutManager [
     ship := Spaceship withName: 'Falcon'.
     ship moveTo: 1.
 
+    board registerShips: { ship }.
     board moveShip: ship forward: 2.
 
     self assert: ship position equals: 3.
@@ -475,6 +481,7 @@ BoardTest >> testMoveShipToWithoutManager [
     ship := Spaceship withName: 'Falcon'.
     ship moveTo: 0.
 
+    board registerShips: { ship }.
     board moveShip: ship to: 3.
 
     self assert: ship position equals: 3.
@@ -486,8 +493,6 @@ BoardTest >> testPositionOfWithoutManager [
     board := Board of: 8 andWormholeAt: #().
     ship := Spaceship withName: 'Solo'.
     ship moveTo: 1.
-
-    self assert: (board positionOf: ship) equals: 1.
 
     board registerShips: { ship }.
     self assert: (board positionOf: ship) equals: 1.

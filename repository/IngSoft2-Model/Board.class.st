@@ -81,12 +81,9 @@ Board class >> validateWormholes: aCollection [
 { #category : 'initialize' }
 Board >> applyEffectTo: aSpaceship [
     | effect |
-    
+
     effect := self effectAt: (self positionOf: aSpaceship).
     effect ifNotNil: [ effect applyTo: aSpaceship inBoard: self ].
-    positionManager ifNotNil: [
-        positionManager moveShip: aSpaceship to: aSpaceship position ].
-
 ]
 
 { #category : 'initialize' }
@@ -159,28 +156,33 @@ Board >> isPositionReachedAt: aPosition [
 
 { #category : 'spaceships' }
 Board >> moveShip: aShip backward: steps [
-    positionManager
-        ifNil: [ aShip moveBack: steps ]
-        ifNotNil: [ positionManager moveShip: aShip backward: steps ].
+    positionManager ifNil: [
+        self error: 'Board has no registered ships'.
+    ].
+    positionManager moveShip: aShip backward: steps.
 ]
 
 { #category : 'spaceships' }
 Board >> moveShip: aShip forward: steps [
-    positionManager
-        ifNil: [ aShip moveForward: steps ]
-        ifNotNil: [ positionManager moveShip: aShip forward: steps ].
+    positionManager ifNil: [
+        self error: 'Board has no registered ships'.
+    ].
+    positionManager moveShip: aShip forward: steps.
 ]
 
 { #category : 'spaceships' }
 Board >> moveShip: aShip to: aPosition [
-    positionManager
-        ifNil: [ aShip moveTo: aPosition ]
-        ifNotNil: [ positionManager moveShip: aShip to: aPosition ].
+    positionManager ifNil: [
+        self error: 'Board has no registered ships'.
+    ].
+    positionManager moveShip: aShip to: aPosition.
 ]
 
 { #category : 'spaceships' }
 Board >> positionOf: aShip [
-    positionManager ifNil: [ ^ aShip position ].
+    positionManager ifNil: [
+        self error: 'Board has no registered ships'.
+    ].
     ^ positionManager positionOf: aShip
 ]
 
