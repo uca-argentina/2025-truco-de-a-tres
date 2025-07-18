@@ -1,9 +1,11 @@
 Class {
-    #name : 'PenalizedShipState',
-    #superclass : 'ShipState',
-    #instVars : ['turnsRemaining'],
-    #category : 'IngSoft2-Model',
-    #package : 'IngSoft2-Model'
+	#name : 'PenalizedShipState',
+	#superclass : 'ShipState',
+	#instVars : [
+		'turnsRemaining'
+	],
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
 { #category : 'initialization' }
@@ -16,11 +18,6 @@ PenalizedShipState class >> forTurns: aNumber [
 PenalizedShipState class >> validateTurns: aNumber [
     (aNumber isInteger and: [ aNumber >= 0 ]) ifFalse: [
         self error: 'Turns must be a non-negative integer' ].
-]
-
-{ #category : 'enumerating' }
-PenalizedShipState >> whenPenalizedDo: penalizedBlock whenNormalDo: normalBlock [
-    ^ penalizedBlock value.
 ]
 
 { #category : 'penalty' }
@@ -67,4 +64,9 @@ PenalizedShipState >> turnsRemaining [
 { #category : 'penalty' }
 PenalizedShipState >> turnsRemaining: aNumber [
     turnsRemaining := aNumber.
+]
+
+{ #category : 'enumerating' }
+PenalizedShipState >> whenPenalizedDo: penalizedBlock whenNormalDo: normalBlock [
+    ^ penalizedBlock value.
 ]

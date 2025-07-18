@@ -26,16 +26,6 @@ ShipPosition >> initializeWithShip: aShip position: aPosition [
 	^ self
 ]
 
-{ #category : 'accessing' }
-ShipPosition >> position [
-    ^ position
-]
-
-{ #category : 'accessing' }
-ShipPosition >> ship [
-    ^ ship
-]
-
 { #category : 'testing' }
 ShipPosition >> isGreaterThan: anotherShipPosition [
     ^ position > anotherShipPosition position
@@ -44,4 +34,14 @@ ShipPosition >> isGreaterThan: anotherShipPosition [
 { #category : 'testing' }
 ShipPosition >> isLessThan: anotherShipPosition [
     ^ position < anotherShipPosition position
+]
+
+{ #category : 'accessing' }
+ShipPosition >> position [
+    ^ position
+]
+
+{ #category : 'accessing' }
+ShipPosition >> ship [
+    ^ ship
 ]

@@ -7,8 +7,8 @@ Class {
 		'dice',
 		'winner',
 		'turnManager',
-                'wantsToPassTurn',
-                'lappedShips',
+		'wantsToPassTurn',
+		'lappedShips',
 		'totalLaps',
 		'state',
 		'lastSteps',
@@ -19,13 +19,6 @@ Class {
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
-
-{ #category : 'initialize' }
-Game class >> validateMinimumShips: someShips [
-
-	someShips size < 2 ifTrue: [
-		self error: 'Need 2 space ships or more to initialize the game' ]
-]
 
 { #category : 'initialize' }
 Game class >> startWithShips: someShips board: aBoard dice: someDices laps: aNumberLaps [
@@ -62,6 +55,13 @@ Game class >> validateLaps: aNumberLaps [
 
 	(aNumberLaps isInteger and: [ aNumberLaps > 0 ]) ifFalse: [
 		self error: 'Laps must be a positive integer' ]
+]
+
+{ #category : 'initialize' }
+Game class >> validateMinimumShips: someShips [
+
+	someShips size < 2 ifTrue: [
+		self error: 'Need 2 space ships or more to initialize the game' ]
 ]
 
 { #category : 'initialize' }
@@ -133,11 +133,6 @@ Game >> die [
 Game >> ensureGameIsNotOver [
     self whenFinishedDo: [ :aWinner | self error: 'Game is already over' ]
         whenInProgressDo: [ ].
-]
-
-{ #category : 'testing' }
-Game >> stateOf: aShip [
-    ^ aShip state
 ]
 
 { #category : 'process actions' }
@@ -368,6 +363,11 @@ Game >> spaceShips [
 { #category : 'process actions' }
 Game >> spaceshipPositions [
     ^ spaceShips collect: [ :ship | ShipPosition for: ship ]
+]
+
+{ #category : 'testing' }
+Game >> stateOf: aShip [
+    ^ aShip state
 ]
 
 { #category : 'process actions' }
