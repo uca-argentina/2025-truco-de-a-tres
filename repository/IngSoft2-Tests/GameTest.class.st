@@ -163,7 +163,7 @@ GameTest >> testFindPenaltyForReturnsExistingPenalty [
     game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
     game penalize: ship1 forTurns: 2.
 
-    self assert: (game findPenaltyFor: ship1) notNil.
+    self assert: (game stateOf: ship1) notNil.
 
 ]
 
@@ -407,6 +407,23 @@ GameTest >> testPassTurnAdvancesIndex [
 
     self assert: game currentShip equals: ship1.
     game passTurn.
+    self assert: game currentShip equals: ship2.
+]
+
+{ #category : 'tests' }
+GameTest >> testPassTurnRestoresFuelToMax [
+    | ship1 ship2 board dice game |
+    ship1 := Spaceship withName: 'Skip'.
+    ship2 := Spaceship withName: 'Other'.
+    board := Board of: 5 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+    ship1 instVarNamed: 'maxFuel' put: 5.
+    ship1 instVarNamed: 'fuel' put: 2.
+
+    game passTurn.
+
+    self assert: (ship1 instVarNamed: 'fuel') equals: (ship1 instVarNamed: 'maxFuel').
     self assert: game currentShip equals: ship2.
 ]
 
@@ -710,16 +727,23 @@ GameTest >> testRedoLastCardOnReplaysOverloadCard [
 
 { #category : 'tests' }
 GameTest >> testRedoLastCardOnReplaysRepeatCard [
-    | ship1 ship2 board dice game card |
-    ship1 := Spaceship withName: 'A'.
-    ship2 := Spaceship withName: 'B'.
-    board := Board of: 5 andWormholeAt: {}.
-    dice := DiceCup with: { Die withSides: 1 }.
-    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
-    card := RepeatCard new.
-    game lastCardPlayed: card.
-    game redoLastCardOn: ship1.
-    self assert: ship1 position equals: 0.
+
+	| ship1 ship2 board dice game card |
+	ship1 := Spaceship withName: 'A'.
+	ship2 := Spaceship withName: 'B'.
+	board := Board of: 5 andWormholeAt: {  }.
+	dice := DiceCup with: { (Die withSides: 1) }.
+	game := Game
+		        startWithShips: {
+				        ship1.
+				        ship2 }
+		        board: board
+		        dice: dice
+		        laps: 1.
+	card := RepeatCard new.
+	game lastCardPlayed: card.
+	game redoLastCardOn: ship1.
+	self assert: ship1 position equals: 0
 ]
 
 { #category : 'tests' }
@@ -768,7 +792,7 @@ GameTest >> testReducePenaltyRemovesPenaltyEventually [
         laps: 1.
 
     game penalize: ship forTurns: 1.
-    penalty := game findPenaltyFor: ship.
+    penalty := game stateOf: ship.
     
     self assert: (penalty hasPenalty).
     
@@ -1542,4 +1566,27 @@ GameTest >> testWhenWinnerSpaceShipIsCorrectWhenGameEnds [
         game
             whenFinishedDo: [ :winner | self assert: winner equals: spaceShip1 ]
             whenInProgressDo: [ self fail: 'Expected game to be finished' ]
+]
+
+{ #category : 'tests' }
+GameTest >> testWinnerReturnsNilWhenGameInProgress [
+    | ship1 ship2 board dice game |
+    ship1 := Spaceship withName: 'Alpha'.
+    ship2 := Spaceship withName: 'Beta'.
+    board := Board of: 3 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 2.
+    self assert: game winner isNil.
+]
+
+{ #category : 'tests' }
+GameTest >> testWinnerReturnsShipWhenGameFinishes [
+    | ship1 ship2 board dice game |
+    ship1 := Spaceship withName: 'Alpha'.
+    ship2 := Spaceship withName: 'Beta'.
+    board := Board of: 1 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+    game playTurn.
+    self assert: game winner equals: ship1.
 ]

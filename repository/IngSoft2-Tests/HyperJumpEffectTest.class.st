@@ -36,6 +36,8 @@ HyperJumpEffectTest >> testApplyEffectToMovesShipForward [
     initial := 1.
     ship moveTo: initial.
 
+    board registerShips: { ship }.
+
     effect applyEffectTo: ship inBoard: board.
 
     self assert: ship position equals: (initial + (board stepsFromParsecs: expected)).
@@ -52,6 +54,8 @@ HyperJumpEffectTest >> testApplyToMovesShipForwardByCurrentJumpValue [
     ship := Spaceship withName: 'Jumper'.
     initialPosition := 2.
     ship moveTo: initialPosition.
+
+    board registerShips: { ship }.
 
     effect applyTo: ship inBoard: board.
 
@@ -81,6 +85,8 @@ HyperJumpEffectTest >> testHyperJumpCyclesThroughAllJumpValues [
     initialPosition := 0.
     ship moveTo: initialPosition.
 
+    board registerShips: { ship }.
+
     positions := OrderedCollection new.
     4 timesRepeat: [
         effect applyTo: ship inBoard: board.
@@ -92,23 +98,23 @@ HyperJumpEffectTest >> testHyperJumpCyclesThroughAllJumpValues [
 
 { #category : 'tests' }
 HyperJumpEffectTest >> testHyperJumpEffectWithValuesInitializesCorrectly [
+        | values effect |
+        values := #(1 3 5).
+        effect := HyperJumpEffect withValues: values.
 
-	| values effect |
-	values := #( 1 3 5 ).
-	effect := HyperJumpEffect withValues: values.
-
-	self assert: (effect perform: #values) equals: #( 5 3 1 )
+        self assert: (effect perform: #values) equals: #(5 3 1).
 ]
 
 { #category : 'tests' }
 HyperJumpEffectTest >> testInitializeWithSetsJumpValuesAndIndex [
 
 	| values effect |
-	values := #(3 5 7).
-	effect := HyperJumpEffect new initializeWith: values.
+        values := #(3 5 7).
+        effect := HyperJumpEffect new initializeWith: values.
 
-	self assert: (effect instVarNamed: 'jumpValues') equals: #(7 5 3).
-	self assert: (effect instVarNamed: 'currentIndex') equals: 1.
+        self assert: (effect instVarNamed: 'jumpValues') equals: #(7 5 3).
+        self assert: (effect instVarNamed: 'currentIndex') equals: 1.
+
 ]
 
 { #category : 'tests' }
@@ -127,28 +133,28 @@ HyperJumpEffectTest >> testNextJumpValueCyclesCorrectly [
 { #category : 'tests' }
 HyperJumpEffectTest >> testNextJumpValueReturnsValuesCyclically [
 
-	| effect values |
-	values := #(3 5 7).
-	effect := HyperJumpEffect withValues: values.
+        | effect values |
+        values := #(3 5 7).
+        effect := HyperJumpEffect withValues: values.
 
-	self assert: effect nextJumpValue equals: 7.
-	self assert: effect nextJumpValue equals: 5.
-	self assert: effect nextJumpValue equals: 3.
-	self assert: effect nextJumpValue equals: 7.
-	self assert: effect nextJumpValue equals: 5.
+        self assert: effect nextJumpValue equals: 7.
+        self assert: effect nextJumpValue equals: 5.
+        self assert: effect nextJumpValue equals: 3.
+        self assert: effect nextJumpValue equals: 7.
+        self assert: effect nextJumpValue equals: 5.
 ]
 
 { #category : 'tests' }
 HyperJumpEffectTest >> testPeekJumpValueReturnsCurrentValueWithoutAdvancing [
 
-	| effect values |
-	values := #(10 20 30).
-	effect := HyperJumpEffect withValues: values.
+        | effect values |
+        values := #(10 20 30).
+        effect := HyperJumpEffect withValues: values.
 
-	self assert: effect peekJumpValue equals: 30.
-	self assert: effect peekJumpValue equals: 30.
-	effect nextJumpValue.
-	self assert: effect peekJumpValue equals: 20.
+        self assert: effect peekJumpValue equals: 30.
+        self assert: effect peekJumpValue equals: 30.
+        effect nextJumpValue.
+        self assert: effect peekJumpValue equals: 20.
 ]
 
 { #category : 'tests' }
@@ -168,14 +174,14 @@ HyperJumpEffectTest >> testResetJumpIndexRestartsSequence [
 { #category : 'tests' }
 HyperJumpEffectTest >> testResetJumpIndexSetsIndexBackToOne [
 
-	| effect values |
-	values := #(3 6 9).
-	effect := HyperJumpEffect withValues: values.
+        | effect values |
+        values := #(3 6 9).
+        effect := HyperJumpEffect withValues: values.
 
-	effect nextJumpValue.
-	effect nextJumpValue.
+        effect nextJumpValue.
+        effect nextJumpValue.
 
-	effect resetJumpIndex.
+        effect resetJumpIndex.
 
         self assert: effect peekJumpValue equals: 9.
 ]
@@ -187,6 +193,7 @@ HyperJumpEffectTest >> testWithLightYearValuesConvertsProperly [
     effect := HyperJumpEffect withLightYearValues: #(3 6).
     ship := Spaceship withName: 'LY'.
     ship moveTo: 0.
+    board registerShips: { ship }.
     effect applyTo: ship inBoard: board.
     self assert: ship position equals: (board stepsFromParsecs: 2).
 ]

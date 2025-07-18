@@ -34,24 +34,28 @@ PositionManager >> initializeForShips: someShips [
 
 { #category : 'updating' }
 PositionManager >> moveShip: aShip backward: steps [
-    | newPos |
-    newPos := (self positionOf: aShip) - steps.
-    newPos < 0 ifTrue: [ newPos := 0 ].
-    self moveShip: aShip to: newPos
+
+	| newPos |
+	newPos := (self positionOf: aShip) - steps.
+	newPos < 0 ifTrue: [ newPos := 0 ].
+	self moveShip: aShip to: newPos
 ]
 
 { #category : 'updating' }
 PositionManager >> moveShip: aShip forward: steps [
-    self moveShip: aShip to: ((self positionOf: aShip) + steps)
+
+	self moveShip: aShip to: (self positionOf: aShip) + steps
 ]
 
 { #category : 'updating' }
 PositionManager >> moveShip: aShip to: aPosition [
-    positions at: aShip put: aPosition.
-    aShip moveTo: aPosition.
+
+	positions at: aShip put: aPosition.
+	aShip moveTo: aPosition
 ]
 
 { #category : 'accessing' }
 PositionManager >> positionOf: aShip [
-    ^ positions at: aShip
+
+	^ positions at: aShip
 ]

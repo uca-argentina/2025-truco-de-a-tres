@@ -3,12 +3,7 @@ Class {
 	#superclass : 'EffectDecorator',
 	#instVars : [
 		'jumpValues',
-		'currentIndex',
-		'values'
-	],
-	#classVars : [
-		'CurrentIndex',
-		'JumpValues'
+		'currentIndex'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -55,6 +50,7 @@ HyperJumpEffect >> applyTo: aSpaceship [
 HyperJumpEffect >> applyTo: aSpaceship inBoard: aBoard [
     self applyEffectTo: aSpaceship inBoard: aBoard.
 ]
+
 
 { #category : 'private' }
 HyperJumpEffect >> convertAndSortValues: aCollection [

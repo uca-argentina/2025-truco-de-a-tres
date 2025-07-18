@@ -7,5 +7,6 @@ Class {
 
 { #category : 'playing' }
 RedoCard >> playOn: aShip inGame: aGame [
+
 	aGame redoLastCardOn: aShip
 ]
