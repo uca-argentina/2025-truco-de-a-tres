@@ -227,7 +227,8 @@ Board >> randomEffect [
 
 { #category : 'spaceships' }
 Board >> registerShips: someShips [
-    positionManager := PositionManager forShips: someShips.
+
+	positionManager := PositionManager forShips: someShips
 ]
 
 { #category : 'initialize' }
@@ -238,13 +239,15 @@ Board >> stepsFromDistance: aDistance [
 
 { #category : 'initialize' }
 Board >> stepsFromLightYears: someLightYears [
-    "Convert a distance expressed in light years to board steps"
-    ^ self stepsFromParsecs: (Distance lightYears: someLightYears) asParsecs
+
+	^ self stepsFromParsecs:
+		  (Distance lightYears: someLightYears) asParsecs
 ]
 
 { #category : 'initialize' }
 Board >> stepsFromParsecs: someParsecs [
-    | ratio |
-    ratio := someParsecs / totalLengthInParsecs.
-    ^ (ratio * cellCount) rounded.
+
+	| ratio |
+	ratio := someParsecs / totalLengthInParsecs.
+	^ (ratio * cellCount) rounded
 ]

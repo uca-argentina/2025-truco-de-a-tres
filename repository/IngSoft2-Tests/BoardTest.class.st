@@ -133,6 +133,14 @@ BoardTest >> testBoardCellsContainRecognizedEffects [
 ]
 
 { #category : 'tests - instance' }
+BoardTest >> testBoardCreationWithDistanceParsecLength [
+    | board |
+    board := Board of: 10 length: (Distance parsecs: 12) andWormholeAt: #().
+
+    self assert: (board stepsFromParsecs: 3) equals: 3.
+]
+
+{ #category : 'tests - instance' }
 BoardTest >> testBoardCreationWithLightYearLength [
     | board |
     board := Board of: 10 lengthLightYears: 30 andWormholeAt: #().
@@ -146,14 +154,6 @@ BoardTest >> testBoardCreationWithParsecsAndLightYears [
     board := Board of: 10 length: 10 lengthLightYears: 30 andWormholeAt: #().
 
     self assert: (board stepsFromParsecs: 1) equals: (board stepsFromLightYears: 3).
-]
-
-{ #category : 'tests - instance' }
-BoardTest >> testBoardCreationWithDistanceParsecLength [
-    | board |
-    board := Board of: 10 length: (Distance parsecs: 12) andWormholeAt: #().
-
-    self assert: (board stepsFromParsecs: 3) equals: 3.
 ]
 
 { #category : 'tests - instance' }

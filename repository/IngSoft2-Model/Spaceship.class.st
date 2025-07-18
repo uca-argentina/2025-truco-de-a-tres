@@ -80,28 +80,26 @@ Spaceship >> initializeWith: aName [
 
 { #category : 'state' }
 Spaceship >> isPenalized [
-    ^ state isPenalized.
+
+	^ state isPenalized
 ]
 
 { #category : 'initialize' }
 Spaceship >> lap [
 
-	^ lap.
-
+	^ lap
 ]
 
 { #category : 'methods' }
 Spaceship >> moveBack: steps [
 
-    position := (position - steps) max: 0.
-
+	position := position - steps max: 0
 ]
 
 { #category : 'methods' }
 Spaceship >> moveForward: steps [
 
-	position := position + steps.
-
+	position := position + steps
 ]
 
 { #category : 'methods' }
@@ -113,17 +111,20 @@ Spaceship >> moveTo: aPosition [
 
 { #category : 'accessing' }
 Spaceship >> name [
-    ^ playerName.
+
+	^ playerName
 ]
 
 { #category : 'state' }
 Spaceship >> penalizeFor: aNumber [
-    state := state penalizeFor: aNumber.
+
+	state := state penalizeFor: aNumber
 ]
 
 { #category : 'state' }
 Spaceship >> penaltyTurnsRemaining [
-    ^ state turnsRemaining.
+
+	^ state turnsRemaining
 ]
 
 { #category : 'cards' }
@@ -144,12 +145,14 @@ Spaceship >> position [
 
 { #category : 'state' }
 Spaceship >> reducePenalty [
-    state := state reducePenalty.
+
+	state := state reducePenalty
 ]
 
 { #category : 'cards' }
 Spaceship >> removeCard: aCard [
-	cards remove: aCard ifAbsent: [ ].
+
+	cards remove: aCard ifAbsent: [  ]
 ]
 
 { #category : 'methods' }
@@ -160,10 +163,12 @@ Spaceship >> restoreFuel [
 
 { #category : 'state' }
 Spaceship >> state [
-    ^ state.
+
+	^ state
 ]
 
 { #category : 'state' }
 Spaceship >> state: aState [
-    state := aState.
+
+	state := aState
 ]

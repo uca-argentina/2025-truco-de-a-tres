@@ -11,16 +11,19 @@ Class {
 
 { #category : 'initialization' }
 ShipPosition class >> for: aShip [
+
 	^ self ship: aShip position: aShip position
 ]
 
 { #category : 'initialization' }
 ShipPosition class >> ship: aShip position: aPosition [
+
 	^ self new initializeWithShip: aShip position: aPosition
 ]
 
 { #category : 'accessing' }
 ShipPosition >> initializeWithShip: aShip position: aPosition [
+
 	ship := aShip.
 	position := aPosition.
 	^ self
@@ -28,20 +31,24 @@ ShipPosition >> initializeWithShip: aShip position: aPosition [
 
 { #category : 'testing' }
 ShipPosition >> isGreaterThan: anotherShipPosition [
-    ^ position > anotherShipPosition position
+
+	^ position > anotherShipPosition position
 ]
 
 { #category : 'testing' }
 ShipPosition >> isLessThan: anotherShipPosition [
-    ^ position < anotherShipPosition position
+
+	^ position < anotherShipPosition position
 ]
 
 { #category : 'accessing' }
 ShipPosition >> position [
-    ^ position
+
+	^ position
 ]
 
 { #category : 'accessing' }
 ShipPosition >> ship [
-    ^ ship
+
+	^ ship
 ]

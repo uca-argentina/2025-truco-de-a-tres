@@ -20,14 +20,12 @@ DiceCup class >> validateMinimumDice: someDice [
 DiceCup class >> with: someDice [
 
 	self validateMinimumDice: someDice.
-	
-	^ self new initializeWith: someDice.
 
+	^ self new initializeWith: someDice
 ]
 
 { #category : 'initialize' }
 DiceCup >> initializeWith: someDice [
-
 
 	diceCollection := someDice
 ]
