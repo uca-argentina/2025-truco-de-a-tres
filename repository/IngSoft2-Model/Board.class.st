@@ -223,6 +223,7 @@ Board >> randomEffect [
 	randomNumber <= 48 ifTrue: [ ^ NoEffect new ].
 	randomNumber <= 74 ifTrue: [ ^ BlackHoleEffect new ].
 	^ HyperGravityEffect new
+
 ]
 
 { #category : 'spaceships' }
@@ -250,4 +251,9 @@ Board >> stepsFromParsecs: someParsecs [
 	| ratio |
 	ratio := someParsecs / totalLengthInParsecs.
 	^ (ratio * cellCount) rounded
+]
+
+{ #category : 'accessing' }
+Board >> totalLengthInParsecs [
+    ^ totalLengthInParsecs
 ]

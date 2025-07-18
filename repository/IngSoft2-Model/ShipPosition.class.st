@@ -52,3 +52,13 @@ ShipPosition >> ship [
 
 	^ ship
 ]
+
+{ #category : 'accessing' }
+ShipPosition >> position [
+    ^ position
+]
+
+{ #category : 'accessing' }
+ShipPosition >> ship [
+    ^ ship
+]

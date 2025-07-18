@@ -78,3 +78,8 @@ PenalizedShipState >> whenPenalizedDo: penalizedBlock whenNormalDo: normalBlock 
 
 	^ penalizedBlock value
 ]
+
+{ #category : 'enumerating' }
+PenalizedShipState >> whenPenalizedDo: penalizedBlock whenNormalDo: normalBlock [
+    ^ penalizedBlock value.
+]

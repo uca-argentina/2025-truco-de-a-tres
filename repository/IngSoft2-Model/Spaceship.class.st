@@ -82,6 +82,7 @@ Spaceship >> initializeWith: aName [
 Spaceship >> isPenalized [
 
 	^ state isPenalized
+
 ]
 
 { #category : 'initialize' }
@@ -127,6 +128,16 @@ Spaceship >> penaltyTurnsRemaining [
 	^ state turnsRemaining
 ]
 
+{ #category : 'state' }
+Spaceship >> penalizeFor: aNumber [
+    state := state penalizeFor: aNumber.
+]
+
+{ #category : 'state' }
+Spaceship >> penaltyTurnsRemaining [
+    ^ state turnsRemaining.
+]
+
 { #category : 'cards' }
 Spaceship >> playCard: aCard inGame: aGame [
 
@@ -147,6 +158,7 @@ Spaceship >> position [
 Spaceship >> reducePenalty [
 
 	state := state reducePenalty
+
 ]
 
 { #category : 'cards' }
