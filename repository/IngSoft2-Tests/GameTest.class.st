@@ -411,6 +411,23 @@ GameTest >> testPassTurnAdvancesIndex [
 ]
 
 { #category : 'tests' }
+GameTest >> testPassTurnRestoresFuelToMax [
+    | ship1 ship2 board dice game |
+    ship1 := Spaceship withName: 'Skip'.
+    ship2 := Spaceship withName: 'Other'.
+    board := Board of: 5 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+    ship1 instVarNamed: 'maxFuel' put: 5.
+    ship1 instVarNamed: 'fuel' put: 2.
+
+    game passTurn.
+
+    self assert: (ship1 instVarNamed: 'fuel') equals: (ship1 instVarNamed: 'maxFuel').
+    self assert: game currentShip equals: ship2.
+]
+
+{ #category : 'tests' }
 GameTest >> testPenalizeAddsPenalizedShip [
 
     | ship1 ship2 board dice game |
@@ -1542,4 +1559,27 @@ GameTest >> testWhenWinnerSpaceShipIsCorrectWhenGameEnds [
         game
             whenFinishedDo: [ :winner | self assert: winner equals: spaceShip1 ]
             whenInProgressDo: [ self fail: 'Expected game to be finished' ]
+]
+
+{ #category : 'tests' }
+GameTest >> testWinnerReturnsNilWhenGameInProgress [
+    | ship1 ship2 board dice game |
+    ship1 := Spaceship withName: 'Alpha'.
+    ship2 := Spaceship withName: 'Beta'.
+    board := Board of: 3 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 2.
+    self assert: game winner isNil.
+]
+
+{ #category : 'tests' }
+GameTest >> testWinnerReturnsShipWhenGameFinishes [
+    | ship1 ship2 board dice game |
+    ship1 := Spaceship withName: 'Alpha'.
+    ship2 := Spaceship withName: 'Beta'.
+    board := Board of: 1 andWormholeAt: {}.
+    dice := DiceCup with: { Die withSides: 1 }.
+    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
+    game playTurn.
+    self assert: game winner equals: ship1.
 ]
