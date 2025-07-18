@@ -62,28 +62,27 @@ Wormhole >> entry [
 { #category : 'validation' }
 Wormhole >> exit [
 
-    ^ exit.
+	^ exit
 ]
 
 { #category : 'validation' }
 Wormhole >> hasEntryAt: aPosition [
 
-    ^ entry = aPosition.
+	^ entry = aPosition
 ]
 
 { #category : 'initialize' }
 Wormhole >> initializeConnecting: aPosition and: anotherPosition [
-	
+
 	entry := aPosition.
-	exit := anotherPosition.
-	
+	exit := anotherPosition
 ]
 
 { #category : 'validation' }
 Wormhole >> initializeFrom: entryPosition to: exitPosition [
 
-    entry := entryPosition.
-    exit := exitPosition.
+	entry := entryPosition.
+	exit := exitPosition
 ]
 
 { #category : 'validation' }

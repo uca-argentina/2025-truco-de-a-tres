@@ -32,6 +32,7 @@ AtomicBombEffectTest >> testApplyToInContextResetsAllPositions [
 
     effect := AtomicBombEffect new.
     board := Board of: 1 andWormholeAt: {}.
+    board registerShips: { ship1. ship2 }.
     effect applyTo: ship1 inContextOf: { ship1. ship2 } inBoard: board.
 
     self assert: ship1 position equals: 0.

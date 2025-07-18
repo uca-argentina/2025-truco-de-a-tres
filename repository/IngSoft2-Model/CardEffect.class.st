@@ -7,5 +7,5 @@ Class {
 
 { #category : 'operations' }
 CardEffect >> applyEffectTo: aSpaceship inBoard: aBoard [
-	aSpaceship addCard: CardDeck randomCard.
+        aSpaceship addCard: (aBoard drawCard).
 ]

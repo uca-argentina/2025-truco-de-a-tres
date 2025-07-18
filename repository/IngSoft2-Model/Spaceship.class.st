@@ -8,16 +8,24 @@ Class {
 		'fuel',
 		'lap',
 		'cards',
-		'activeCards'
+		'activeCards',
+		'state'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
 { #category : 'initialize' }
+Spaceship class >> validatingName: aName [
+	
+	aName isEmpty ifTrue: [ self error: 'A name cannot be empty' ].
+]
+
+{ #category : 'initialize' }
 Spaceship class >> withName: aName [
 
-	^ self new initializeWith: aName.
+	self validatingName: aName.
+	^ self new initializeWith: aName
 ]
 
 { #category : 'methods' }
@@ -60,36 +68,39 @@ Spaceship >> increaseMaxFuelBy: anAmount [
 { #category : 'initialize' }
 Spaceship >> initializeWith: aName [
 
-	aName isEmpty ifTrue: [ self error: 'Name cannot be empty' ].
-
 	playerName := aName.
 	position := 0.
 	fuel := 0.
-  	maxFuel := 0.
-	lap := 0.
-	cards := OrderedCollection new.
-   activeCards := OrderedCollection new.
+	maxFuel := 0.
+        lap := 0.
+        cards := OrderedCollection new.
+        activeCards := OrderedCollection new.
+        state := NormalShipState new
+]
+
+{ #category : 'state' }
+Spaceship >> isPenalized [
+
+	^ state isPenalized
+
 ]
 
 { #category : 'initialize' }
 Spaceship >> lap [
 
-	^ lap.
-
+	^ lap
 ]
 
 { #category : 'methods' }
 Spaceship >> moveBack: steps [
 
-    position := (position - steps) max: 0.
-
+	position := position - steps max: 0
 ]
 
 { #category : 'methods' }
 Spaceship >> moveForward: steps [
 
-	position := position + steps.
-
+	position := position + steps
 ]
 
 { #category : 'methods' }
@@ -101,15 +112,40 @@ Spaceship >> moveTo: aPosition [
 
 { #category : 'accessing' }
 Spaceship >> name [
-    ^ playerName.
+
+	^ playerName
+]
+
+{ #category : 'state' }
+Spaceship >> penalizeFor: aNumber [
+
+	state := state penalizeFor: aNumber
+]
+
+{ #category : 'state' }
+Spaceship >> penaltyTurnsRemaining [
+
+	^ state turnsRemaining
+]
+
+{ #category : 'state' }
+Spaceship >> penalizeFor: aNumber [
+    state := state penalizeFor: aNumber.
+]
+
+{ #category : 'state' }
+Spaceship >> penaltyTurnsRemaining [
+    ^ state turnsRemaining.
 ]
 
 { #category : 'cards' }
 Spaceship >> playCard: aCard inGame: aGame [
+
+	aGame ensureGameIsNotOver.
 	(cards includes: aCard) ifFalse: [ self error: 'Card not in hand' ].
-    aCard playOn: self inGame: aGame.
-    cards remove: aCard ifAbsent: [ ].
-    aGame lastCardPlayed: aCard.
+	aCard playOn: self inGame: aGame.
+	self removeCard: aCard.
+	aGame lastCardPlayed: aCard
 ]
 
 { #category : 'initialize' }
@@ -118,13 +154,33 @@ Spaceship >> position [
     ^ position.
 ]
 
-{ #category : 'methods' }
+{ #category : 'state' }
+Spaceship >> reducePenalty [
+
+	state := state reducePenalty
+
+]
+
+{ #category : 'cards' }
 Spaceship >> removeCard: aCard [
-	cards remove: aCard ifAbsent: [ ].
+
+	cards remove: aCard ifAbsent: [  ]
 ]
 
 { #category : 'methods' }
 Spaceship >> restoreFuel [
 
         fuel := maxFuel.
+]
+
+{ #category : 'state' }
+Spaceship >> state [
+
+	^ state
+]
+
+{ #category : 'state' }
+Spaceship >> state: aState [
+
+	state := aState
 ]
