@@ -7,10 +7,12 @@ Class {
 
 { #category : 'playing' }
 AccelerationCard >> activateFor: aShip inGame: aGame [
-	aShip addActiveCard: self.
+
+	aShip addActiveCard: self
 ]
 
 { #category : 'effects' }
 AccelerationCard >> modifyRoll: aNumber forShip: aShip inGame: aGame [
+
 	^ aNumber + 1
 ]

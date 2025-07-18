@@ -1,9 +1,11 @@
 Class {
-    #name : 'PenalizedShipState',
-    #superclass : 'ShipState',
-    #instVars : ['turnsRemaining'],
-    #category : 'IngSoft2-Model',
-    #package : 'IngSoft2-Model'
+	#name : 'PenalizedShipState',
+	#superclass : 'ShipState',
+	#instVars : [
+		'turnsRemaining'
+	],
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
 { #category : 'initialization' }
@@ -18,37 +20,37 @@ PenalizedShipState class >> validateTurns: aNumber [
         self error: 'Turns must be a non-negative integer' ].
 ]
 
-{ #category : 'enumerating' }
-PenalizedShipState >> whenPenalizedDo: penalizedBlock whenNormalDo: normalBlock [
-    ^ penalizedBlock value.
-]
-
 { #category : 'penalty' }
 PenalizedShipState >> decreaseTurns [
-    turnsRemaining := turnsRemaining - 1.
+
+	turnsRemaining := turnsRemaining - 1
 ]
 
 { #category : 'penalty' }
 PenalizedShipState >> hasPenalty [
-    ^ turnsRemaining > 0.
+
+	^ turnsRemaining > 0
 ]
 
 { #category : 'initialization' }
 PenalizedShipState >> initializeForTurns: aNumber [
-    turnsRemaining := aNumber.
-    ^ self.
+
+	turnsRemaining := aNumber.
+	^ self
 ]
 
 { #category : 'penalty' }
 PenalizedShipState >> isPenalized [
-    ^ true.
+
+	^ true
 ]
 
 { #category : 'penalty' }
 PenalizedShipState >> penalizeFor: aNumber [
-    self class validateTurns: aNumber.
-    turnsRemaining := aNumber.
-    ^ self.
+
+	self class validateTurns: aNumber.
+	turnsRemaining := aNumber.
+	^ self
 ]
 
 { #category : 'penalty' }
@@ -61,10 +63,23 @@ PenalizedShipState >> reducePenalty [
 
 { #category : 'penalty' }
 PenalizedShipState >> turnsRemaining [
-    ^ turnsRemaining.
+
+	^ turnsRemaining
 ]
 
 { #category : 'penalty' }
 PenalizedShipState >> turnsRemaining: aNumber [
-    turnsRemaining := aNumber.
+
+	turnsRemaining := aNumber
+]
+
+{ #category : 'enumerating' }
+PenalizedShipState >> whenPenalizedDo: penalizedBlock whenNormalDo: normalBlock [
+
+	^ penalizedBlock value
+]
+
+{ #category : 'enumerating' }
+PenalizedShipState >> whenPenalizedDo: penalizedBlock whenNormalDo: normalBlock [
+    ^ penalizedBlock value.
 ]

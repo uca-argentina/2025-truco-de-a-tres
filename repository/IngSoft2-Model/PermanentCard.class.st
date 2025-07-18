@@ -12,7 +12,8 @@ PermanentCard >> activateFor: aShip inGame: aGame [
 
 { #category : 'playing' }
 PermanentCard >> playOn: aShip inGame: aGame [
-        (aGame currentShip = aShip)
-            ifTrue: [ self activateFor: aShip inGame: aGame ]
-            ifFalse: [ self error: 'Not your turn' ].
+
+	aGame currentShip = aShip
+		ifTrue: [ self activateFor: aShip inGame: aGame ]
+		ifFalse: [ self error: 'Not your turn' ]
 ]

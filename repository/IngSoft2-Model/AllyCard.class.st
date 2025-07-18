@@ -16,20 +16,23 @@ AllyCard class >> withAlly: aShip [
 
 { #category : 'playing' }
 AllyCard >> activateFor: aShip inGame: aGame [
+
 	ownerShip := aShip.
-    ownerShip addActiveCard: self.
-    allyShip addActiveCard: self.
+	ownerShip addActiveCard: self.
+	allyShip addActiveCard: self
 ]
 
 { #category : 'effects' }
 AllyCard >> allyFor: aShip [
+
 	aShip = ownerShip ifTrue: [ ^ allyShip ].
-    aShip = allyShip ifTrue: [ ^ ownerShip ].
-    ^ nil
+	aShip = allyShip ifTrue: [ ^ ownerShip ].
+	^ nil
 ]
 
 { #category : 'initialization' }
 AllyCard >> initializeWithAlly: aShip [
+
 	allyShip := aShip.
-    ^ self
+	^ self
 ]

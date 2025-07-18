@@ -4,13 +4,20 @@ Class {
 	#instVars : [
 		'cellCount',
 		'wormholes',
-                'cells',
-                'totalLengthInParsecs',
-                'positionManager'
+		'cells',
+		'totalLengthInParsecs',
+		'positionManager'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
+
+{ #category : 'initialize' }
+Board class >> convertToParsecs: aLength [
+    ^ (aLength isKindOf: Distance)
+        ifTrue: [ aLength asParsecs ]
+        ifFalse: [ aLength ].
+]
 
 { #category : 'initialize' }
 Board class >> of: anAmountOfCells andWormholeAt: positions [
@@ -24,42 +31,50 @@ Board class >> of: anAmountOfCells andWormholeAt: positions [
 
 { #category : 'initialize' }
 Board class >> of: anAmountOfCells length: parsecLength andWormholeAt: positions [
-    self validateCellCount: anAmountOfCells.
-    self validateWormholes: positions.
-    ^ self new
-        initializeWithCells: anAmountOfCells
-        length: ((parsecLength isKindOf: Distance)
-            ifTrue: [ parsecLength asParsecs ]
-            ifFalse: [ parsecLength ])
-        andWormholes: positions.
+
+	| lengthOnParsecs |
+	self validateCellCount: anAmountOfCells.
+	self validateWormholes: positions.
+	lengthOnParsecs := self convertToParsecs: parsecLength.
+
+	^ self new
+		  initializeWithCells: anAmountOfCells
+		  length: lengthOnParsecs
+		  andWormholes: positions
 ]
 
 { #category : 'initialize' }
 Board class >> of: anAmountOfCells length: parsecLength lengthLightYears: lightYears andWormholeAt: positions [
 
-	(parsecLength notNil and: [ lightYears notNil ]) ifTrue: [
-		(Distance parsecs: parsecLength) asLightYears = lightYears ifFalse: [
-			self error: 'Length mismatch between parsecs and light years' ] ].
-	parsecLength ifNil: [
-		^ self
-			  of: anAmountOfCells
-			  lengthLightYears: lightYears
-			  andWormholeAt: positions ].
+	self
+		validateLengthConsistencyBetweenParsecs: parsecLength
+		andLightYears: lightYears.
+	self validateCellCount: anAmountOfCells.
+	self validateWormholes: positions.
 
-	^ self
-		  of: anAmountOfCells
-		  length: parsecLength
-		  andWormholeAt: positions
+	parsecLength
+		ifNil: [
+			^ self
+				  of: anAmountOfCells
+				  lengthLightYears: lightYears
+				  andWormholeAt: positions ]
+		ifNotNil: [
+			^ self
+				  of: anAmountOfCells
+				  length: parsecLength
+				  andWormholeAt: positions ]
 ]
 
 { #category : 'initialize' }
 Board class >> of: anAmountOfCells lengthLightYears: lightYears andWormholeAt: positions [
-    "Create a board specifying its length in light years"
 
-    ^ self
-        of: anAmountOfCells
-        length: (Distance lightYears: lightYears) asParsecs
-        andWormholeAt: positions.
+	self validateCellCount: anAmountOfCells.
+	self validateWormholes: positions.
+
+	^ self
+		  of: anAmountOfCells
+		  length: (Distance lightYears: lightYears) asParsecs
+		  andWormholeAt: positions
 ]
 
 { #category : 'initialize' }
@@ -67,6 +82,15 @@ Board class >> validateCellCount: aCount [
 
 	(aCount isInteger and: [ aCount > 0 ]) ifFalse: [
 		self error: 'Board must have a positive number of cells' ]
+]
+
+{ #category : 'initialize' }
+Board class >> validateLengthConsistencyBetweenParsecs: parsecLength andLightYears: lightYears [
+    (parsecLength notNil and: [ lightYears notNil ]) ifTrue: [
+        (Distance parsecs: parsecLength) asLightYears = lightYears ifFalse: [
+            self error: 'Length mismatch between parsecs and light years'
+        ]
+    ]
 ]
 
 { #category : 'initialize' }
@@ -118,6 +142,13 @@ Board >> cells [
 { #category : 'moves' }
 Board >> determineNewPositionFrom: aPosition after: steps [
     ^ self applyWormholeIfPresentAt: (aPosition + steps).
+]
+
+{ #category : 'deck' }
+Board >> drawCard [
+    "Return a random card from the deck"
+
+    ^ CardDeck randomCard
 ]
 
 { #category : 'initialize' }
@@ -178,33 +209,27 @@ Board >> moveShip: aShip to: aPosition [
 
 { #category : 'spaceships' }
 Board >> positionOf: aShip [
-    positionManager ifNil: [
-        self error: 'Board has no registered ships'.
-    ].
-    ^ positionManager positionOf: aShip
+
+	positionManager ifNil: [ self error: 'Board has no registered ships' ].
+	^ positionManager positionOf: aShip
 ]
 
 { #category : 'initialize' }
 Board >> randomEffect [
-        | r |
-    r := (1 to: 100) atRandom.
-    r <= 10 ifTrue: [ ^ CardEffect new ].
-    r <= 48 ifTrue: [ ^ NoEffect new ].
-    r <= 74 ifTrue: [ ^ BlackHoleEffect new ].
-        ^ HyperGravityEffect new.
 
-]
+	| randomNumber |
+	randomNumber := (1 to: 100) atRandom.
+	randomNumber <= 10 ifTrue: [ ^ CardEffect new ].
+	randomNumber <= 48 ifTrue: [ ^ NoEffect new ].
+	randomNumber <= 74 ifTrue: [ ^ BlackHoleEffect new ].
+	^ HyperGravityEffect new
 
-{ #category : 'deck' }
-Board >> drawCard [
-    "Return a random card from the deck"
-
-    ^ CardDeck randomCard
 ]
 
 { #category : 'spaceships' }
 Board >> registerShips: someShips [
-    positionManager := PositionManager forShips: someShips.
+
+	positionManager := PositionManager forShips: someShips
 ]
 
 { #category : 'initialize' }
@@ -215,13 +240,20 @@ Board >> stepsFromDistance: aDistance [
 
 { #category : 'initialize' }
 Board >> stepsFromLightYears: someLightYears [
-    "Convert a distance expressed in light years to board steps"
-    ^ self stepsFromParsecs: (Distance lightYears: someLightYears) asParsecs
+
+	^ self stepsFromParsecs:
+		  (Distance lightYears: someLightYears) asParsecs
 ]
 
 { #category : 'initialize' }
 Board >> stepsFromParsecs: someParsecs [
-    | ratio |
-    ratio := someParsecs / totalLengthInParsecs.
-    ^ (ratio * cellCount) rounded.
+
+	| ratio |
+	ratio := someParsecs / totalLengthInParsecs.
+	^ (ratio * cellCount) rounded
+]
+
+{ #category : 'accessing' }
+Board >> totalLengthInParsecs [
+    ^ totalLengthInParsecs
 ]

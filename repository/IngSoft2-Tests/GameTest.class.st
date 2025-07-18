@@ -727,16 +727,23 @@ GameTest >> testRedoLastCardOnReplaysOverloadCard [
 
 { #category : 'tests' }
 GameTest >> testRedoLastCardOnReplaysRepeatCard [
-    | ship1 ship2 board dice game card |
-    ship1 := Spaceship withName: 'A'.
-    ship2 := Spaceship withName: 'B'.
-    board := Board of: 5 andWormholeAt: {}.
-    dice := DiceCup with: { Die withSides: 1 }.
-    game := Game startWithShips: { ship1. ship2 } board: board dice: dice laps: 1.
-    card := RepeatCard new.
-    game lastCardPlayed: card.
-    game redoLastCardOn: ship1.
-    self assert: ship1 position equals: 0.
+
+	| ship1 ship2 board dice game card |
+	ship1 := Spaceship withName: 'A'.
+	ship2 := Spaceship withName: 'B'.
+	board := Board of: 5 andWormholeAt: {  }.
+	dice := DiceCup with: { (Die withSides: 1) }.
+	game := Game
+		        startWithShips: {
+				        ship1.
+				        ship2 }
+		        board: board
+		        dice: dice
+		        laps: 1.
+	card := RepeatCard new.
+	game lastCardPlayed: card.
+	game redoLastCardOn: ship1.
+	self assert: ship1 position equals: 0
 ]
 
 { #category : 'tests' }
