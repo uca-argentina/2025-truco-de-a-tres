@@ -4,10 +4,9 @@ Class {
 	#instVars : [
 		'cellCount',
 		'wormholes',
-		'cells',
-		'effects',
-		'totalLengthInParsecs',
-		'positionManager'
+                'cells',
+                'totalLengthInParsecs',
+                'positionManager'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'

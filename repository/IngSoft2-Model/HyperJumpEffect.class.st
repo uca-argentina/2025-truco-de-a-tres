@@ -1,15 +1,12 @@
 Class {
 	#name : 'HyperJumpEffect',
 	#superclass : 'EffectDecorator',
-	#instVars : [
-		'jumpValues',
-		'currentIndex',
-		'values'
-	],
-	#classVars : [
-		'CurrentIndex',
-		'JumpValues'
-	],
+        #instVars : [
+                'jumpValues',
+                'currentIndex'
+        ],
+        #classVars : [
+        ],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
