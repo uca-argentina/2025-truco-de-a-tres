@@ -128,12 +128,10 @@ Board >> effectAt: aPosition [
 
 { #category : 'initialize' }
 Board >> initializeWithCells: aCount andWormholes: aCollection [
-	cellCount := aCount.
-	wormholes := aCollection.
-	cells := Dictionary new.
-	
-	0 to: aCount - 1 do: [ :i |
-		cells at: i put: self randomEffect ].
+    ^ self
+        initializeWithCells: aCount
+        length: aCount
+        andWormholes: aCollection
 ]
 
 { #category : 'initialize' }
@@ -141,11 +139,12 @@ Board >> initializeWithCells: aCount length: aLengthInParsecs andWormholes: aCol
     cellCount := aCount.
     totalLengthInParsecs := aLengthInParsecs.
     wormholes := aCollection.
-	 cells := Dictionary new.
-	
-	0 to: aCount - 1 do: [ :i |
-		cells at: i put: self randomEffect ].
-    
+         cells := Dictionary new.
+
+        0 to: aCount - 1 do: [ :i |
+                cells at: i put: self randomEffect ].
+
+    ^ self
 ]
 
 { #category : 'initialize' }
