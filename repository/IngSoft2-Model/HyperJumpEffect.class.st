@@ -53,11 +53,12 @@ HyperJumpEffect >> applyTo: aSpaceship inBoard: aBoard [
 
 { #category : 'operations' }
 HyperJumpEffect >> initializeWith: aCollection [
-    jumpValues := aCollection collect: [ :each |
-        (each respondsTo: #asParsecs)
+    jumpValues := (aCollection
+        collect: [ :each | (each respondsTo: #asParsecs)
             ifTrue: [ each asParsecs ]
-            ifFalse: [ each ]
-    ].
+            ifFalse: [ each ] ])
+        asOrderedCollection;
+        sort: [ :a :b | a > b ].
     currentIndex := 1.
 ]
 
